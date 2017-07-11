@@ -1,49 +1,49 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, View, Text, Image, TextInput, ScrollView, TouchableHighlight, ListView,StatusBar } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements';
 
 export default class ForumList extends Component {
-  constructor(props)
+  
+    constructor(props)
     {
         super(props);
+        
         const {state} = this.props.navigation;
-        // console.log(state.params.forum_data)
+        // console.log(state.params.forumtopics_data)
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
         
         text: '',
-        dataSource: ds.cloneWithRows(state.params.forum_data),
+        dataSource: ds.cloneWithRows(state.params.forumtopics_data),
         };
 
         this._renderRow = this._renderRow.bind(this);
         this._pressRow = this._pressRow.bind(this);
     }
 
-
   _renderRow(data) {
-     // console.log(data);
-if(data != 'Forum not found for the particular course')
+  //  console.log(data)
+if(data != 'No discussion found for this forum')
         {
-
-        const d = new Date(data.timemodified * 1000).toDateString();
-        const total = '( '+data.tot+' )';
+           const d = new Date(data.timemodified * 1000).toDateString();
+           const tot_replies = data.dis_count+' Replies';
     return ( 
-
         <List containerStyle={{marginBottom: -18,marginRight:5,marginLeft:5,bottom:15}}>
 
           <ListItem
           roundAvatar
           key={data.id}
           title={data.name}
-          titleContainerStyle={{width:280,paddingBottom:5}}
-          subtitle={d}
-          rightTitle= {total}
+          titleContainerStyle={{width:250,paddingBottom:5}}
+          subtitle={'by '+data.firstname+'     '+d}
+          subtitleContainerStyle={{width:1000}}
+          rightTitle={tot_replies}
+          rightTitleStyle={{color:'grey'}}
           onPress={() => this._pressRow(data) }
           />
 
       </List>
-
                       
     );
 
@@ -54,18 +54,17 @@ if(data != 'Forum not found for the particular course')
         }
   }
 
- _pressRow(forum){
-        console.log('Forum id - '+ forum.id);
+ _pressRow(forumtopics){
+        console.log('ForumTopic id - '+ forumtopics.id);
 
     const { navigate } = this.props.navigation;
-    const url = 'http://10.21.2.45:8001/app/discussionlist/'+forum.id ;
-   
+    const url = 'http://10.21.2.45:8001/app/forumposts/'+forumtopics.id ;
     fetch(url, {
     method: 'GET',
     })
     .then((response) => { return response.json() } )                     //Fetch and passing data
     .then((responseJson) => {
-    navigate('ForumTopics', { forumtopics_data: responseJson });
+    navigate('ForumDiscussion', { discussion_data: responseJson, discussionid: forumtopics.id, subject: forumtopics.name });
     })
     .catch((error) => {
     Alert.alert("Network Not Reachable. Try Again");
@@ -85,9 +84,9 @@ if(data != 'Forum not found for the particular course')
     }
 
     return (
-     
+    
             <View style={{flex: 1, padding: 3 }}>
-                                
+                                    
                   <ListView
                   dataSource={this.state.dataSource}
                   renderRow={this._renderRow}  

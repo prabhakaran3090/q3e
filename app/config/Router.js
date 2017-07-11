@@ -12,14 +12,19 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import LoginScreen from '../components/LoginScreen';
 import HomeScreen from '../components/HomeScreen';
+import CourseScreen from '../components/CourseScreen';
 import ForumScreen from '../components/ForumScreen';
+import ForumTopicScreen from '../components/ForumTopicScreen';
+import ForumDiscussion from '../components/ForumDiscussion';
 import CalendarScreen from '../components/CalendarScreen';
+import AgendaScreen from '../components/CalendarScreen2';
 import BrowseScreen from '../components/BrowseScreen';
 import ProfileScreen from '../components/ProfileScreen';
+import EditScreen from '../components/ProfileEdit';
 import NotificationScreen from '../components/NotificationScreen';
 
 
-ForumScreen.navigationOptions = {
+CourseScreen.navigationOptions = {
   drawerLabel: 'Forum',
   drawerIcon: ({ tintColor }) => (
     <MaterialIcons
@@ -40,6 +45,54 @@ CalendarScreen.navigationOptions = {
   ),
 };
 
+export const CalendarStack = StackNavigator({ 
+      Calendar: { 
+        screen: CalendarScreen,
+        navigationOptions:{
+         title: 'Calendar'
+        } 
+      } ,
+      Agenda: {
+        screen: AgendaScreen,
+        navigationOptions:{
+         title: 'Events'
+        } 
+      }
+  },{
+    headerMode: 'none',
+  });
+
+export const ProfileStack = StackNavigator({
+  Profile: {
+    screen: ProfileScreen,
+  },
+  Edit: {
+    screen: EditScreen,
+  },
+},{
+    headerMode: 'none',
+  });
+
+
+export const ForumStack = StackNavigator({
+  Course: {
+    screen: CourseScreen,
+  },
+  Forum: {
+    screen: ForumScreen,
+  },
+  ForumTopics: {
+    screen: ForumTopicScreen,
+  },
+  ForumDiscussion: {
+    screen: ForumDiscussion,
+  },
+},{
+    headerMode: 'none',
+  });
+
+
+
 const HomePage = TabNavigator({
                         Home:{
                             screen: HomeScreen ,
@@ -51,12 +104,14 @@ const HomePage = TabNavigator({
                         Browse:{
                             screen: BrowseScreen ,
                             navigationOptions:{
+                              tabBarLabel:'Browse',
                                 tabBarIcon: ({tintColor}) => <Icon name='play-circle-o' style={styles.tabBarIconStyle} size={25} color={tintColor}/>                                
                             }
                         }, 
                         Profile:{
-                            screen: ProfileScreen ,
+                            screen: ProfileStack ,
                             navigationOptions:{
+                                tabBarLabel:'Profile',
                                 tabBarIcon: ({tintColor}) => <Icon name='user-circle-o' style={styles.tabBarIconStyle} size={20} color={tintColor}/>                                
                             }
                         },
@@ -86,13 +141,16 @@ const DrawerTab = DrawerNavigator(
                                     path: '/',
                                     screen: HomePage
                                 },
-                                Forum: {
+                                Course: {
                                     path: '/forum',
-                                    screen: ForumScreen,
+                                    screen: ForumStack,
+                                    navigationOptions:{
+                                  title:'Forum'
+                            }
                                 },
                                 Calendar: {
                                     path: '/calendar',
-                                    screen: CalendarScreen,
+                                    screen: CalendarStack,
                                 },
                             },
                             { 

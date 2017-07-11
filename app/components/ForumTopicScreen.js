@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, View, Text, Image, TextInput, ScrollView, TouchableHighlight, ListView,StatusBar } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements';
+import { Card, List, ListItem } from 'react-native-elements';
 
 export default class ForumList extends Component {
   
@@ -29,7 +29,7 @@ if(data != 'No discussion found for this forum')
            const d = new Date(data.timemodified * 1000).toDateString();
            const tot_replies = data.dis_count+' Replies';
     return ( 
-        <List containerStyle={{marginBottom: -18,marginRight:5,marginLeft:5,bottom:15}}>
+       <Card containerStyle={{padding:2,marginBottom:-10,marginRight:2,marginLeft:2,bottom:10}}>
 
           <ListItem
           roundAvatar
@@ -43,7 +43,7 @@ if(data != 'No discussion found for this forum')
           onPress={() => this._pressRow(data) }
           />
 
-      </List>
+      </Card>
                       
     );
 
@@ -66,11 +66,7 @@ if(data != 'No discussion found for this forum')
     .then((responseJson) => {
     navigate('ForumDiscussion', { discussion_data: responseJson, discussionid: forumtopics.id, subject: forumtopics.name });
     })
-    .catch((error) => {
-    Alert.alert("Network Not Reachable. Try Again");
-    });
-
-
+   
 }
 
 
@@ -85,7 +81,7 @@ if(data != 'No discussion found for this forum')
 
     return (
     
-            <View style={{flex: 1, padding: 3 }}>
+            <View style={{flex: 1, padding: 2 }}>
                                     
                   <ListView
                   dataSource={this.state.dataSource}

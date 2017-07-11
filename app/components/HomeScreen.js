@@ -16,7 +16,7 @@ export default class HomeScreen extends Component {
     return({
         title: 'Q3E',
         drawerLabel: 'Menu',
-        headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'black',marginLeft:20}}/></TouchableHighlight>,
+        headerLeft: <TouchableHighlight underlayColor='transparent' onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'black',marginLeft:20}}/></TouchableHighlight>,
         headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'black',marginRight:20}}/>,
         headerTitleStyle :{
           alignSelf: 'center'

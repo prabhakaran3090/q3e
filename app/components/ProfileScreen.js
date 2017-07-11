@@ -40,7 +40,7 @@ export default class ProfileScreen extends Component {
           featured
           title={`${profile_data.name.toUpperCase()}`}
           caption={profile_data.email}
-          imageContainerStyle={{padding:200}}
+          imageContainerStyle={{padding:180}}
         />
         <Button
           title="EDIT"

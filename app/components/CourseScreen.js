@@ -12,7 +12,7 @@ import {
   Alert 
 } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements'
+import { Card, List, ListItem } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 export default class courselist extends Component {
   constructor(props) {
@@ -26,6 +26,7 @@ export default class courselist extends Component {
     this._renderRow = this._renderRow.bind(this);
     this._pressRow = this._pressRow.bind(this);
   }
+
 
   componentDidMount() {
     return fetch('http://10.21.2.45:8001/app/courselist/')
@@ -49,7 +50,7 @@ export default class courselist extends Component {
 
     return ( 
       
-      <List containerStyle={{marginBottom: -18,marginRight:5,marginLeft:5,bottom:15}}>
+      <Card containerStyle={{padding:3,marginBottom:-10,marginRight:2,marginLeft:2,bottom:10}}>
 
           <ListItem
           roundAvatar
@@ -58,7 +59,7 @@ export default class courselist extends Component {
           key={data.id} onPress={() => this._pressRow(data) }
           />
 
-      </List>
+      </Card>
       
     );
   }
@@ -75,11 +76,7 @@ _pressRow( course){
     .then((responseJson) => {
     navigate('Forum', { forum_data: responseJson });
     })
-    .catch((error) => {
-    Alert.alert("Network Not Reachable. Try Again");
-    });
-
-
+    
 }
 
 filterSearch(text){
@@ -98,7 +95,7 @@ filterSearch(text){
     {
        this.state.dataSource = this.state.dataSource.cloneWithRows(newData);
         Alert.alert(
-        'Searching',
+        '',
         'Search Not Found',
         [
           {text: 'OK'},
@@ -125,12 +122,12 @@ filterSearch(text){
 
     return (
       
-            <View style={{flex: 1, padding: 3,marginBottom:1}}>
-                  <View style={{ backgroundColor:'#d3d3d3',padding: 7 }}>
+            <View style={{flex: 1, padding: 2}}>
+                  <View style={{ backgroundColor:'#d3d3d3',padding: 8 }}>
                     <TextInput 
                     placeholder="Search" 
                     underlineColorAndroid='transparent' 
-                    style={{backgroundColor:'white', borderWidth: 1,paddingLeft:15, padding:4,borderRadius: 5, borderColor: '#e5e5e5' }} 
+                    style={{backgroundColor:'white', borderWidth: 1,paddingLeft:15, padding:2,borderRadius: 5, borderColor: '#e5e5e5' }} 
                     onChangeText={(text) => this.filterSearch(text)}
                     value= {this.state.text}
                     />

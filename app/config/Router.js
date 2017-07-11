@@ -25,7 +25,7 @@ import NotificationScreen from '../components/NotificationScreen';
 
 
 CourseScreen.navigationOptions = {
-  drawerLabel: 'Forum',
+   drawerLabel: 'Forum',
   drawerIcon: ({ tintColor }) => (
     <MaterialIcons
       name="forum"
@@ -68,6 +68,9 @@ export const ProfileStack = StackNavigator({
   },
   Edit: {
     screen: EditScreen,
+    navigationOptions:{
+            title: 'Edit'
+        }
   },
 },{
     headerMode: 'none',
@@ -77,15 +80,27 @@ export const ProfileStack = StackNavigator({
 export const ForumStack = StackNavigator({
   Course: {
     screen: CourseScreen,
+    navigationOptions:{
+            title: 'Courses'
+        }
   },
   Forum: {
     screen: ForumScreen,
+    navigationOptions:{
+            title: 'Forum'
+        }
   },
   ForumTopics: {
     screen: ForumTopicScreen,
+    navigationOptions:{
+            title: 'Forum Topics'
+        }
   },
   ForumDiscussion: {
     screen: ForumDiscussion,
+    navigationOptions:{
+            title: 'Forum Discussion'
+        }
   },
 },{
     headerMode: 'none',
@@ -144,9 +159,6 @@ const DrawerTab = DrawerNavigator(
                                 Course: {
                                     path: '/forum',
                                     screen: ForumStack,
-                                    navigationOptions:{
-                                  title:'Forum'
-                            }
                                 },
                                 Calendar: {
                                     path: '/calendar',

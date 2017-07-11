@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ActivityIndicator, View, Text, Image, TextInput, ScrollView, TouchableHighlight, ListView,StatusBar } from 'react-native';
 
-import { List, ListItem } from 'react-native-elements'
+import { Card, List, ListItem } from 'react-native-elements'
 
 export default class ForumList extends Component {
   constructor(props)
@@ -30,7 +30,7 @@ if(data != 'Forum not found for the particular course')
         const total = '( '+data.tot+' )';
     return ( 
 
-        <List containerStyle={{marginBottom: -18,marginRight:5,marginLeft:5,bottom:15}}>
+         <Card containerStyle={{padding:2,marginBottom:-10,marginRight:2,marginLeft:2,bottom:10}}>
 
           <ListItem
           roundAvatar
@@ -42,15 +42,14 @@ if(data != 'Forum not found for the particular course')
           onPress={() => this._pressRow(data) }
           />
 
-      </List>
-
+      </Card>
                       
     );
 
      }
         else
         {
-            return (<Text style={{fontWeight: 'bold',textAlign:'center',color:'#34495e',paddingTop:150,fontSize:18}}>{data}</Text>);
+            return (<Text style={{fontWeight: 'bold',textAlign:'center',color:'#34495e',paddingTop:200,fontSize:18}}>{data}</Text>);
         }
   }
 
@@ -67,11 +66,7 @@ if(data != 'Forum not found for the particular course')
     .then((responseJson) => {
     navigate('ForumTopics', { forumtopics_data: responseJson });
     })
-    .catch((error) => {
-    Alert.alert("Network Not Reachable. Try Again");
-    });
-
-
+   
 }
 
 
@@ -86,7 +81,7 @@ if(data != 'Forum not found for the particular course')
 
     return (
      
-            <View style={{flex: 1, padding: 3 }}>
+            <View style={{flex: 1, padding: 2 }}>
                                 
                   <ListView
                   dataSource={this.state.dataSource}

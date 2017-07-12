@@ -4,9 +4,11 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  StatusBar,
+  View,
+  Image
 } from 'react-native'; 
-import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -102,9 +104,7 @@ export const ForumStack = StackNavigator({
             title: 'Forum Discussion'
         }
   },
-},{
-    headerMode: 'none',
-  });
+} );
 
 
 
@@ -138,23 +138,40 @@ const HomePage = TabNavigator({
                         },
                     },{
                          tabBarOptions: {
-                             activeTintColor: 'green',
+                             activeTintColor: 'white',
                              showIcon: true,
-                             style: {backgroundColor: 'white',borderTopWidth:1,borderTopColor: '#dbdbdb' },
-                             inactiveTintColor: 'black',
+                             style: {backgroundColor: '#32313F',borderTopWidth:1, borderTopColor : '#2d2c33'  },
+                             inactiveTintColor: 'white',
                              upperCaseLabel: false,
                              tabStyle: {padding:0},
-                             indicatorStyle: {opacity:0},
+                             indicatorStyle: {opacity:1},
                              pressColor :'gray', 
                          },
-                        tabBarPosition: 'bottom',
+                        tabBarPosition: 'bottom',  
                     })
+  const DrawerTab = StackNavigator({ 
+                            Home: {screen: HomePage},
+                            Login: { screen: LoginScreen } ,
+                        } ,{headerMode: 'screen'}); 
 
-const DrawerTab = DrawerNavigator(
+const CustomDrawerContentComponent = (props) => (
+  <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight}}>
+     <View style={{ alignSelf:'center', marginTop: 30}} >
+          <Image
+          source={require('../assets/images/logo.png')}
+        />
+        
+     </View>
+     
+    <DrawerItems {...props} />
+  </View>
+);
+
+export const AppContent = DrawerNavigator(
                             {
                                 Home: {
                                     path: '/',
-                                    screen: HomePage
+                                    screen: DrawerTab
                                 },
                                 Course: {
                                     path: '/forum',
@@ -167,16 +184,21 @@ const DrawerTab = DrawerNavigator(
                             },
                             { 
                                 contentOptions: {
-                                    activeTintColor: '#e91e63',
+                                    inactiveTintColor: 'white',  
+                                    activeTintColor : '#FF9D44',
+                                    activeBackgroundColor:'#25252b',
+                                    style: { 
+                                        backgroundColor: '#32313F',
+                                        flex: 1,
+                                        paddingTop:StatusBar.currentHeight
+                                    }
                                 },
+                                contentComponent: CustomDrawerContentComponent
+                                
                             }
                         );
 
 
-export const App = StackNavigator({ 
-                            Login: { screen: LoginScreen } ,
-                            Home: {screen: DrawerTab}
-                        });
 
 const styles = StyleSheet.create({
     tabBarIconStyle: {  }

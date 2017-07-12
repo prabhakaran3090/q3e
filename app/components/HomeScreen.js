@@ -5,30 +5,41 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
+  Image,
+  TouchableHighlight,
+  StatusBar
 } from 'react-native'; 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class HomeScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
- 
+  static navigationOptions = ({ navigation }) => {  
     return({
-        title: 'Q3E',
-        drawerLabel: 'Menu',
-        headerLeft: <TouchableHighlight underlayColor='transparent' onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'black',marginLeft:20}}/></TouchableHighlight>,
-        headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'black',marginRight:20}}/>,
+        title: 'Q3E',  
+        drawerLabel: 'Home',
+        drawerIcon: (props) => <MaterialIcons
+                      name="home"
+                      size={24}
+                      style={{ color: props.tintColor }}
+                    />,  
+        headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'white',marginLeft:20}}/></TouchableHighlight>,
+        headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}}/>, 
+        headerStyle:{
+          backgroundColor: '#32313F', 
+           height: 80,
+          paddingTop: StatusBar.currentHeight, 
+        }, 
         headerTitleStyle :{
-          alignSelf: 'center'
-        }
-    })
-  };
+          alignSelf: 'center',
+          color: 'white'
+        }, 
+      })
+    };
  
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Welcome to Q3E</Text>
+      <View style={styles.container}>  
       </View>
     );
   }
@@ -39,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#3F3E4E',
   },
   welcome: {
     fontSize: 20,
@@ -51,4 +62,7 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  icon:{
+    flex:1
+  }
 });

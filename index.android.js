@@ -9,11 +9,15 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  StatusBar
 } from 'react-native';
 
-import {App} from './app/config/Router';
+import {AppContent} from './app/config/Router';
 
-
-
+const App = () =>
+  <View style={{flex: 1}}>
+    <StatusBar  backgroundColor={'rgba(0, 0, 0, 0.18)'} translucent  /> 
+   <AppContent />
+ </View>; 
 AppRegistry.registerComponent('navigation', () => App);

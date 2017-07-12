@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableHighlight, ScrollView } from 'react-native';
+import { View, Text, StyleSheet,TouchableHighlight, ScrollView,StatusBar } from 'react-native';
 import { Tile, List, ListItem, Button } from 'react-native-elements';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import Icon from 'react-native-vector-icons/FontAwesome'; 
 
 
 export const profile_data = {
@@ -25,16 +24,17 @@ export default class ProfileScreen extends Component {
   static navigationOptions = {
     header: null
   }
-
-   handleSettingsPress = () => {
+ 
+  
+  handleSettingsPress = () => {
     const edit_data = this.props;
     this.props.navigation.navigate('Edit',{data: profile_data});
   };
-
+ 
   render() {
     
     return (
-      <ScrollView>
+      <ScrollView style={{marginTop: StatusBar.currentHeight}}>
           <Tile
           imageSrc={{ uri: profile_data.picture.large}}
           featured

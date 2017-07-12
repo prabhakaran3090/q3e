@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight
+  TouchableHighlight,
+  StatusBar
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -15,8 +16,14 @@ export default class NotificationScreen extends Component {
         title: 'Notification', 
         headerLeft: null,
         headerTitleStyle :{
-          alignSelf: 'center'
-        }        
+          alignSelf: 'center', 
+          color: 'white'
+        }      ,
+                headerStyle:{
+          backgroundColor: '#32313F', 
+           height: 80,
+          paddingTop: StatusBar.currentHeight, 
+        },   
     })
   };
   render() {

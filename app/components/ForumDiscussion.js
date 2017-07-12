@@ -118,7 +118,7 @@ const {state} = this.props.navigation;
        
      <View style={{flex:1}}>
 
-        <ScrollView style={{marginBottom:50}}
+        <ScrollView style={{marginBottom:50, backgroundColor:'#fff'}}
                 ref={ref => this.scrollView = ref}
                 onContentSizeChange={(contentWidth, contentHeight)=>{        
                     this.scrollView.scrollToEnd({animated: true});

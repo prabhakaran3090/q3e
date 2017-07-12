@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Alert } from 'react-native';
 
 import { FormLabel, FormInput, Button } from 'react-native-elements'
 
@@ -17,11 +17,7 @@ export default class Edit extends Component {
  
   }
 
-  static navigationOptions = {  
-    title:'Edit'
-  };
-
-  validateEmail = (email) => {
+   validateEmail = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
   };
@@ -65,22 +61,23 @@ export default class Edit extends Component {
   render() {
     const {state} = this.props.navigation;
     return (
-      <View>
-          <FormLabel>Name</FormLabel>
+      <ScrollView>
+      <View style={{backgroundColor:'#fff'}}>
+          <FormLabel labelStyle={{color:'black',fontSize:14}}>Name</FormLabel>
           <FormInput
            inputStyle={{width:null}}
            onChangeText={(text) => this.setState({name:text})}
            value={this.state.name}
           />
 
-          <FormLabel>Email</FormLabel>
+          <FormLabel labelStyle={{color:'black',fontSize:14}}>Email</FormLabel>
           <FormInput
            inputStyle={{width:null}}
            onChangeText={(text) => this.setState({email:text})}
            value={this.state.email}
           />
 
-          <FormLabel>Phone</FormLabel>
+          <FormLabel labelStyle={{color:'black',fontSize:14}}>Phone</FormLabel>
           <FormInput
            inputStyle={{width:null}}
            onChangeText={(text) => this.setState({phone:text})}
@@ -94,6 +91,7 @@ export default class Edit extends Component {
         />
 
       </View>
+      </ScrollView>
     );
   }
 }

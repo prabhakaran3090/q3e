@@ -155,10 +155,11 @@ const HomePage = TabNavigator({
                         } ,{headerMode: 'screen'}); 
 
 const CustomDrawerContentComponent = (props) => (
-  <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight}}>
-     <View style={{ alignSelf:'center', marginTop: 30}} >
+  <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight,}}>
+     <View style={{ marginTop: 30, alignSelf:'center'  }} >
           <Image
-          source={require('../assets/images/logo.png')}
+          source={require('../assets/images/logo.png')}  
+          style={{ width: 150, height: 50, resizeMode: 'contain'}}
         />
         
      </View>

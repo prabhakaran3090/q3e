@@ -94,17 +94,17 @@ componentDidMount() {
            <Text style={styles.SwipeTextStyle}>
             <MaterialIcons
               name="access-time"
-              size={24} 
+              size={20} 
             /> 
         </Text>    
-        <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>        
+        <Text style={ styles.SwipeTextStyle }>30.08.1990 05.30 PM </Text>        
        </View>
-       <View style={{flexDirection: 'row', marginLeft: 20}}> 
+       <View style={{flexDirection: 'row' }}> 
            <Text style={styles.SwipeTextStyle}>
             <MaterialIcons
               name="videocam"
               color = 'green'
-              size={24} 
+              size={20} 
             /> 
         </Text>    
         <Text style={{marginTop: 6, fontSize: 15, fontWeight:'bold', color: 'green'}}>Live</Text>        
@@ -130,17 +130,17 @@ componentDidMount() {
            <Text style={styles.SwipeTextStyle}>
             <MaterialIcons
               name="access-time"
-              size={24} 
+              size={20} 
             /> 
         </Text>    
         <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>        
        </View>
-       <View style={{flexDirection: 'row', marginLeft: 20}}> 
+       <View style={{flexDirection: 'row' }}> 
            <Text style={styles.SwipeTextStyle}>
             <MaterialIcons
               name="videocam"
               color = 'green'
-              size={24} 
+              size={20} 
             /> 
         </Text>    
         <Text style={styles.indicateLive}>Live</Text>        
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   SwipeTextStyle:{ 
-    fontSize: 15,
+    fontSize: 13,
     fontWeight:'bold', 
     color: 'black',
     padding: 5

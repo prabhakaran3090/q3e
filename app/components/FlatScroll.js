@@ -109,7 +109,7 @@ const styles = {
     flexDirection: 'row'
   },
   SwipeTextStyle:{ 
-    fontSize: 15,
+    fontSize: 13,
     fontWeight:'bold', 
     color: 'black',
     padding: 5

@@ -23,9 +23,7 @@ export default class BrowseScreen extends Component {
         headerLeft: <TouchableHighlight onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'white',marginLeft:20}}/></TouchableHighlight>,
         headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}}/>, 
         headerStyle:{
-          backgroundColor: '#32313F', 
-           height: 80,
-          paddingTop: StatusBar.currentHeight, 
+          backgroundColor: '#32313F',  
         }, 
         headerTitleStyle :{
           alignSelf: 'center',

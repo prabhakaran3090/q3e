@@ -1,3 +1,6 @@
 rootProject.name = 'navigation'
 
 include ':app'
+
+include ':react-native-device-info'
+project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../app/core/RNDeviceInfo/android')

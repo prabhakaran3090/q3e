@@ -13,7 +13,7 @@ import {
   StatusBar
 } from 'react-native';
 
-import {AppContent} from './app/config/Router';
+import {AppContent} from './app/config/Router';  
 
 const App = () =>
   <View style={{flex: 1}}>

@@ -8,14 +8,16 @@ import {
   Image,
   TouchableHighlight,
   StatusBar,
-  ScrollView
+  ScrollView,
+  Constants
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Swiper from 'react-native-swiper'; 
-import { Card, ListItem, Button } from 'react-native-elements'
+import { Card, ListItem, Button } from 'react-native-elements' 
 
 import FlatScroll from './FlatScroll';
+import DeviceInfo from  '../core/RNDeviceInfo/';
 
 const users = [
  {
@@ -31,25 +33,38 @@ const users = [
 
 export default class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => {  
+    let StatusBarHeaderStyle = {
+          paddingTop: 0,
+          height: 60 ,
+    };
+    if(DeviceInfo.versionCompatibility() != 0){
+      StatusBarHeaderStyle = {
+          paddingTop: StatusBar.currentHeight,
+          height: 60 + StatusBar.currentHeight,   
+      }
+    }
     return({
-        title: 'Q3E',  
+        headerTitle: <Image   
+                        source={require('../assets/images/q3e.png')}
+                        style={{ alignSelf:'center', width:40, resizeMode: 'contain'}}
+                      /> ,   
         drawerLabel: 'Home',
         drawerIcon: (props) => <MaterialIcons
                       name="home"
                       size={24}
                       style={{ color: props.tintColor }}
                     />,  
-        headerLeft: <TouchableHighlight  underlayColor='transparent'  onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{color: 'white',marginLeft:20}}/></TouchableHighlight>,
-        headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}}/>, 
+        headerLeft: <TouchableHighlight  underlayColor='transparent'  onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{  color: 'white',marginLeft:20}}/></TouchableHighlight>,
+        headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}} />, 
         headerStyle:{
-          backgroundColor: '#32313F', 
-           height: 80,
-          paddingTop: StatusBar.currentHeight, 
+          backgroundColor: '#32313F',
+          paddingTop: StatusBarHeaderStyle.paddingTop,
+          height:  StatusBarHeaderStyle.height
         }, 
         headerTitleStyle :{
           alignSelf: 'center',
-          color: 'white'
-        }, 
+          color: 'black'
+        },  
       })
     };
  
@@ -66,12 +81,14 @@ componentDidMount() {
         visibleSwiper: true
       });
    }, 0);
+
+   
 }
 
 
   renderSwipe(){
     return(<Swiper 
-         height={250} horizontal={true} 
+         height={300} horizontal={true} 
          loop={true} bounces={true} 
          removeClippedSubviews={false}
       > 
@@ -151,16 +168,22 @@ componentDidMount() {
       
       </Swiper>)
   } 
-  render() {
+  render() { 
    let swiper = null;
    if (this.state.visibleSwiper) {
       return( 
 
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           {this.renderSwipe()}
-          <Text style={styles.HeaderStyle}>Upcoming Session</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[styles.HeaderStyle,{ flex:1}]}>Upcoming Session</Text>
+            <Text style={[styles.HeaderStyle,{textAlign: 'right',marginRight:10, flex:1, color: '#0089da'}]}>View All</Text>
+          </View>
           <FlatScroll />
-          <Text style={styles.HeaderStyle}>Completed Session</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={[styles.HeaderStyle,{ flex:1}]}>Completed Session</Text>
+            <Text style={[styles.HeaderStyle,{textAlign: 'right',marginRight:10, flex:1, color: '#0089da'}]}>View All</Text>
+          </View> 
           <FlatScroll />
        </ScrollView>
 
@@ -224,6 +247,8 @@ const styles = StyleSheet.create({
   HeaderStyle:{
     fontSize: 15, 
     paddingLeft: 10,
-    marginTop: 15
+    marginTop: 15,
+    color: '#212121',
+    fontWeight: 'bold'
   }
 });

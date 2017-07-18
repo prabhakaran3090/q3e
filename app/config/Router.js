@@ -23,8 +23,8 @@ import AgendaScreen from '../components/CalendarScreen2';
 import BrowseScreen from '../components/BrowseScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import EditScreen from '../components/ProfileEdit';
-import NotificationScreen from '../components/NotificationScreen';
-
+import NotificationScreen from '../components/NotificationScreen'; 
+import DeviceInfo from  '../core/RNDeviceInfo/';
 
 CourseScreen.navigationOptions = {
    drawerLabel: 'Forum',
@@ -135,17 +135,18 @@ const HomePage = TabNavigator({
                             navigationOptions:{
                                 tabBarIcon: ({tintColor}) => <Icon name='bell-o' style={styles.tabBarIconStyle} size={20} color={tintColor}/>                                
                             }
-                        },
+                        },  
                     },{
                          tabBarOptions: {
-                             activeTintColor: 'white',
+                             activeTintColor: 'green',
                              showIcon: true,
-                             style: {backgroundColor: '#32313F',borderTopWidth:1, borderTopColor : '#2d2c33'  },
-                             inactiveTintColor: 'white',
+                             style: {backgroundColor: 'whitesmoke',borderTopWidth:0.5,  borderTopColor : '#dadada'  },
+                             inactiveTintColor: 'black',
                              upperCaseLabel: false,
-                             tabStyle: {padding:0},
-                             indicatorStyle: {opacity:1},
+                             tabStyle: {padding:0,margin:0,  alignSelf:'center'},
+                             indicatorStyle: {opacity:0},
                              pressColor :'gray', 
+                             labelStyle: {fontSize: 11,marginTop:0, }
                          },
                         tabBarPosition: 'bottom',  
                     })
@@ -153,13 +154,22 @@ const HomePage = TabNavigator({
                             Home: {screen: HomePage},
                             Login: { screen: LoginScreen } ,
                         } ,{headerMode: 'screen'}); 
-
+let StatusBarHeaderStyle = {
+    paddingTop: 0,
+    height: 60 ,
+};
+if(DeviceInfo.versionCompatibility() != 0){
+    StatusBarHeaderStyle = {
+        paddingTop: StatusBar.currentHeight,
+        height: 60 + StatusBar.currentHeight,   
+    }
+}
 const CustomDrawerContentComponent = (props) => (
   <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight,}}>
-     <View style={{ marginTop: 30, alignSelf:'center'  }} >
+     <View style={{ marginTop: StatusBarHeaderStyle.paddingTop, alignSelf:'center'  }} >
           <Image
           source={require('../assets/images/logo.png')}  
-          style={{ width: 150, height: 50, resizeMode: 'contain'}}
+          style={{ width: 200, height: 60, resizeMode: 'contain'}}
         />
         
      </View>

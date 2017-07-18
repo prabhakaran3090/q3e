@@ -20,9 +20,7 @@ export default class NotificationScreen extends Component {
           color: 'white'
         }      ,
                 headerStyle:{
-          backgroundColor: '#32313F', 
-           height: 80,
-          paddingTop: StatusBar.currentHeight, 
+          backgroundColor: '#32313F',  
         },   
     })
   };

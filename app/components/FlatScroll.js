@@ -16,7 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const course_list = [{
   key:1,
-  name:'Frequency Domain Representation of Continuous ',
+  name:'Frequency Domain  ',
   image:'https://udemy-images.udemy.com/course/304x171/426570_1b91_3.jpg'
 },
 {

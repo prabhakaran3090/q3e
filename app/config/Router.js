@@ -24,18 +24,9 @@ import BrowseScreen from '../components/BrowseScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import EditScreen from '../components/ProfileEdit';
 import NotificationScreen from '../components/NotificationScreen'; 
-import DeviceInfo from  '../core/RNDeviceInfo/';
+import { SBHeaderStyle, headerProp } from '../config/Config';
 
-CourseScreen.navigationOptions = {
-   drawerLabel: 'Forum',
-  drawerIcon: ({ tintColor }) => (
-    <MaterialIcons
-      name="forum"
-      size={24}
-      style={{ color: tintColor }}
-    />
-  ),
-};
+ 
 CalendarScreen.navigationOptions = {
   drawerLabel: 'Calendar',
   drawerIcon: ({ tintColor }) => (
@@ -112,7 +103,7 @@ const HomePage = TabNavigator({
                         Home:{
                             screen: HomeScreen ,
                             navigationOptions:{
-                                tabBarIcon: ({tintColor}) => <Icon name='home' style={styles.tabBarIconStyle} size={25} color={tintColor}/>                                ,
+                                tabBarIcon: ({tintColor}) => <Icon name='home' size={25} color={tintColor}/>                                ,
                                 tabBarLabel: 'Home'
                             }
                         },
@@ -120,20 +111,20 @@ const HomePage = TabNavigator({
                             screen: BrowseScreen ,
                             navigationOptions:{
                               tabBarLabel:'Browse',
-                                tabBarIcon: ({tintColor}) => <Icon name='play-circle-o' style={styles.tabBarIconStyle} size={25} color={tintColor}/>                                
+                                tabBarIcon: ({tintColor}) => <Icon name='play-circle-o' size={25} color={tintColor}/>                                
                             }
                         }, 
                         Profile:{
                             screen: ProfileStack ,
                             navigationOptions:{
                                 tabBarLabel:'Profile',
-                                tabBarIcon: ({tintColor}) => <Icon name='user-circle-o' style={styles.tabBarIconStyle} size={20} color={tintColor}/>                                
+                                tabBarIcon: ({tintColor}) => <Icon name='user-circle-o' size={20} color={tintColor}/>                                
                             }
                         },
                         Notification:{
                             screen: NotificationScreen ,
                             navigationOptions:{
-                                tabBarIcon: ({tintColor}) => <Icon name='bell-o' style={styles.tabBarIconStyle} size={20} color={tintColor}/>                                
+                                tabBarIcon: ({tintColor}) => <Icon name='bell-o' size={20} color={tintColor}/>                                
                             }
                         },  
                     },{
@@ -150,67 +141,54 @@ const HomePage = TabNavigator({
                          },
                         tabBarPosition: 'bottom',  
                     })
-  const DrawerTab = StackNavigator({ 
-                            Home: {screen: HomePage},
-                            Login: { screen: LoginScreen } ,
-                        } ,{headerMode: 'screen'}); 
-let StatusBarHeaderStyle = {
-    paddingTop: 0,
-    height: 60 ,
-};
-if(DeviceInfo.versionCompatibility() != 0){
-    StatusBarHeaderStyle = {
-        paddingTop: StatusBar.currentHeight,
-        height: 60 + StatusBar.currentHeight,   
-    }
-}
+
+const DrawerTab = StackNavigator({ 
+                Login: { screen: LoginScreen } ,
+                Home: {screen: HomePage},
+            } ,{ headerMode: 'screen' });  
+
 const CustomDrawerContentComponent = (props) => (
   <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight,}}>
-     <View style={{ marginTop: StatusBarHeaderStyle.paddingTop, alignSelf:'center'  }} >
+     <View style={{ marginTop: SBHeaderStyle.Top, alignSelf:'center'  }} >
           <Image
           source={require('../assets/images/logo.png')}  
-          style={{ width: 200, height: 60, resizeMode: 'contain'}}
-        />
-        
-     </View>
-     
+          style={{ width: 200, height: 60, resizeMode: 'contain' }}
+        /> 
+     </View> 
     <DrawerItems {...props} />
   </View>
 );
 
-export const AppContent = DrawerNavigator(
-                            {
-                                Home: {
-                                    path: '/',
-                                    screen: DrawerTab
-                                },
-                                Course: {
-                                    path: '/forum',
-                                    screen: ForumStack,
-                                },
-                                Calendar: {
-                                    path: '/calendar',
-                                    screen: CalendarStack,
-                                },
-                            },
-                            { 
-                                contentOptions: {
-                                    inactiveTintColor: 'white',  
-                                    activeTintColor : '#FF9D44',
-                                    activeBackgroundColor:'#25252b',
-                                    style: { 
-                                        backgroundColor: '#32313F',
-                                        flex: 1,
-                                        paddingTop:StatusBar.currentHeight
-                                    }
-                                },
-                                contentComponent: CustomDrawerContentComponent
-                                
-                            }
-                        );
+const DrawerRouteConfigs = {        
+        Home: {
+            path: '/',
+            screen: DrawerTab
+        },
+        Course: {
+            path: '/forum',
+            screen: ForumStack,
+        },
+        Calendar: {
+            path: '/calendar',
+            screen: CalendarStack,
+        }
+    }
+const DrawerNavigatorConfig = { 
+    contentOptions: {
+        inactiveTintColor: 'white',  
+        activeTintColor : '#FF9D44',
+        activeBackgroundColor:'#25252b',
+        style: { 
+            backgroundColor: '#32313F',
+            flex: 1,
+            paddingTop:SBHeaderStyle.Top
+        }
+    },
+    contentComponent: CustomDrawerContentComponent 
+}
 
 
+export const AppContent = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
 
-const styles = StyleSheet.create({
-    tabBarIconStyle: {  }
-}) ;       
+
+ 

@@ -35,11 +35,7 @@ export default class LoginScreen extends Component {
                                 <Image style={styles.logoImage} source={require('../assets/images/logo.png')} />
                             </View>
                                 <ScrollView>
-                                    <View style={styles.LoginBody}>
-                                        <InputBox 
-                                            placeholder="Server IP"
-                                            icon="globe" 
-                                        />   
+                                    <View style={styles.LoginBody}>  
                                         <InputBox 
                                             placeholder="Username"
                                             icon="user" 
@@ -81,9 +77,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-end',   
     },
-    logoImage: {
-        width: 153,
-        height: 24, 
+    logoImage: {  
+        width: 200, 
+        height: 60, 
+        resizeMode: 'contain'  
     },
     LoginBody: {  
         flex: 5,

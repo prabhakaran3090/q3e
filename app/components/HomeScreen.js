@@ -16,8 +16,8 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Swiper from 'react-native-swiper'; 
 import { Card, ListItem, Button } from 'react-native-elements' 
 
-import FlatScroll from './FlatScroll';
-import DeviceInfo from  '../core/RNDeviceInfo/';
+import FlatScroll from './FlatScroll'; 
+import { SBHeaderStyle, headerProp } from '../config/Config';
 
 const users = [
  {
@@ -32,58 +32,23 @@ const users = [
 
 
 export default class HomeScreen extends Component {
-  static navigationOptions = ({ navigation }) => {  
-    let StatusBarHeaderStyle = {
-          paddingTop: 0,
-          height: 60 ,
-    };
-    if(DeviceInfo.versionCompatibility() != 0){
-      StatusBarHeaderStyle = {
-          paddingTop: StatusBar.currentHeight,
-          height: 60 + StatusBar.currentHeight,   
-      }
-    }
-    return({
-        headerTitle: <Image   
-                        source={require('../assets/images/q3e.png')}
-                        style={{ alignSelf:'center', width:40, resizeMode: 'contain'}}
-                      /> ,   
-        drawerLabel: 'Home',
-        drawerIcon: (props) => <MaterialIcons
-                      name="home"
-                      size={24}
-                      style={{ color: props.tintColor }}
-                    />,  
-        headerLeft: <TouchableHighlight  underlayColor='transparent'  onPress={() => { navigation.navigate('DrawerOpen') }}><Icon name='bars'  size={25} style={{  color: 'white',marginLeft:20}}/></TouchableHighlight>,
-        headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}} />, 
-        headerStyle:{
-          backgroundColor: '#32313F',
-          paddingTop: StatusBarHeaderStyle.paddingTop,
-          height:  StatusBarHeaderStyle.height
-        }, 
-        headerTitleStyle :{
-          alignSelf: 'center',
-          color: 'black'
-        },  
-      })
-    };
+  
+  static navigationOptions = ({ navigation }) =>  headerProp(navigation) ;
  
-constructor(props) {
-   super(props);
-   this.state = {
-      visibleSwiper: false
-   };
-}
+  constructor(props) {
+    super(props);
+    this.state = {
+        visibleSwiper: false
+    };
+  }
 
-componentDidMount() {
-   setTimeout(() => {
-      this.setState({
-        visibleSwiper: true
-      });
-   }, 0);
-
-   
-}
+  componentDidMount() {
+    setTimeout(() => {
+        this.setState({
+          visibleSwiper: true
+        });
+    }, 0);  
+  }
 
 
   renderSwipe(){
@@ -168,11 +133,11 @@ componentDidMount() {
       
       </Swiper>)
   } 
-  render() { 
-   let swiper = null;
-   if (this.state.visibleSwiper) {
-      return( 
 
+  render() { 
+  
+   if (this.state.visibleSwiper) {
+      return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           {this.renderSwipe()}
           <View style={{ flexDirection: 'row' }}>

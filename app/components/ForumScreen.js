@@ -8,7 +8,7 @@ export default class ForumList extends Component {
     {
         super(props);
         const {state} = this.props.navigation;
-        // console.log(state.params.forum_data)
+       
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
         
@@ -22,16 +22,14 @@ export default class ForumList extends Component {
 
 
   _renderRow(data) {
-     // console.log(data);
-if(data != 'Forum not found for the particular course')
+        if(data != 'Forum not found for the particular course')
         {
 
         const d = new Date(data.timemodified * 1000).toDateString();
         const total = '( '+data.tot+' )';
-    return ( 
+        return ( 
 
-         <Card containerStyle={{padding:2,marginBottom:-10,marginRight:2,marginLeft:2,bottom:10}}>
-
+         <Card containerStyle={{padding:0,marginBottom:-14,marginRight:2,marginLeft:2,bottom:12}}>
           <ListItem
           roundAvatar
           key={data.id}
@@ -54,8 +52,7 @@ if(data != 'Forum not found for the particular course')
   }
 
  _pressRow(forum){
-        console.log('Forum id - '+ forum.id);
-
+       
     const { navigate } = this.props.navigation;
     const url = 'http://10.21.2.45:8001/app/discussionlist/'+forum.id ;
    
@@ -66,7 +63,7 @@ if(data != 'Forum not found for the particular course')
     .then((responseJson) => {
     navigate('ForumTopics', { forumtopics_data: responseJson });
     })
-   
+    
 }
 
 

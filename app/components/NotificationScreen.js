@@ -9,20 +9,19 @@ import {
   StatusBar 
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { SBHeaderStyle, headerProp } from '../config/Config';
 
 export default class NotificationScreen extends Component {
-  static navigationOptions = ({ navigation }) => {  
-    return({
-        title: 'Notification', 
-        headerLeft: null,
-        headerTitleStyle :{
-          alignSelf: 'center', 
-          color: 'white'
-        }      ,
-                headerStyle:{
-          backgroundColor: '#32313F',  
-        },   
-    })
+  
+  static navigationOptions = ({ navigation }) => { 
+    
+    const header = headerProp(navigation);
+
+    header.headerLeft = null;
+    header.headerRight = null;
+    header.headerTitle = 'Notification';
+
+    return (header);
   };
   render() {
     return (

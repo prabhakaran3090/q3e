@@ -12,14 +12,15 @@ import {
   Alert 
 } from 'react-native';
 
-import { Card, List, ListItem, SearchBar } from 'react-native-elements'
+import { Card, List, ListItem } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
 export default class courselist extends Component {
-     static navigationOptions = ({ navigation }) => { 
+  
+   static navigationOptions = ({ navigation }) => { 
                                 
             const header = headerProp(navigation);
 
@@ -42,8 +43,7 @@ export default class courselist extends Component {
     this.state = {
       isLoading: true,
       text: '',
-      response_data:'',
-      emptySearch:1
+      response_data:''
     }
 
     this._renderRow = this._renderRow.bind(this);
@@ -52,8 +52,7 @@ export default class courselist extends Component {
 
 
   componentDidMount() {
-
-   return fetch('http://10.21.2.45:8001/app/courselist/')
+    return fetch('http://10.21.2.45:8001/app/courselist/')
       .then((response) => response.json())
       .then((responseJson) => {
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -68,27 +67,26 @@ export default class courselist extends Component {
       .catch((error) => {
         Alert.alert("Network Not Reachable. Try Again");
         });
-    
   }
 
   _renderRow(data) {
 
     return ( 
-      
+       
           <ListItem
           roundAvatar
           key={data.id}
           title={data.fullname}
-          titleStyle={{fontSize: 13, fontWeight: 'bold'}} 
-          onPress={() => this._pressRow(data) }
-          />
- 
+          titleStyle={{fontSize: 15,fontWeight: 'bold'}}
+          key={data.id} onPress={() => this._pressRow(data) }
+          /> 
       
     );
   }
 
 _pressRow( course){
-   
+    console.log('Course id - '+ course.id);
+
     const { navigate } = this.props.navigation;
     const url = 'http://10.21.2.45:8001/app/forum/'+course.id ;
     fetch(url, {
@@ -96,7 +94,6 @@ _pressRow( course){
     })
     .then((response) => { return response.json() } )                     //Fetch and passing data
     .then((responseJson) => {
-      console.log(responseJson);
     navigate('Forum', { forum_data: responseJson });
     })
     
@@ -111,14 +108,26 @@ filterSearch(text){
       const textData = text.toUpperCase()
       return itemData.indexOf(textData) > -1
     })
-
     
+    // console.log(newData.length);
+
+    if(newData.length === 0)
+    {
+       this.state.dataSource = this.state.dataSource.cloneWithRows(newData);
+        Alert.alert(
+        '',
+        'Search Not Found',
+        [
+          {text: 'OK'},
+        ])
+    }
+    else
+    {
       this.state.dataSource = this.state.dataSource.cloneWithRows(newData);
       this.setState({
-          emptySearch:newData,
           text: text
       })
-    
+    }
 
 }
 
@@ -130,41 +139,26 @@ filterSearch(text){
         </View>
       );
     }
-  if(this.state.emptySearch.length == 0){
-    return(
-    <View style={{flex: 1, padding: 2}}>
-            
-          <SearchBar
-            lightTheme
-            round
-            onChangeText={(text) => this.filterSearch(text)}
-            clearIcon
-            textInputRef='none'
-            placeholder='Type Here...' />       
 
-            <Text style={{textAlign:'center',fontSize:20,marginTop:10,color:'black',padding:6}} >No results found</Text>
-          
-  </View>
-    )
-  }
     return (
       
             <View style={{flex: 1, padding: 2}}>
-          
-                    <SearchBar
-                      lightTheme
-                      round
-                      onChangeText={(text) => this.filterSearch(text)}
-                      clearIcon
-                      textInputRef='none'
-                      placeholder='Type Here...' />
+                  <View style={{ backgroundColor:'#d3d3d3',padding: 8 }}>
+                    <TextInput 
+                    placeholder="Search" 
+                    underlineColorAndroid='transparent' 
+                    style={{backgroundColor:'white', borderWidth: 1,paddingLeft:15, padding:2,borderRadius: 5, borderColor: '#e5e5e5' }} 
+                    onChangeText={(text) => this.filterSearch(text)}
+                    value= {this.state.text}
+                    />
+                  </View>
                   
-                <List containerStyle={{padding:0, marginTop:0}}>
-                                    <ListView
-                  dataSource={this.state.dataSource}
-                  renderRow={this._renderRow}  
-                  />  
-                  </List>      
+                  <List>
+                      <ListView
+                        dataSource={this.state.dataSource}
+                        renderRow={this._renderRow}  
+                      /> 
+                  </List>       
                     
             </View>
 

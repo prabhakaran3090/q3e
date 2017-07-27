@@ -34,12 +34,13 @@ class PopupMenu extends Component {
   render () {
     return (
       <View>
-        <TouchableOpacity onPress={this.onPress}>
+        <TouchableOpacity onPress={this.onPress} underlayColor='transparent'>
              <Icon 
                 name='ellipsis-v'  
                 size={25} 
-                style={{color: '#fff',marginRight:20}} 
-                ref={this.onRef}/>
+                style={{color: '#fff',marginRight:20,padding: 10}} 
+                ref={this.onRef}
+              />
         </TouchableOpacity>
       </View>
     )

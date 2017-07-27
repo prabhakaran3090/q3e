@@ -19,14 +19,17 @@ import { Card, ListItem, Button } from 'react-native-elements'
 import FlatScroll from './FlatScroll'; 
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
+
 const users = [
  {
     name: 'Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS',
-    avatar: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'
+    session: 'Session 1',
+    bg: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'
  }, 
    {
     name: 'Learn and Understand AngularJS',
-    avatar: 'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'
+      session: 'Session 2',
+    bg: 'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'
  }, 
 ]
 
@@ -63,14 +66,19 @@ export default class HomeScreen extends Component {
         <Image 
           resizeMode='cover'
           style={styles.image} 
-          source={{uri: users[0].avatar}} 
+          source={{uri: users[0].bg}} 
         /> 
       </View>
       <View style={styles.SwipeTextBox}>
         <Text style={styles.SwipeTextStyle}>
           {users[0].name}
-        </Text>
-      </View>        
+        </Text> 
+      </View> 
+      <View style={styles.SwipeTextBox}>
+        <Text style={styles.SwipeTextStyle}>
+          {users[0].session}
+        </Text> 
+      </View>              
       <View style={styles.SwipeTextBox}>
        <View style={{flexDirection: 'row'}}> 
            <Text style={styles.SwipeTextStyle}>
@@ -99,14 +107,19 @@ export default class HomeScreen extends Component {
         <Image 
           resizeMode='cover'
           style={styles.image} 
-          source={{uri: users[1].avatar}} 
+          source={{uri: users[1].bg}} 
         /> 
       </View>
       <View style={styles.SwipeTextBox}>
         <Text style={styles.SwipeTextStyle}>
           {users[1].name}
         </Text>
-      </View>        
+      </View>     
+      <View style={styles.SwipeTextBox}>
+        <Text style={styles.SwipeTextStyle}>
+          {users[1].session}
+        </Text> 
+      </View>          
       <View style={styles.SwipeTextBox}>
        <View style={{flexDirection: 'row'}}> 
            <Text style={styles.SwipeTextStyle}>

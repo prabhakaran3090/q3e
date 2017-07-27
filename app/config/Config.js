@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import DeviceInfo from  '../core/RNDeviceInfo/';
+import TopRightmenu from '../components/TopRightmenu';
 
 const StatusBarHeaderStyle = {
     Top: 0,
@@ -50,7 +51,8 @@ export const headerProp = (navigation) => {
                                 style={{  color: 'white',marginLeft:20}}
                             />
                         </TouchableHighlight>,
-            headerRight: <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}} />, 
+            headerRight: <TopRightmenu />,
+            // <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}} />, 
             headerStyle:{
                 backgroundColor: '#32313F',
                 paddingTop: SBHeaderStyle.Top,

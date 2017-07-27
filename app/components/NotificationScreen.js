@@ -21,9 +21,9 @@ export default class NotificationScreen extends Component {
     header.headerRight = null;
     header.headerTitle = 'Notification';
 
-    return (header);
+    return (header);   
   };
-  render() {
+  render() { 
     return (
       <View style={styles.container}>
         <Text>Welcome to Notification</Text>

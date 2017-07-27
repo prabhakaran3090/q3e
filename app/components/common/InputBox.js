@@ -2,9 +2,8 @@ import React from 'react';
 import { TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const InputBox = ({ placeholder, icon, onChangeText, value, secureTextEntry }) => {
-    const { boxContanier, box } = styles;
-
+const InputBox = ({ placeholder, icon, onChangeText, value, secureTextEntry } ) => {
+    const { boxContanier, box } = styles;   
     return (
         <View style={boxContanier} >
             <Icon.Button name={icon} backgroundColor="transparent" style={{marginLeft:10}} />

@@ -24,6 +24,7 @@ import BrowseScreen from '../components/BrowseScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import EditScreen from '../components/ProfileEdit';
 import NotificationScreen from '../components/NotificationScreen'; 
+import Loading from '../components/Loading';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
  
@@ -142,8 +143,7 @@ const HomePage = TabNavigator({
                         tabBarPosition: 'bottom',  
                     })
 
-const DrawerTab = StackNavigator({ 
-                Login: { screen: LoginScreen } ,
+const DrawerTab = StackNavigator({  
                 Home: {screen: HomePage},
             } ,{ headerMode: 'screen' });  
 
@@ -190,5 +190,5 @@ const DrawerNavigatorConfig = {
 
 export const AppContent = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
 
-
+export const Login = StackNavigator({  Login: { screen: LoginScreen }  });
  

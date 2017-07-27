@@ -6,28 +6,62 @@ import {
   View, 
   Image,
   Text,
-  ScrollView,
+  ScrollView, 
   StatusBar, 
 } from 'react-native';
+import { connect } from 'react-redux';
 import { InputBox, Button, Spinner } from './common';
+import { 
+        usernameChanged,
+        passwordChanged,
+        onSubmit
+    } from '../actions/auth';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
+    
   static navigationOptions = { header: null };
 
   constructor(props){
       super(props);
   }
 
-    renderButton() {
+  renderButton() {
  
+    const { username, password, loading } = this.props;
+    let buttonDisabled;  
+    if (username === '' || password === ''  || loading === true) {
+        buttonDisabled = true;
+    }
+       
+    if (loading === true) {
+        return ( 
+            <Button onPress={this.onSubmitz.bind(this)} disabled={buttonDisabled} >
+                <Spinner size='small' />
+            </Button>    
+        );
+    }  
+
     return ( 
-        <Button onPress={() => this.props.navigation.navigate('Home') } childText >
+        <Button onPress={this.onSubmitz.bind(this)} disabled={buttonDisabled} childText >
             Login
         </Button>    
     ); 
+
   }
 
-  render() {
+    onUsernameChange(text) { 
+        this.props.usernameChanged(text);
+    }
+
+    onPasswordChange(text) {
+        this.props.passwordChanged(text);
+    }  
+    onSubmitz() {
+    
+        const { username, password } = this.props; 
+        this.props.onSubmit(username, password);   
+    }  
+  render() {   
     return (
       <Image source={require('../assets/images/bg.png')} style={styles.wrapper}>
                     <View style={styles.container}> 
@@ -35,15 +69,19 @@ export default class LoginScreen extends Component {
                                 <Image style={styles.logoImage} source={require('../assets/images/logo.png')} />
                             </View>
                                 <ScrollView>
-                                    <View style={styles.LoginBody}>  
+                                    <View style={styles.LoginBody}>   
                                         <InputBox 
                                             placeholder="Username"
                                             icon="user" 
+                                            onChangeText={this.onUsernameChange.bind(this)}
+                                            value={this.props.username}
                                         />    
                                         <InputBox 
                                             secureTextEntry
                                             placeholder="Password"
                                             icon="key" 
+                                            onChangeText={this.onPasswordChange.bind(this)}
+                                            value={this.props.password}   
                                         /> 
                                         <Text style={styles.errorText} >{this.props.error}</Text> 
                                         {this.renderButton.call(this)}           
@@ -110,3 +148,15 @@ const styles = StyleSheet.create({
          marginRight: 30,
     }
 });
+
+const mapStateToProps = ({ Auth }) => {    
+    const { username, password, loading, error, isLoggedIn  } = Auth;
+    return {
+        username,
+        password,
+        loading,
+        error,
+        isLogged: isLoggedIn,
+    };
+}; 
+export default connect(mapStateToProps,{ usernameChanged, passwordChanged, onSubmit })(LoginScreen)

@@ -7,38 +7,13 @@ import {
   View,
   ScrollView,
   TouchableHighlight,
-  FlatList, Image
+  FlatList, Image,
+  ActivityIndicator
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
 import { Card, ListItem, Button } from 'react-native-elements';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-const course_list = [{
-  key:1,
-  name:'Frequency Domain  ',
-  session: 'Session 1',
-  image:'https://udemy-images.udemy.com/course/304x171/426570_1b91_3.jpg'
-},
-{
-  key:2,
-  name:'Input and Output Streams -Interfaces, Packages Collections and Vectors ',
-  session: 'Session 2',
-  image:'https://udemy-images.udemy.com/course/304x171/913448_e6e2.jpg'
-},
-{
-  key:3,
-  name:'Frequency Domain Representation of Continuous ',
-  session: 'Session 3',
-  image:'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'
-},
-{
-  key:4,
-  name:'Input and Output Streams -Interfaces, Packages Collections and Vectors ',
-  session: 'Session 4',
-  image:'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'
-},];
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 export default class FlatScroll extends Component {
 
  
@@ -52,18 +27,25 @@ _onCoursec(item){
     navigate('Profile')
 }
 
-  _renderItem(item){
-    
+objectLength(obj){ 
+    var size = 0, key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    return size; 
+}
+
+  _renderItem(item){ 
     return( 
-      <View style={[styles.box, {height: 270,}]}>
+      <View style={[styles.box, {height: 270,}]} >
           <View style={{flex: 5 }}>
             <TouchableHighlight onPress={() => this._onCoursec(item) } style={{flex: 1}} >
-              <Image style={{flex: 1}} resizeMode="cover" source={{uri: item.image}} />
+              <Image style={{flex: 1}} resizeMode="cover" source={{uri: item.img_url}} />
             </TouchableHighlight>
           </View>
           <View style={{flex: 3,   padding:5 ,}}>
           <Text style={{padding:2,width:250,color:'black', fontSize: 13, fontWeight: 'bold',flex: 1}}>
-            {item.name}
+            {item.fullname}
           </Text>
           <Text style={{padding:2,width:250,color:'#4e4e4e', fontSize: 13, fontWeight: 'bold',flex: 1}}>
             {item.session}
@@ -84,14 +66,60 @@ _onCoursec(item){
     
   }
 
+  renderFooter(item) {
+
+    const count = this.objectLength(item);
+    if (count == 0 || count == null) {
+      return (
+
+        <View style={[styles.box, { height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
+
+          <Text style={{ textAlign: 'center', width: 330, color: 'black', fontSize: 18, fontWeight: 'bold' }}>
+            Session Not Available
+            </Text>
+
+        </View>
+
+      );
+    } else if (count <= 5) {
+
+      return (<View></View>);
+
+    } else {
+      return (
+        <TouchableHighlight underlayColor='transparent' onPress={() => this._onCourseAll(item)} style={{ flex: 1 }} >
+          <View style={[styles.box, { height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
+
+            <Text style={{ textAlign: 'center', width: 100, color: '#0089da', fontSize: 13, fontWeight: 'bold' }}>
+              View All
+            </Text>
+
+          </View>
+        </TouchableHighlight>
+      );
+    }
+
+  }
 
   render() {
+
+    const data = this.props.data;
+
+    if(data == undefined){
+      return(
+        <View style={{flex: 1}}>
+          <ActivityIndicator style={{ margin: 100 }} />
+        </View>
+      )
+    } 
     return (
      
         <FlatList 
             horizontal
             renderItem={({item}) => this._renderItem(item)}
-            data={course_list} 
+            keyExtractor={(item, index) => index}
+            data={data} 
+            ListFooterComponent={this.renderFooter(data)}
           />
  
     );

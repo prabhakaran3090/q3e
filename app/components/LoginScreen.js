@@ -12,10 +12,10 @@ import {
 import { connect } from 'react-redux';
 import { InputBox, Button, Spinner } from './common';
 import { 
-        usernameChanged,
-        passwordChanged,
-        onSubmit
-    } from '../actions/auth';
+    usernameChanged,
+    passwordChanged,
+    onSubmit
+} from '../actions/auth';
 
 class LoginScreen extends Component {
     
@@ -61,7 +61,7 @@ class LoginScreen extends Component {
         const { username, password } = this.props; 
         this.props.onSubmit(username, password);   
     }  
-  render() {   
+  render() {    
     return (
       <Image source={require('../assets/images/bg.png')} style={styles.wrapper}>
                     <View style={styles.container}> 
@@ -149,14 +149,15 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = ({ Auth }) => {    
-    const { username, password, loading, error, isLoggedIn  } = Auth;
+const mapStateToProps = ({ Auth, Nav }) => {    
+    const { username, password, loading, error, isLoggedIn  } = Auth; 
     return {
         username,
         password,
         loading,
         error,
         isLogged: isLoggedIn,
+        nav: Nav
     };
 }; 
 export default connect(mapStateToProps,{ usernameChanged, passwordChanged, onSubmit })(LoginScreen)

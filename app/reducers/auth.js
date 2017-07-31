@@ -22,10 +22,14 @@ const INIT = {
 
 export default (state = INIT, action) => { 
     switch (action.type) {  
-        case USERNAME_CHANGED:  
-            return { ...state, username: action.payload, error: '' };
-        case PASSWORD_CHANGED:  
-            return { ...state, password: action.payload, error: '' };   
+        case USERNAME_CHANGED:
+            return { ...state, username: 'PECPY_16EE107', error: '' };
+        case PASSWORD_CHANGED:
+            return { ...state, password: 'student', error: '' };   
+        // case USERNAME_CHANGED:  
+        //     return { ...state, username: action.payload, error: '' };
+        // case PASSWORD_CHANGED:  
+        //     return { ...state, password: action.payload, error: '' };   
         case LOGIN_SUCCESS:  
             return { ...state, error: '', isLoggedIn: true, username: action.payload.username, password: action.payload.password, id: action.payload.id, loading: false };   
         case LOGIN_INIT:  
@@ -33,7 +37,9 @@ export default (state = INIT, action) => {
         case SERVER_NOT_REACHABLE:  
             return { ...state, error: action.payload, loading: false };   
         case LOGGED_IN:  
-            return { ...state, error: '', loading: false, isLoggedIn: true };                                                                 
+            return { ...state, error: '', loading: false, isLoggedIn: true };    
+        case SERVERIP_FAILED:  
+            return { ...state, error: action.payload, loading: false };                                                                             
         default:
             return state;
     }

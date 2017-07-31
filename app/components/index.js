@@ -1,5 +1,8 @@
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { addNavigationHelpers } from 'react-navigation';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -12,9 +15,9 @@ import {
 } from 'react-native'; 
 import Loading from './Loading';
 
-import { AppContent, Login } from '../config/Router';  
+import { AppContent, Login, AppMain } from '../config/Router';  
 
-export default class AppIndex extends Component{
+class AppIndex extends Component{
 
     constructor(props, context) {
         super(props, context);
@@ -41,13 +44,22 @@ export default class AppIndex extends Component{
     }
 
     render(){
-
+        const { nav, dispatch } = this.props; 
         if (this.state.loading)  
             return (<Loading />); 
 
-        if (this.state.logged)   
-            return (<AppContent />); 
+        if (this.state.logged || this.props.isLoggedIn)   
+            return (<AppContent />);  
 
         return (<Login />);
     }
 }
+
+const mapStateToProps = ({ Auth, Nav }) => {
+    return({
+        isLoggedIn: Auth.isLoggedIn,
+        nav: Nav
+    })
+}
+
+export default connect(mapStateToProps)(AppIndex);

@@ -12,221 +12,77 @@ import {
   Constants
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome'; 
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Swiper from 'react-native-swiper'; 
-import { Card, ListItem, Button } from 'react-native-elements' 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
+import { Card, ListItem, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import FlatScroll from './FlatScroll'; 
 import { SBHeaderStyle, headerProp } from '../config/Config';
+import Swiper from './Swiper';
+import { getSessions } from '../actions/courses'; 
 
 
-const users = [
- {
-    name: 'Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS',
-    session: 'Session 1',
-    bg: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'
- }, 
-   {
-    name: 'Learn and Understand AngularJS',
-      session: 'Session 2',
-    bg: 'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'
- }, 
-]
-
-
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
   
   static navigationOptions = ({ navigation }) =>  headerProp(navigation) ;
  
-  constructor(props) {
+  constructor(props) { 
     super(props);
+
     this.state = {
-        visibleSwiper: false
+      visibleSwiper: false
     };
   }
 
   componentDidMount() {
+
     setTimeout(() => {
         this.setState({
           visibleSwiper: true
         });
-    }, 0);  
+    }, 0); 
+
+    this.props.getSessions();  
   }
-
-
-  renderSwipe(){
-    return(<Swiper 
-         height={300} horizontal={true} 
-         loop={true} bounces={true} 
-         removeClippedSubviews={false}
-      > 
-
-    <View style={styles.slide}>
-      <View style={{flex:4}}>
-        <Image 
-          resizeMode='cover'
-          style={styles.image} 
-          source={{uri: users[0].bg}} 
-        /> 
-      </View>
-      <View style={styles.SwipeTextBox}>
-        <Text style={styles.SwipeTextStyle}>
-          {users[0].name}
-        </Text> 
-      </View> 
-      <View style={styles.SwipeTextBox}>
-        <Text style={styles.SwipeTextStyle}>
-          {users[0].session}
-        </Text> 
-      </View>              
-      <View style={styles.SwipeTextBox}>
-       <View style={{flexDirection: 'row'}}> 
-           <Text style={styles.SwipeTextStyle}>
-            <MaterialIcons
-              name="access-time"
-              size={20} 
-            /> 
-        </Text>    
-        <Text style={ styles.SwipeTextStyle }>30.08.1990 05.30 PM </Text>        
-       </View>
-       <View style={{flexDirection: 'row' }}> 
-           <Text style={styles.SwipeTextStyle}>
-            <MaterialIcons
-              name="videocam"
-              color = 'green'
-              size={20} 
-            /> 
-        </Text>    
-        <Text style={{marginTop: 6, fontSize: 15, fontWeight:'bold', color: 'green'}}>Live</Text>        
-       </View>
-      </View>
-    </View> 
-      
-    <View style={styles.slide}>
-      <View style={{flex:4}}>
-        <Image 
-          resizeMode='cover'
-          style={styles.image} 
-          source={{uri: users[1].bg}} 
-        /> 
-      </View>
-      <View style={styles.SwipeTextBox}>
-        <Text style={styles.SwipeTextStyle}>
-          {users[1].name}
-        </Text>
-      </View>     
-      <View style={styles.SwipeTextBox}>
-        <Text style={styles.SwipeTextStyle}>
-          {users[1].session}
-        </Text> 
-      </View>          
-      <View style={styles.SwipeTextBox}>
-       <View style={{flexDirection: 'row'}}> 
-           <Text style={styles.SwipeTextStyle}>
-            <MaterialIcons
-              name="access-time"
-              size={20} 
-            /> 
-        </Text>    
-        <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>        
-       </View>
-       <View style={{flexDirection: 'row' }}> 
-           <Text style={styles.SwipeTextStyle}>
-            <MaterialIcons
-              name="videocam"
-              color = 'green'
-              size={20} 
-            /> 
-        </Text>    
-        <Text style={styles.indicateLive}>Live</Text>        
-       </View>
-      </View>
-    </View>       
-
-      
-      </Swiper>)
-  } 
-
-  render() { 
-  
-   if (this.state.visibleSwiper) {
+ 
+  render() {   
       return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
-          {this.renderSwipe()}
+          <Swiper data = {this.props.sessions.live} />
           <View style={{ flexDirection: 'row' }}>
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Upcoming Session</Text>
-            <Text style={[styles.HeaderStyle,{textAlign: 'right',marginRight:10, flex:1, color: '#0089da'}]}>View All</Text>
+            <Text style={[styles.HeaderStyle,styles.HeaderRight]}>View All</Text>
           </View>
-          <FlatScroll />
+          <FlatScroll data={this.props.sessions.completed} />
           <View style={{ flexDirection: 'row' }}>
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Completed Session</Text>
-            <Text style={[styles.HeaderStyle,{textAlign: 'right',marginRight:10, flex:1, color: '#0089da'}]}>View All</Text>
+            <Text style={[styles.HeaderStyle, styles.HeaderRight]}>View All</Text>
           </View> 
-          <FlatScroll />
+          <FlatScroll data={this.props.sessions.completed}/>
        </ScrollView>
 
        );
-   } else {
-       return(<View>
-         <Text> </Text>
-       </View>);
-   } 
+    
   }
 
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  indicateLive:{
-    marginTop: 6,
-    fontSize: 15,
-    fontWeight:'bold',
-    color: 'green'
-  },
-  icon:{
-    flex:1
-  },
-  slide:{
-    flex:1,
-    backgroundColor: '#F8F8F8',  
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    marginBottom: 20,
-    elevation: 2, 
-  },image:{
-    flex:1
-  },
-  SwipeTextBox:{ 
-    paddingLeft: 10,  
-    flexDirection: 'row'
-  },
-  SwipeTextStyle:{ 
-    fontSize: 13,
-    fontWeight:'bold', 
-    color: 'black',
-    padding: 5
-  },
+const styles = StyleSheet.create({ 
   HeaderStyle:{
     fontSize: 15, 
     paddingLeft: 10,
     marginTop: 15,
     color: '#212121',
     fontWeight: 'bold'
-  }
+  },
+  HeaderRight: { textAlign: 'right', marginRight: 10, flex: 1, color: '#0089da' }
 });
+
+mapStateToProps = ({courses}) => { 
+  return({
+    sessions: courses.sessions
+  })
+}
+
+
+export default connect(mapStateToProps,{ getSessions })(HomeScreen);

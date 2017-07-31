@@ -189,6 +189,5 @@ const DrawerNavigatorConfig = {
 
 
 export const AppContent = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
-
-export const Login = StackNavigator({  Login: { screen: LoginScreen }  });
  
+export const Login = StackNavigator({  Login: { screen: LoginScreen }  }); 

@@ -64,3 +64,9 @@ export const headerProp = (navigation) => {
             }
         })
 }
+
+
+
+export const URI = {
+    ip: '10.21.1.245:3001'
+}

@@ -53,7 +53,7 @@ class HomeScreen extends Component {
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Upcoming Session</Text>
             <Text style={[styles.HeaderStyle,styles.HeaderRight]}>View All</Text>
           </View>
-          <FlatScroll data={this.props.sessions.completed} />
+          <FlatScroll data={this.props.sessions.upcoming} />
           <View style={{ flexDirection: 'row' }}>
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Completed Session</Text>
             <Text style={[styles.HeaderStyle, styles.HeaderRight]}>View All</Text>

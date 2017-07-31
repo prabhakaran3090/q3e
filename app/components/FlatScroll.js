@@ -8,12 +8,15 @@ import {
   ScrollView,
   TouchableHighlight,
   FlatList, Image,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
 import { Card, ListItem, Button } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
+import _ from 'lodash';
+
 export default class FlatScroll extends Component {
 
  
@@ -48,7 +51,7 @@ objectLength(obj){
             {item.fullname}
           </Text>
           <Text style={{padding:2,width:250,color:'#4e4e4e', fontSize: 13, fontWeight: 'bold',flex: 1}}>
-            {item.session}
+            {item.event_name}
           </Text>          
           <View style={{flexDirection: 'row', flex: 1}}> 
               <Text style={ styles.SwipeTextStyle }>
@@ -72,10 +75,10 @@ objectLength(obj){
     if (count == 0 || count == null) {
       return (
 
-        <View style={[styles.box, { height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
+        <View style={[{ flex: 1, width: Dimensions.get('window').width ,height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
 
-          <Text style={{ textAlign: 'center', width: 330, color: 'black', fontSize: 18, fontWeight: 'bold' }}>
-            Session Not Available
+          <Text style={{ textAlign: 'center', width: 330, color: 'black', fontSize: 13, margin: 0, fontWeight: 'bold' }}>
+            Sessions not available
             </Text>
 
         </View>
@@ -103,8 +106,7 @@ objectLength(obj){
 
   render() {
 
-    const data = this.props.data;
-
+    const data = _(this.props.data).slice(0).take(5).value();   
     if(data == undefined){
       return(
         <View style={{flex: 1}}>

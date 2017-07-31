@@ -42,7 +42,7 @@ export default class SwiperScreen extends Component {
       return (
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           <Swiper
-            height={250} horizontal={true}
+            height={300} horizontal={true}
             loop={true} bounces={true}
             removeClippedSubviews={false}
             autoplay
@@ -64,27 +64,32 @@ export default class SwiperScreen extends Component {
                       </Text>
                     </View>
                     <View style={styles.SwipeTextBox}>
+                      <Text style={styles.SwipeTextStyle}>
+                        {u.event_name}
+                      </Text>
+                    </View>
+                    <View style={styles.SwipeTextBox}>
                       <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.SwipeTextStyle}>
                           <MaterialIcons
                             name="access-time"
-                            size={24}
+                            size={20}
                           />
                         </Text>
                         <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>
                       </View>
-                      <View style={{ flexDirection: 'row', marginLeft: 20 }}>
+                      <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.SwipeTextStyle}>
                           <MaterialIcons
                             name="videocam"
                             color='green'
-                            size={24}
+                            size={20}
                           />
                         </Text>
                         <Text style={{ marginTop: 6, fontSize: 15, fontWeight: 'bold', color: 'green' }}>Live</Text>
                       </View>
                     </View>
-                  </View>
+                  </View> 
                 );
               })
             }
@@ -148,9 +153,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   SwipeTextStyle: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: 'bold',
     color: 'black',
     padding: 5
+  },
+  HeaderStyle: {
+    fontSize: 15,
+    paddingLeft: 10,
+    marginTop: 15,
+    color: '#212121',
+    fontWeight: 'bold'
   }
 });

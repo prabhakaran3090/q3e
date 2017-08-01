@@ -7,103 +7,89 @@ import {
   View,
   Image,
   TouchableHighlight,
-  StatusBar
+  StatusBar,
+  ScrollView,
+  ListView
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { List, ListItem, SearchBar } from 'react-native-elements';
+import { connect } from 'react-redux'; 
+import _ from 'lodash';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
+import { getCourses } from '../actions/courses'; 
 
-export default class BrowseScreen extends Component {
+class BrowseScreen extends Component {
  
- static navigationOptions = ({ navigation }) => { 
-    console.log(navigation)
+ static navigationOptions = ({ navigation }) => {  
     const header = headerProp(navigation); 
-    header.headerRight =  <Icon name='search'  size={25} style={{color: 'white',marginRight:20}} />;
+    header.headerRight =  <View style={{ marginRight:20}} />;
     header.headerTitle = 'My Courses';
 
     return (header);
   };
+
+constructor(props){
+  super(props) 
+}
+
+ componentDidMount() {  
+   this.props.getCourses(7);
+ }
+ 
+ objectLength(obj) {
+   var size = 0, key;
+   for (key in obj) {
+     if (obj.hasOwnProperty(key)) size++;
+   }
+   return size;
+ }
+
+ renderRow(rowData, sectionID) { 
+  
+   return (
+     <ListItem
+       roundAvatar
+       title={rowData.name}
+       subtitle={
+         <View style={styles.subtitleView}>
+           <Text style={styles.ratingText}>{ rowData.fname + ' ' + rowData.lname }</Text>
+         </View>
+       }
+       avatar={{ uri: rowData.img_url }}
+       avatarStyle={{ borderRadius: 0, width: 60, height: 60 }}
+       titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
+     />
+   )
+ }
+
   render() {
+    const items = this.props.courses;
+    const count = this.objectLength(items);
+    
+    if (count == 0) 
+      return(<View></View>);  
+    
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.state = {
+      dataSource: ds.cloneWithRows(_.values(this.props.courses)),
+    };
+
     return (
+      <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
       <View>
         <SearchBar 
-  placeholder='Type Here...' />
+          lightTheme 
+          inputStyle ={{ backgroundColor: 'white' }}
+          placeholder='Type Here...'  />
         <List containerStyle= {{marginTop:0, paddingTop:0}}>
-          <ListItem
-            roundAvatar
-            title='Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />
-          <ListItem
-            roundAvatar
-            title='Learn and Understand AngularJS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />
-          <ListItem
-            roundAvatar
-            title='Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />   
- <ListItem
-            roundAvatar
-            title='Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />
-          <ListItem
-            roundAvatar
-            title='Learn and Understand AngularJS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/289230_1056_16.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />
-          <ListItem
-            roundAvatar
-            title='Input and Output Streams -Interfaces, Packages Collections and Vectors,Files- OOPS'
-            subtitle={
-              <View style={styles.subtitleView}> 
-                 <Text style={styles.ratingText}>Dr. Ashwin Mahalingam</Text>
-              </View>
-            }
-            avatar={{uri: 'https://udemy-images.udemy.com/course/304x171/836044_c960_4.jpg'}}
-            avatarStyle={{borderRadius:0, width: 60, height: 60}}
-            titleStyle = {{fontSize:13,fontWeight: 'bold'}} 
-          />                              
+            <ListView
+              renderRow={this.renderRow}
+             dataSource={this.state.dataSource} 
+            />                   
         </List>
       </View>
+      </ScrollView>
     );
   }
 }
@@ -118,3 +104,11 @@ subtitleView: {
     color: 'grey'
   }
 });
+mapStateToProps = ({ courses }) => {
+  return ({ 
+    courses: courses.courses
+  })
+}
+
+
+export default connect(mapStateToProps, { getCourses })(BrowseScreen);

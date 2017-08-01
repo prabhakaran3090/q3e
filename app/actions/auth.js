@@ -10,15 +10,16 @@ import {
     LOGIN_SUCCESS,
     LOGIN_INIT,
     SERVER_NOT_REACHABLE,
-    LOGGED_IN
+    LOGGED_IN,
+    ON_LOGOUT
  } from './types';
 import { URI } from '../config/Config';
 
  export const onSubmit = (username, password) => {  
     return (dispatch) => {
         dispatch({ type: LOGIN_INIT });
-        axios.defaults.timeout = 1000;
-        axios.post(`http://${URI.ip}/login`, querystring.stringify({ username: username, pass: password }))
+        axios.defaults.timeout = 1000;  
+        axios.post(`http://${URI.nodeServer}:${URI.port}/login`, querystring.stringify({ username: username, pass: password }))
         .then((response) => {    
             return response.data;
         }).then((res) => {   
@@ -57,8 +58,7 @@ import { URI } from '../config/Config';
                     payload: 'Something went wrong please try again.'
                 });                
             }
-        }).catch((res) => { 
-            console.log(res)
+        }).catch((res) => {  
             dispatch({ 
                 type: SERVER_NOT_REACHABLE,
                 payload: 'Server not reachable'
@@ -66,14 +66,7 @@ import { URI } from '../config/Config';
         });  
     };
 };
-
-export const afterLoading = () => { 
-        Actions.main({ type: 'reset', animation: 'fade', duration: 1000 });
-    return {
-        type: 'email_changed',
-        payload: 'ok'
-    };
-};
+ 
 
  export const usernameChanged = (text) => {
     return {
@@ -88,3 +81,11 @@ export const passwordChanged = (text) => {
         payload: text
     };
 };
+
+export const onLogout = ()  => {
+    AsyncStorage.clear();
+    return{
+        type: ON_LOGOUT,
+        payload: ''
+    }
+}

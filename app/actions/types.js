@@ -10,3 +10,5 @@ export const LOGGED_IN = 'logged_in';
 
 //  Course
 export const GET_SESSION = 'get_session';
+export const GET_COURSES = 'get_courses';
+export const ON_LOGOUT = 'logout';

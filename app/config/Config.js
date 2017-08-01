@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import DeviceInfo from  '../core/RNDeviceInfo/';
-import TopRightmenu from '../components/TopRightmenu';
+
 
 const StatusBarHeaderStyle = {
     Top: 0,
@@ -51,7 +51,7 @@ export const headerProp = (navigation) => {
                                 style={{  color: 'white',marginLeft:20}}
                             />
                         </TouchableHighlight>,
-            headerRight: <TopRightmenu />,
+           
             // <Icon name='ellipsis-v'  size={25} style={{color: 'white',marginRight:20}} />, 
             headerStyle:{
                 backgroundColor: '#32313F',
@@ -68,5 +68,11 @@ export const headerProp = (navigation) => {
 
 
 export const URI = {
-    ip: '10.21.1.245:3001'
+    nodeServer: '10.21.1.245',
+    phpServer: 'qeee.in',
+    port:3001
 }
+
+export const reqHeader = {
+    headers: { 'X-API-KEY': '6SnzcCPITXrjVEcw4/WpGQ==' }
+};

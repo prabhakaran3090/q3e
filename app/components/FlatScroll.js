@@ -72,7 +72,7 @@ objectLength(obj){
   renderFooter(item) {
 
     const count = this.objectLength(item);
-    if (count == 0 || count == null) {
+    if (count == 0) {
       return (
 
         <View style={[{ flex: 1, width: Dimensions.get('window').width ,height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
@@ -105,8 +105,8 @@ objectLength(obj){
   }
 
   render() {
-
-    const data = _(this.props.data).slice(0).take(5).value();   
+    const items = this.props.data;
+    const data = _(items).slice(0).take(5).value();   
     if(data == undefined){
       return(
         <View style={{flex: 1}}>
@@ -121,7 +121,7 @@ objectLength(obj){
             renderItem={({item}) => this._renderItem(item)}
             keyExtractor={(item, index) => index}
             data={data} 
-            ListFooterComponent={this.renderFooter(data)}
+            ListFooterComponent={this.renderFooter(items)}
           />
  
     );

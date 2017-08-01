@@ -20,11 +20,16 @@ import FlatScroll from './FlatScroll';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 import Swiper from './Swiper';
 import { getSessions } from '../actions/courses'; 
-
+import TopRightmenu from '../components/TopRightmenu';
 
 class HomeScreen extends Component {
   
-  static navigationOptions = ({ navigation }) =>  headerProp(navigation) ;
+  static navigationOptions = ({ navigation }) => {
+
+    const header = headerProp(navigation); 
+    header.headerRight =  <TopRightmenu />; 
+    return (header);
+  };
  
   constructor(props) { 
     super(props);
@@ -45,7 +50,8 @@ class HomeScreen extends Component {
     this.props.getSessions();  
   }
  
-  render() {   
+  render() {  
+    console.log(this.props)  ;
       return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           <Swiper data = {this.props.sessions.live} />
@@ -78,9 +84,10 @@ const styles = StyleSheet.create({
   HeaderRight: { textAlign: 'right', marginRight: 10, flex: 1, color: '#0089da' }
 });
 
-mapStateToProps = ({courses}) => { 
+mapStateToProps = ({courses, Auth}) => { 
   return({
-    sessions: courses.sessions
+    sessions: courses.sessions,
+    isLoggedIn: Auth.isLoggedIn
   })
 }
 

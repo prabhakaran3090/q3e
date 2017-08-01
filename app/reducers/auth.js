@@ -6,7 +6,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_INIT,
     SERVER_NOT_REACHABLE,
-    LOGGED_IN
+    LOGGED_IN,
+    ON_LOGOUT
  } from '../actions/types';
 
  
@@ -23,7 +24,7 @@ const INIT = {
 export default (state = INIT, action) => { 
     switch (action.type) {  
         case USERNAME_CHANGED:
-            return { ...state, username: 'PECPY_16EE107', error: '' };
+            return { ...state, username: 'CITCMB_1504105', error: '' };
         case PASSWORD_CHANGED:
             return { ...state, password: 'student', error: '' };   
         // case USERNAME_CHANGED:  
@@ -37,7 +38,9 @@ export default (state = INIT, action) => {
         case SERVER_NOT_REACHABLE:  
             return { ...state, error: action.payload, loading: false };   
         case LOGGED_IN:  
-            return { ...state, error: '', loading: false, isLoggedIn: true };    
+            return { ...state, error: '', loading: false, isLoggedIn: true }; 
+        case ON_LOGOUT: 
+            return { ...state, error: '', loading: false, isLoggedIn: false };    
         case SERVERIP_FAILED:  
             return { ...state, error: action.payload, loading: false };                                                                             
         default:

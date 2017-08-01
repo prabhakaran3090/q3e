@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { View, UIManager, findNodeHandle, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux'; 
+
+import { onLogout } from '../actions/auth';
 
 class PopupMenu extends Component {
   static propTypes = {
@@ -53,30 +56,37 @@ class PopupMenu extends Component {
   }
 }
 
-export default class RightMenu extends Component{
+class RightMenu extends Component{
+constructor(props){
+  super(props)
+}
 
-
-render () {
+render () {   
     return (
       <View>
-        <PopupMenu actions={['Notification', 'Logout']} onPress={this.onPopupEvent} />
+        <PopupMenu actions={['Notification', 'Logout']} onPress={this.onPopupEvent.bind(this)} />
       </View>
     )
   }
 
-  onPopupEvent = (eventName, index) => {
+  onPopupEvent = (eventName, index) => { 
+
     if (eventName !== 'itemSelected') return
     if (index === 0) this.onNotification()
-    else this.onLogout()
+    else this.props.onLogout()
   }
   
   onNotification(){
     alert('Notification');
    
-  }
-
-  onLogout(){
-    alert('Logout');
-  }
-
+  } 
 }
+
+mapStateToProps = ({ Auth }) => {
+  return ({
+     isLoggedIn: Auth.isLoggedIn
+  })
+}
+
+
+export default connect(mapStateToProps, { onLogout })(RightMenu);

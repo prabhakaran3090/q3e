@@ -1,15 +1,21 @@
 import {
-    GET_SESSION
+    GET_SESSION,
+    GET_COURSES
 } from '../actions/types';
 
 
-const INIT = { sessions : {} };
+const INIT = { 
+    sessions : {},
+    courses: {}
+};
 
 export default (state = INIT, action) => {  
     switch(action.type){
         case GET_SESSION:  
-            return { ...state, sessions: action.payload };
-        default :
-            return state; 
+            return { ...state, sessions: action.payload }; 
+        case GET_COURSES:
+            return { ...state, courses: action.payload };
+        default:
+            return state;             
     }
 }

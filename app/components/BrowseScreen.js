@@ -65,8 +65,7 @@ constructor(props){
 
   render() {
     const items = this.props.courses;
-    const count = this.objectLength(items);
-    
+    const count = this.objectLength(items); 
     if (count == 0) 
       return(<View></View>);  
     

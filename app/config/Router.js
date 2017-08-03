@@ -141,11 +141,12 @@ const HomePage = TabNavigator({
                              labelStyle: {fontSize: 11,marginTop:0, }
                          },
                         tabBarPosition: 'bottom',  
+                        initialRouteName : 'Home'
                     })
 
 const DrawerTab = StackNavigator({  
                 Home: {screen: HomePage},
-            } ,{ headerMode: 'screen' });  
+}, { headerMode: 'screen', initialRouteName: 'Home' });  
 
 const CustomDrawerContentComponent = (props) => (
   <View style={{flex:1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight,}}>
@@ -184,7 +185,8 @@ const DrawerNavigatorConfig = {
             paddingTop:SBHeaderStyle.Top
         }
     },
-    contentComponent: CustomDrawerContentComponent 
+    contentComponent: CustomDrawerContentComponent ,
+    initialRouteName: 'Home'
 }
 
 

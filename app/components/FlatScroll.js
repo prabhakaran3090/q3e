@@ -43,7 +43,7 @@ objectLength(obj){
       <View style={[styles.box, {height: 270,}]} >
           <View style={{flex: 5 }}>
             <TouchableHighlight onPress={() => this._onCoursec(item) } style={{flex: 1}} >
-              <Image style={{flex: 1}} resizeMode="cover" source={{uri: item.img_url}} />
+              <Image style={{flex: 1,margin:1}} resizeMode="cover" source={{uri: item.img_url}} />
             </TouchableHighlight>
           </View>
           <View style={{flex: 3,   padding:5 ,}}>
@@ -107,7 +107,7 @@ objectLength(obj){
   render() {
     const items = this.props.data;
     const data = _(items).slice(0).take(5).value();   
-    if(data == undefined){
+    if(items == undefined){
       return(
         <View style={{flex: 1}}>
           <ActivityIndicator style={{ margin: 100 }} />

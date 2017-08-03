@@ -9,6 +9,7 @@ import {
   Image,
   TouchableHighlight,
   StatusBar,
+  Dimensions,
   ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -36,8 +37,7 @@ export default class SwiperScreen extends Component {
 
   render() {
     let swiper = null;
-    const item = this.props.data;
-
+    const item = this.props.data; 
     if (this.state.visibleSwiper && item != undefined) {
       return (
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
@@ -58,35 +58,37 @@ export default class SwiperScreen extends Component {
                         source={{ uri: u.img_url }}
                       />
                     </View>
-                    <View style={styles.SwipeTextBox}>
-                      <Text style={styles.SwipeTextStyle}>
-                        {u.fullname}
-                      </Text>
-                    </View>
-                    <View style={styles.SwipeTextBox}>
-                      <Text style={styles.SwipeTextStyle}>
-                        {u.event_name}
-                      </Text>
-                    </View>
-                    <View style={styles.SwipeTextBox}>
-                      <View style={{ flexDirection: 'row' }}>
+                    <View >
+                      <View style={[styles.SwipeTextBox, { marginTop: 10 }]}>
                         <Text style={styles.SwipeTextStyle}>
-                          <MaterialIcons
-                            name="access-time"
-                            size={20}
-                          />
+                          {u.fullname}
                         </Text>
-                        <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>
                       </View>
-                      <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.SwipeTextBox}>
                         <Text style={styles.SwipeTextStyle}>
-                          <MaterialIcons
-                            name="videocam"
-                            color='green'
-                            size={20}
-                          />
+                          {u.event_name}
                         </Text>
-                        <Text style={{ marginTop: 6, fontSize: 15, fontWeight: 'bold', color: 'green' }}>Live</Text>
+                      </View>
+                      <View style={[styles.SwipeTextBox, { marginBottom: 10 }]}>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={styles.SwipeTextStyle}>
+                            <MaterialIcons
+                              name="access-time"
+                              size={20}
+                            />
+                          </Text>
+                          <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>
+                        </View>
+                        <View style={{ flexDirection: 'row' }}>
+                          <Text style={styles.SwipeTextStyle}>
+                            <MaterialIcons
+                              name="videocam"
+                              color='green'
+                              size={20}
+                            />
+                          </Text>
+                          <Text style={{ marginTop: 1, fontSize: 15, fontWeight: 'bold', color: 'green' }}>Live</Text>
+                        </View>
                       </View>
                     </View>
                   </View> 
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: 'bold',
     color: 'black',
-    padding: 5
+    padding: 2
   },
   HeaderStyle: {
     fontSize: 15,
@@ -164,5 +166,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
     color: '#212121',
     fontWeight: 'bold'
+  },
+  txtBox:{
+    position: 'absolute', 
+    bottom: 0,
+    left:0,
+    backgroundColor: 'rgba(0, 0, 0, 0.90)', 
+    width: Dimensions.get('window').width
   }
 });

@@ -14,7 +14,7 @@ export const getCourses = (phase='') => {
     return async (dispatch) => {
 
         const username = await AsyncStorage.getItem('username'); 
-        axios.get(`http://${URI.phpServer}:${URI.port}/q3api/v1/index.php/Getcourse/enrol_course_id/${username}/${phase}`,reqHeader)
+        axios.get(`http://${URI.phpServer}/q3api/v1/index.php/Getcourse/enrol_course_id/${username}/${phase}`,reqHeader)
         .then(response => response.data) 
         .then(courses => {
             dispatch({

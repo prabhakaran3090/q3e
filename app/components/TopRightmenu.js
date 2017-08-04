@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { View, UIManager, findNodeHandle, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux'; 
+import { NavigationActions } from 'react-navigation';
 
 import { onLogout } from '../actions/auth';
 
@@ -62,6 +63,7 @@ constructor(props){
 }
 
 render () {   
+  
     return (
       <View>
         <PopupMenu actions={['Notification', 'Logout']} onPress={this.onPopupEvent.bind(this)} />
@@ -73,7 +75,9 @@ render () {
 
     if (eventName !== 'itemSelected') return
     if (index === 0) this.onNotification()
-    else this.props.onLogout()
+    else{
+      this.props.onLogout();
+    } 
   }
   
   onNotification(){

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
+import { bindActionCreators } from 'redux';
 
 import {
   AppRegistry,
@@ -15,8 +16,9 @@ import {
 } from 'react-native'; 
 import Loading from './Loading';
 
-import { AppContent, Login, AppMain } from '../config/Router';  
-
+import { AppNavigator, Login, AppMain } from '../config/Router';  
+import * as myActions from '../actions/auth';
+import { LoggedIn } from '../actions/auth';
 class AppIndex extends Component{
 
     constructor(props, context) {
@@ -31,8 +33,8 @@ class AppIndex extends Component{
         AsyncStorage.getItem('username')
         .then((data) => {    
              if (data !== null) {
-                this.setState({
-                    logged: true,
+                 this.props.LoggedIn();
+                this.setState({ 
                     loading: false,            
                 }); 
              } else {
@@ -43,15 +45,13 @@ class AppIndex extends Component{
         });  
     }
 
-    render(){
+    render(){ 
         const { nav, dispatch } = this.props; 
         if (this.state.loading)  
             return (<Loading />); 
-
-        if (this.state.logged || this.props.isLoggedIn)   
-            return (<AppContent />);  
-
-        return (<Login />);
+ 
+    return (<AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })}  />);  
+ 
     }
 }
 
@@ -61,5 +61,11 @@ const mapStateToProps = ({ Auth, Nav }) => {
         nav: Nav
     })
 }
-
-export default connect(mapStateToProps)(AppIndex);
+const mapDispatchToProps = (dispatch) => { 
+    let actionCreators = bindActionCreators(myActions, dispatch)
+    return ({
+        ...actionCreators,
+        dispatch
+    });
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AppIndex);

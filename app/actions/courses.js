@@ -13,7 +13,7 @@ export const getCourses = (phase='') => {
 
     return async (dispatch) => {
 
-        const username = await AsyncStorage.getItem('username'); 
+        const username = await AsyncStorage.getItem('username');  
         axios.get(`http://${URI.phpServer}/q3api/v1/index.php/Getcourse/enrol_course_id/${username}/${phase}`,reqHeader)
         .then(response => response.data) 
         .then(courses => {
@@ -30,11 +30,11 @@ export const getCourses = (phase='') => {
 export const getSessions = () => { 
 
     return async (dispatch) => {
-        const username = await AsyncStorage.getItem('username');
-
+        const username = await AsyncStorage.getItem('username');  
         axios.get(`http://${URI.nodeServer}:${URI.port}/sessions/?username=${username}`)
         .then(response => response.data)
-        .then(sessions => { 
+        .then(sessions => {  
+            console.log(sessions)
             dispatch ({
                 type: GET_SESSION,
                 payload: sessions

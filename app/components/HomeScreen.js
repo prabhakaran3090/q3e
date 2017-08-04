@@ -27,7 +27,7 @@ class HomeScreen extends Component {
   static navigationOptions = ({ navigation }) => {
 
     const header = headerProp(navigation); 
-    header.headerRight =  <TopRightmenu />; 
+    header.headerRight =  <TopRightmenu nav={navigation} />; 
     return (header);
   };
  
@@ -37,6 +37,7 @@ class HomeScreen extends Component {
     this.state = {
       visibleSwiper: false
     };
+    
   }
 
   componentDidMount() {
@@ -46,12 +47,14 @@ class HomeScreen extends Component {
           visibleSwiper: true
         });
     }, 0); 
+      console.log('sessions')
 
-    this.props.getSessions();  
+    this.props.getSessions();
+    
   }
  
-  render() {  
-    console.log(this.props)  ;
+  render() {   
+    console.log(this.props.sessions)
       return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           <Swiper data = {this.props.sessions.live} />

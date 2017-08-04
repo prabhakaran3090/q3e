@@ -1,6 +1,7 @@
 import {
     GET_SESSION,
-    GET_COURSES
+    GET_COURSES,
+    LOGGED_IN
 } from '../actions/types';
 
 
@@ -12,7 +13,7 @@ const INIT = {
 export default (state = INIT, action) => {  
     switch(action.type){
         case GET_SESSION:  
-            return { ...state, sessions: action.payload }; 
+            return { ...state, sessions: action.payload };  
         case GET_COURSES:
             return { ...state, courses: action.payload };
         default:

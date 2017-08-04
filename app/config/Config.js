@@ -68,7 +68,7 @@ export const headerProp = (navigation) => {
 
 
 export const URI = {
-    nodeServer: 'qeee.rtbi.in',
+    nodeServer: '10.21.18.213',
     phpServer: 'qeee.in',
     port:3001
 }

@@ -18,33 +18,36 @@ import { URI } from '../config/Config';
  export const onSubmit = (username, password) => {  
     return (dispatch) => {
         dispatch({ type: LOGIN_INIT });
-        axios.defaults.timeout = 1000;  
+        axios.defaults.timeout = 1000;   
         axios.post(`http://${URI.nodeServer}:${URI.port}/login`, querystring.stringify({ username: username, pass: password }))
-        .then((response) => {    
+        .then((response) => {     
             return response.data;
-        }).then((res) => {   
+            }).then(async (res) => {   
             if (res.success === true) { 
                 const userInfo = {
                     id: res.data.userid,
                     username,
                     password 
-                }; 
-                
-                AsyncStorage.multiSet([
+                };  
+ 
+                await AsyncStorage.multiSet([
                     ['username', userInfo.username.toString()],
                     ['password', userInfo.password.toString()],
                     ['userId', userInfo.id.toString()]
-                ], () => {
-                    dispatch({
-                        type: SERVER_NOT_REACHABLE,
-                        payload: 'Something went wrong please try again.'
-                    });
-                });   
-
-                dispatch({
-                    type: LOGIN_SUCCESS,
+                ])
+                .then(dispatch({
+                    type: LOGGED_IN,
                     payload: userInfo
-                });  
+                }))
+                    .catch((err) => {
+                        console.log(err)
+                        dispatch({
+                            type: SERVER_NOT_REACHABLE,
+                            payload: 'Something went wrong please try again.'
+                        });
+                    });   
+
+                 
 
                 
             } else if (res.success === false) {  
@@ -81,7 +84,12 @@ export const passwordChanged = (text) => {
         payload: text
     };
 };
-
+export const LoggedIn = () => { 
+    return {
+        type: LOGGED_IN,
+        payload: ''
+    }
+}
 export const onLogout = ()  => {
     AsyncStorage.clear();
     return{

@@ -1,4 +1,7 @@
+import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
+
+import { AppNavigator } from '../config/Router';
 import {
     USERNAME_CHANGED,
     PASSWORD_CHANGED,
@@ -7,9 +10,35 @@ import {
     LOGIN_SUCCESS,
     LOGIN_INIT,
     SERVER_NOT_REACHABLE,
-    LOGGED_IN
-} from '../actions/types';     
+    LOGGED_IN,
+    ON_LOGOUT
+} from '../actions/types';
 
-export default (state = {} , action ) => {   
-    return state;
+ 
+const LoginAction = AppNavigator.router.getActionForPathAndParams('Login');
+const initialNavState = AppNavigator.router.getStateForAction(LoginAction); 
+
+export default (state = initialNavState, action) => {
+    let nextState;
+    switch (action.type) {
+        case LOGGED_IN:
+            nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({ routeName: 'Main' }),
+                state
+            );
+            break;
+        case ON_LOGOUT:
+            nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({ routeName: 'Login' }),
+                state
+            );
+            break;
+        default:
+            nextState = AppNavigator.router.getStateForAction(action, state);
+            break;
+    }
+
+    // Simply return the original `state` if `nextState` is null or undefined.
+    return nextState || state;
 }
+

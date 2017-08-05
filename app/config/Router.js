@@ -25,34 +25,65 @@ import BrowseScreen from '../components/BrowseScreen';
 import ProfileScreen from '../components/ProfileScreen';
 import EditScreen from '../components/ProfileEdit';
 import NotificationScreen from '../components/NotificationScreen';
+import CourseOutline from '../components/CourseOutline';
+import Description from '../components/Description';
+import BookIndex from '../components/BookIndex';
 import Loading from '../components/Loading';
 import { SBHeaderStyle, headerProp } from '../config/Config'; 
 
+const ForumStack = StackNavigator({
+    Course: {
+        screen: CourseScreen,
+        navigationOptions: {
+            title: 'Courses'
+        }
+    },
+    Forum: {
+        screen: ForumScreen,
+        navigationOptions: {
+            title: 'Forum'
+        }
+    },
+    ForumTopics: {
+        screen: ForumTopicScreen,
+        navigationOptions: {
+            title: 'Forum Topics'
+        }
+    },
+    ForumDiscussion: {
+        screen: ForumDiscussion,
+        navigationOptions: {
+            title: 'Forum Discussion'
+        }
+    },
+}); 
+
 const TabBar = TabNavigator({
-    Home: {
+    HomeStack: {
         screen: StackNavigator({ Home: { screen: HomeScreen}}),
         navigationOptions: {
             tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} color={tintColor} />,
             tabBarLabel: 'Home'
         }
     },
-    Browse: {
-        screen: BrowseScreen,
+    BrowseStack: {
+        screen: StackNavigator({ Browse: { screen: BrowseScreen } }),
         navigationOptions: {
             tabBarLabel: 'Browse',
             tabBarIcon: ({ tintColor }) => <Icon name='play-circle-o' size={25} color={tintColor} />
         }
     },
     Profile: {
-        screen: NotificationScreen,
+        screen: StackNavigator({ Profile: { screen: ProfileScreen } }),
         navigationOptions: {
             tabBarLabel: 'Profile',
             tabBarIcon: ({ tintColor }) => <Icon name='user-circle-o' size={20} color={tintColor} />
         }
     },
-    Notification: {
-        screen: NotificationScreen,
+    NotificationStack: {
+        screen: StackNavigator({ Notification: { screen: NotificationScreen } }),
         navigationOptions: {
+            tabBarLabel: 'Notification',
             tabBarIcon: ({ tintColor }) => <Icon name='bell-o' size={20} color={tintColor} />
         }
     },
@@ -69,20 +100,20 @@ const TabBar = TabNavigator({
             labelStyle: { fontSize: 11, marginTop: 0, },
         },
         tabBarPosition: 'bottom',
-        initialRouteName: 'Home',
+        initialRouteName: 'HomeStack',
     });
 
 
 
 const CustomDrawerContentComponent = (props) => (
-    <View style={{ flex: 1, backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}>
+    <View style={{flex: 1,  backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}>
         <View style={{ marginTop: SBHeaderStyle.Top, alignSelf: 'center' }} >
             <Image
                 source={require('../assets/images/logo.png')}
                 style={{ width: 200, height: 60, resizeMode: 'contain' }}
             />
         </View>
-        <DrawerItems {...props} />
+        <DrawerItems {...props}  />
     </View>
 );
 
@@ -91,24 +122,27 @@ const DrawerRouteConfigs = {
         path: '/',
         screen: TabBar
     },
-    Course: {
+    Forum: {
         path: '/forum',
-        screen: HomeScreen,
+        screen: ForumStack,
     },
     Calendar: {
         path: '/calendar',
-        screen: HomeScreen,
+        screen: StackNavigator({ 
+            CourseOutline: { screen: CourseOutline }, 
+            Description : { screen: Description },
+            BookIndex: { screen: BookIndex }
+        }),
     }
 }
 const DrawerNavigatorConfig = {
     contentOptions: {
         inactiveTintColor: 'white',
-        activeTintColor: '#FF9D44',
-        activeBackgroundColor: '#25252b',
-        style: {
-            backgroundColor: '#32313F',
-            flex: 1,
-            paddingTop: SBHeaderStyle.Top
+        activeTintColor: 'white',
+        activeBackgroundColor: '#28262b',
+        style: {  
+            paddingTop: SBHeaderStyle.Top, 
+            flex: 1
         }
     },
     contentComponent: CustomDrawerContentComponent,

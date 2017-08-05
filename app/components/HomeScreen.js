@@ -39,22 +39,20 @@ class HomeScreen extends Component {
     };
     
   }
-
+  componentWillMount(){
+    this.props.getSessions();
+  }
   componentDidMount() {
 
     setTimeout(() => {
         this.setState({
           visibleSwiper: true
         });
-    }, 0); 
-      console.log('sessions')
-
-    this.props.getSessions();
+    }, 0);  
     
   }
  
-  render() {   
-    console.log(this.props.sessions)
+  render() {    
       return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
           <Swiper data = {this.props.sessions.live} />
@@ -94,5 +92,8 @@ mapStateToProps = ({courses, Auth}) => {
   })
 }
 
+mapDispatchToProps = (dispatch) => {
+  return { getSessions: () => dispatch(getSessions())}  
+}
 
-export default connect(mapStateToProps,{ getSessions })(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

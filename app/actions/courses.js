@@ -5,7 +5,9 @@ import querystring from 'querystring';
 import { reqHeader } from '../config/Config'
 import {
     GET_SESSION,
-    GET_COURSES
+    GET_COURSES,
+    SEE_MORE,
+    VIEW_BOOK
 } from './types';
 import { URI } from '../config/Config';
 
@@ -45,4 +47,18 @@ export const getSessions = () => {
         });
     }
  
-}
+} 
+
+export const seeMore = () => { 
+    return {
+        type: SEE_MORE,
+        payload: 'ok'
+    };
+};
+
+export const selectBook = () => { 
+    return {
+        type: VIEW_BOOK,
+        payload: 'ok'
+    };
+};

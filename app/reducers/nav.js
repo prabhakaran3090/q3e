@@ -11,7 +11,9 @@ import {
     LOGIN_INIT,
     SERVER_NOT_REACHABLE,
     LOGGED_IN,
-    ON_LOGOUT
+    ON_LOGOUT,
+    SEE_MORE,
+    VIEW_BOOK
 } from '../actions/types';
 
  
@@ -30,6 +32,18 @@ export default (state = initialNavState, action) => {
         case ON_LOGOUT:
             nextState = AppNavigator.router.getStateForAction(
                 NavigationActions.navigate({ routeName: 'Login' }),
+                state
+            );
+            break;
+        case SEE_MORE:
+            nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({ routeName: 'Description' }),
+                state
+            );
+            break;
+        case VIEW_BOOK:
+            nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({ routeName: 'BookIndex' }),
                 state
             );
             break;

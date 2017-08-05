@@ -21,9 +21,7 @@ import { SBHeaderStyle, headerProp } from '../config/Config';
 export default class courselist extends Component {
      static navigationOptions = ({ navigation }) => { 
                                 
-            const header = headerProp(navigation);
-
-            header.headerLeft = null;
+            const header = headerProp(navigation); 
             header.headerRight = null;
             header.headerTitle = 'Courses';
             header.drawerLabel = 'Forum';

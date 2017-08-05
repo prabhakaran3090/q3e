@@ -13,7 +13,7 @@ export const profile_data = {
   "name": "Vimal N",
   "email": "vimal@tenet.res.in", 
   "picture": {
-    "large": "http://www.tenet.res.in/picture/136EE_user.png"
+    "large": "http://makerepo.com/assets/default-avatar-19cf8cebb96b4d8beff4ef9cad0e5903d288c778c503777332a57085a65371be.png"
   },
  
 };
@@ -44,17 +44,19 @@ export default class ProfileScreen extends Component {
         />
         <Button
           title="EDIT"
-          buttonStyle={{ marginTop: 20,backgroundColor:"#1abc9c" }}
+          buttonStyle={{ marginTop: 20,backgroundColor:"#1abc9c", borderRadius: 5 }}
           onPress={this.handleSettingsPress}
         />
         <List>
           <ListItem
             title="Email"
+            titleStyle={{fontWeight: 'bold', fontSize: 13}}
             rightTitle={profile_data.email}
             hideChevron
           />
           <ListItem
             title="Phone"
+            titleStyle={{fontWeight: 'bold', fontSize: 13}}
             rightTitle={profile_data.phone}
             hideChevron
           />
@@ -62,6 +64,7 @@ export default class ProfileScreen extends Component {
         <List>
           <ListItem
             title="Username"
+            titleStyle={{fontWeight: 'bold', fontSize: 13}}
             rightTitle={profile_data.uname}
             hideChevron
           />
@@ -69,6 +72,7 @@ export default class ProfileScreen extends Component {
         <List>
             <ListItem
             title="Gender"
+            titleStyle={{fontWeight: 'bold', fontSize: 13}}
             rightTitle={profile_data.gender}
             hideChevron
           />

@@ -37,7 +37,7 @@ export default class SwiperScreen extends Component {
 
   render() {
     let swiper = null;
-    const item = this.props.data; 
+    const item = this.props.data;  
     if (this.state.visibleSwiper && item != undefined) {
       return (
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
@@ -100,14 +100,8 @@ export default class SwiperScreen extends Component {
 
       );
     } else {
-      return (<Swiper
-        height={250} horizontal={true}
-        loop={true} bounces={true}
-        removeClippedSubviews={false}
-        autoplay
-      >
-        <ActivityIndicator style={{ margin: 100 }}/>
-      </Swiper>);
+      return ( 
+      <ActivityIndicator style={{ margin: 100 }}/> );
     }
   }
 

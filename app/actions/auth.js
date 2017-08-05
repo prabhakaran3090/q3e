@@ -17,8 +17,7 @@ import { URI } from '../config/Config';
 
  export const onSubmit = (username, password) => {  
     return (dispatch) => {
-        dispatch({ type: LOGIN_INIT });
-        axios.defaults.timeout = 1000;   
+        dispatch({ type: LOGIN_INIT }); 
         axios.post(`http://${URI.nodeServer}:${URI.port}/login`, querystring.stringify({ username: username, pass: password }))
         .then((response) => {     
             return response.data;

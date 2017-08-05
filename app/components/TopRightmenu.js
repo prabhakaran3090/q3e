@@ -66,7 +66,7 @@ render () {
   
     return (
       <View>
-        <PopupMenu actions={['Notification', 'Logout']} onPress={this.onPopupEvent.bind(this)} />
+        <PopupMenu actions={['Logout']} onPress={this.onPopupEvent.bind(this)} />
       </View>
     )
   }
@@ -74,8 +74,7 @@ render () {
   onPopupEvent = (eventName, index) => { 
 
     if (eventName !== 'itemSelected') return
-    if (index === 0) this.onNotification()
-    else{
+    if (index === 0) {
       this.props.onLogout();
     } 
   }

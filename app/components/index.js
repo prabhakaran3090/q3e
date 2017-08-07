@@ -44,13 +44,37 @@ class AppIndex extends Component{
              } 
         });  
     }
+    _addNavigationHelpers = (navigation) => {
+        const original = addNavigationHelpers(navigation);
+        let debounce;
+        return {
+            ...original,
+            navigateWithDebounce: (routeName, params, action) => {
+                let func = () => {
+                    if (debounce) {
+                        return;
+                    }
 
+                    navigation.dispatch(NavigationActions.navigate({
+                        routeName,
+                        params,
+                        action
+                    }));
+
+                    debounce = setTimeout(() => {
+                        debounce = 0;
+                    }, 1000)
+                };
+                return func();
+            }
+        }
+    };
     render(){ 
         const { nav, dispatch } = this.props; 
         if (this.state.loading)  
             return (<Loading />); 
  
-    return (<AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })}  />);  
+    return (<AppNavigator navigation={this._addNavigationHelpers({ dispatch, state: nav })}  />);  
  
     }
 }

@@ -32,7 +32,8 @@ import { URI } from '../config/Config';
                 await AsyncStorage.multiSet([
                     ['username', userInfo.username.toString()],
                     ['password', userInfo.password.toString()],
-                    ['userId', userInfo.id.toString()]
+                    ['userId', userInfo.id.toString()],
+                    ['userInfo', JSON.stringify(res.data)]
                 ])
                 .then(dispatch({
                     type: LOGGED_IN,

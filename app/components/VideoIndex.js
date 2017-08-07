@@ -3,6 +3,9 @@ import { View, Text, StatusBar, ListView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
 
 class ChapterView extends Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
     }

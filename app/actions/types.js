@@ -14,3 +14,5 @@ export const GET_COURSES = 'get_courses';
 export const ON_LOGOUT = 'logout';
 export const SEE_MORE = 'see_more';
 export const VIEW_BOOK = 'view_book'; 
+export const SELECT_BOOK = 'select_book';
+export const COURSE_OUTLINE = 'course_outline';

@@ -1,35 +1,62 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, 
+    Text, 
+    Image, 
+    TouchableOpacity, 
+    TouchableHighlight, 
+    ScrollView ,
+    ActivityIndicator
+} from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { connect } from 'react-redux'; 
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+import { NavigationActions } from 'react-navigation';
+import { _ } from 'lodash';
 
-import { seeMore, selectBook } from '../actions/courses';
+import { seeMore, selectBook, viewBook, getCourseOutline } from '../actions/courses';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
 class CourseOutline extends Component {
     static navigationOptions = ({ navigation }) => {
 
         const header = headerProp(navigation);
+        header.headerLeft = <TouchableHighlight
+            underlayColor='transparent'
+            onPress={() => {  
+                return navigation.dispatch(NavigationActions.back())
+            }}
+        >
+            <Icon
+                name='chevron-left'
+                size={25}
+                style={{ color: 'white', marginLeft: 20 }}
+            />
+        </TouchableHighlight>;
 
-        header.headerLeft = null;
-        header.headerRight = null;
+        header.headerRight = <View
+            style={{ marginLeft: 20 }}
+        />;
         header.headerTitle = 'Topic Outline';
 
         return (header);
     };
 
     constructor(props) {
-        super(props);
+        super(props);  
     }
 
+    componentWillMount(){
+       const { params } = this.props.navigation.state;
+       this.props.getCourseOutline(params.id);
+    }
     renderNode(node, index) {
         if (node.name === 'seeall') {
             return (
-                <TouchableOpacity onPress={() => this.props.seeMore()}>
+                <TouchableOpacity onPress={() => this.props.seeMore(desc)} key={index}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={styles.buttonSeeAll}>
                             See All
-                    </Text>
+                        </Text>
                     </View>
                 </TouchableOpacity>
             );
@@ -38,12 +65,20 @@ class CourseOutline extends Component {
 
 
     render() {
+        if (_.isEmpty(this.props.course)){
+            return (<View style={{ flex: 1 }}>
+                <ActivityIndicator style={{ margin: 100 }} />
+            </View>)
+        }
+        const { desc, prof_img, fname , lname, city, img_url } = this.props.course;
+ 
         const { thumbnailStyle } = styles;
-        const html = `<p>Session 1: Basic configuration, construction - types, principle of operation, Amp-Turn balance, Ideal transformer,&nbsp; Accounting for core losses - Eddy current and hysteresis losses, revisiting construction - reduction of eddy current losses with laminations; magnetizing current and magnetizing reactance; some worked examples</p>` + `<seeAll></SeeAll>`;
+        
+        
         return (
             <View style={styles.parent}>
                 <View>
-                    <Image style={thumbnailStyle} source={require('../assets/images/img123.png')} />
+                    <Image style={thumbnailStyle} source={{ uri: img_url }} />
                 </View>
                 <View style={styles.floatView}>
                     <Text style={styles.floatText}>Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers</Text>
@@ -53,9 +88,18 @@ class CourseOutline extends Component {
                         <View style={styles.heading}>
                             <Text style={styles.headText}>
                                 Course Outline
-                                </Text>
+                            </Text>
                         </View>
-                        <HTMLView value={html} renderNode={this.renderNode.bind(this)} />
+                        <View style={{height: 100 }}>
+                            <HTMLView value={desc} renderNode={this.renderNode.bind(this)} />
+                        </View> 
+                        <TouchableOpacity onPress={() => this.props.seeMore(desc)} >
+                                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={styles.buttonSeeAll}>
+                                        See All
+                                     </Text>
+                                </View>
+                            </TouchableOpacity> 
                     </View>
                     <View style={styles.WebView}>
                         <View style={styles.heading}>
@@ -65,24 +109,28 @@ class CourseOutline extends Component {
                         </View >
                         <View style={{ flexDirection: 'row', marginTop: 10 }}>
                             <View>
-                                <Image style={{ height: 50, width: 50, borderRadius: 50, }} source={require('../assets/images/prabha.jpg')} />
+                                <Image 
+                                style={{ height: 50, width: 50, borderRadius: 50, }} 
+                                source={{uri:prof_img }} 
+                                defaultSource={require('../assets/images/img123.png')}
+                            />
                             </View>
                             <View style={{ flexDirection: 'column', marginLeft: 10 }}>
                                 <View style={{ paddingBottom: 2 }}>
-                                    <Text style={{ fontSize: 15, color: '#2b2b2b', fontWeight: '600' }}>Prabhakaran C.P.</Text>
+                                    <Text style={{ fontSize: 15, color: '#2b2b2b', fontWeight: '600' }}>{ fname+ " "+ lname }</Text>
                                 </View>
                                 <View >
-                                    <Text style={{ fontSize: 13, color: '#2b2b2b' }}>IIT Chennai</Text>
+                                    <Text style={{ fontSize: 13, color: '#2b2b2b' }}>{ city }</Text>
                                 </View>
                             </View>
                         </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity style={styles.footer} onPress={() => { this.props.selectBook(); }}>
+                <TouchableOpacity style={styles.footer} onPress={() => { this.props.viewBook(); }}>
                     <View >
                         <Text style={{ color: 'white', fontWeight: '600', textAlign: 'center' }}>
                             View Book
-                                </Text>
+                        </Text>
                     </View>
                 </ TouchableOpacity>
             </View>
@@ -161,4 +209,10 @@ const styles = {
     },
 };
 
-export default connect(null, { seeMore, selectBook })(CourseOutline);
+const mapStateToProps = ({ courses }) => {
+    return({
+        course: courses.outline
+    })
+}
+
+export default connect(mapStateToProps, { seeMore, selectBook, viewBook, getCourseOutline })(CourseOutline);

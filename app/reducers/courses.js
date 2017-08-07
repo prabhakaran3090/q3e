@@ -1,13 +1,15 @@
 import {
     GET_SESSION,
     GET_COURSES,
-    LOGGED_IN
+    LOGGED_IN,
+    COURSE_OUTLINE
 } from '../actions/types';
 
 
 const INIT = { 
     sessions : {},
-    courses: {}
+    courses: {},
+    outline: {}
 };
 
 export default (state = INIT, action) => {  
@@ -16,6 +18,8 @@ export default (state = INIT, action) => {
             return { ...state, sessions: action.payload };  
         case GET_COURSES:
             return { ...state, courses: action.payload };
+        case COURSE_OUTLINE:
+            return { ...state, outline: action.payload };            
         default:
             return state;             
     }

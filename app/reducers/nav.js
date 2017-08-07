@@ -13,7 +13,8 @@ import {
     LOGGED_IN,
     ON_LOGOUT,
     SEE_MORE,
-    VIEW_BOOK
+    VIEW_BOOK,
+    SELECT_BOOK
 } from '../actions/types';
 
  
@@ -37,7 +38,19 @@ export default (state = initialNavState, action) => {
             break;
         case SEE_MORE:
             nextState = AppNavigator.router.getStateForAction(
-                NavigationActions.navigate({ routeName: 'Description' }),
+                NavigationActions.navigate({ 
+                    routeName: 'Description',
+                    params: { outline : action.payload },
+                }),
+                state
+            );
+            break;
+        case SELECT_BOOK:
+            nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({ 
+                    routeName: 'CourseMain',
+                     params: {id: action.payload}, 
+                }),
                 state
             );
             break;

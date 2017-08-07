@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
  
 
 class ChapterView extends Component {
+    static navigationOptions = {
+        header: null
+    }
     constructor(props) {
         super(props);
     }

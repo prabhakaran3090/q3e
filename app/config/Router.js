@@ -26,9 +26,12 @@ import ProfileScreen from '../components/ProfileScreen';
 import EditScreen from '../components/ProfileEdit';
 import NotificationScreen from '../components/NotificationScreen';
 import CourseOutline from '../components/CourseOutline';
-import Description from '../components/Description';
+import Description from '../components/Description'; 
 import BookIndex from '../components/BookIndex';
 import Loading from '../components/Loading';
+import ChapterView from '../components/ChapterView';
+import VideoIndex from '../components/VideoIndex'; 
+
 import { SBHeaderStyle, headerProp } from '../config/Config'; 
 
 const ForumStack = StackNavigator({
@@ -67,7 +70,12 @@ const TabBar = TabNavigator({
         }
     },
     BrowseStack: {
-        screen: StackNavigator({ Browse: { screen: BrowseScreen } }),
+        screen: StackNavigator({
+            Browse: {   screen: BrowseScreen },
+                        CourseOutline: { screen: CourseOutline },
+                        Description: { screen: Description },
+                        BookIndex: { screen: BookIndex } 
+                    }),
         navigationOptions: {
             tabBarLabel: 'Browse',
             tabBarIcon: ({ tintColor }) => <Icon name='play-circle-o' size={25} color={tintColor} />
@@ -107,11 +115,17 @@ const TabBar = TabNavigator({
 
 const CustomDrawerContentComponent = (props) => (
     <View style={{flex: 1,  backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}>
-        <View style={{ marginTop: SBHeaderStyle.Top, alignSelf: 'center' }} >
+        {/* <View style={{ marginTop: SBHeaderStyle.Top, alignSelf: 'center' }} >
             <Image
                 source={require('../assets/images/logo.png')}
                 style={{ width: 200, height: 60, resizeMode: 'contain' }}
             />
+        </View> */}
+        <View style={{padding:  20, flexDirection: 'row'}} >
+           <View style={{flex: 4}}>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>Prabhakaran</Text>
+                <Text style={{ color: 'white' }}>prabhakaran@tenet.res.in</Text>
+           </View> 
         </View>
         <DrawerItems {...props}  />
     </View>
@@ -140,8 +154,7 @@ const DrawerNavigatorConfig = {
         inactiveTintColor: 'white',
         activeTintColor: 'white',
         activeBackgroundColor: '#28262b',
-        style: {  
-            paddingTop: SBHeaderStyle.Top, 
+        style: {    
             flex: 1
         }
     },
@@ -150,12 +163,41 @@ const DrawerNavigatorConfig = {
 }
 
 
-export const DrawerNav = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
+const DrawerNav = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
 
+const courseMain = StackNavigator({ 
+    CourseOutline: { screen: CourseOutline },
+    Description: { screen: Description },
+    BookIndex: { screen: BookIndex }
+});
 
-export const AppNavigator = StackNavigator({  
+export const BookTabView = TabNavigator({
+    ChapterView : {
+        screen: StackNavigator({ Home: { screen: ChapterView } }),
+        navigationOptions: { 
+            tabBarLabel: 'Chapters'
+        }
+    } ,
+    VideoIndex: {
+        screen: StackNavigator({ Home: { screen: VideoIndex } }),
+        navigationOptions: {
+            tabBarLabel: 'Videos'
+        }
+    } ,
+    Description: {
+        screen: StackNavigator({ Home: { screen: Description } }, {
+            headerMode: 'none'
+        }),
+        navigationOptions: {
+            tabBarLabel: 'Description'
+        }
+    } 
+})
+
+export const AppNavigator = StackNavigator({   
     Login: { screen: LoginScreen },
     Main: { screen: DrawerNav },
+    CourseMain: { screen: courseMain }
   },{
       headerMode: 'none'
   });

@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
-import { getCourses } from '../actions/courses'; 
+import { getCourses, selectBook, viewBook } from '../actions/courses'; 
 
 class BrowseScreen extends Component {
  
@@ -45,10 +45,13 @@ constructor(props){
    return size;
  }
 
- renderRow(rowData, sectionID) { 
-  
+ selectCourse(id) { 
+   this.props.selectBook(id)
+ }
+
+ renderRow(rowData, sectionID) {   
    return (
-     <ListItem
+     <ListItem 
        roundAvatar
        title={rowData.name}
        subtitle={
@@ -59,6 +62,10 @@ constructor(props){
        avatar={{ uri: rowData.img_url }}
        avatarStyle={{ borderRadius: 0, width: 60, height: 60 }}
        titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
+       onPress={  () => { 
+        return this.selectCourse.call(this, rowData.id )
+         }
+       }
      />
    )
  }
@@ -83,7 +90,7 @@ constructor(props){
           placeholder='Type Here...'  />
         <List containerStyle= {{marginTop:0, paddingTop:0}}>
             <ListView
-              renderRow={this.renderRow}
+              renderRow={this.renderRow.bind(this)}
              dataSource={this.state.dataSource} 
             />                   
         </List>
@@ -110,4 +117,4 @@ mapStateToProps = ({ courses }) => {
 }
 
 
-export default connect(mapStateToProps, { getCourses })(BrowseScreen);
+export default connect(mapStateToProps, { getCourses, selectBook })(BrowseScreen);

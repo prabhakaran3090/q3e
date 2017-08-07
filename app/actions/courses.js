@@ -7,7 +7,9 @@ import {
     GET_SESSION,
     GET_COURSES,
     SEE_MORE,
-    VIEW_BOOK
+    VIEW_BOOK,
+    SELECT_BOOK,
+    COURSE_OUTLINE
 } from './types';
 import { URI } from '../config/Config';
 
@@ -35,8 +37,7 @@ export const getSessions = () => {
         const username = await AsyncStorage.getItem('username');  
         axios.get(`http://${URI.nodeServer}:${URI.port}/sessions/?username=${username}`)
         .then(response => response.data)
-        .then(sessions => {  
-            console.log(sessions)
+        .then(sessions => {   
             dispatch ({
                 type: GET_SESSION,
                 payload: sessions
@@ -49,16 +50,39 @@ export const getSessions = () => {
  
 } 
 
-export const seeMore = () => { 
+
+export const getCourseOutline = (id) => {
+    return (dispatch) => { 
+        axios.get(`http://${URI.phpServer}/q3api/v1/index.php/cs/course_by_id?data=${id}&_=${Date.now()}`, reqHeader)
+        .then(response => response.data) 
+        .then(outline => {
+            dispatch({
+                type: COURSE_OUTLINE,
+                payload: outline[id]
+            });
+        })
+        .catch(() => {
+         
+        })
+    }
+}
+export const seeMore = (desc) => { 
     return {
         type: SEE_MORE,
-        payload: 'ok'
+        payload: desc
     };
 };
 
-export const selectBook = () => { 
+export const selectBook = (data) => { 
+    return {
+        type: SELECT_BOOK,
+        payload: data
+    };
+};
+ 
+export const viewBook = () => {
     return {
         type: VIEW_BOOK,
-        payload: 'ok'
+        payload: ''
     };
 };

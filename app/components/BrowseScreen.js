@@ -45,8 +45,8 @@ constructor(props){
    return size;
  }
 
- selectCourse(id) { 
-   this.props.selectBook(id)
+ selectCourse(id) {  
+   this.props.navigation.navigate('CourseMain', { id }); 
  }
 
  renderRow(rowData, sectionID) {   
@@ -62,10 +62,7 @@ constructor(props){
        avatar={{ uri: rowData.img_url }}
        avatarStyle={{ borderRadius: 0, width: 60, height: 60 }}
        titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
-       onPress={  () => { 
-        return this.selectCourse.call(this, rowData.id )
-         }
-       }
+       onPress={  () =>  this.props.navigation.navigate('CourseMain', { id:rowData.id })  }
      />
    )
  }
@@ -83,17 +80,18 @@ constructor(props){
 
     return (
       <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
-      <View>
-        <SearchBar 
-          lightTheme 
-          inputStyle ={{ backgroundColor: 'white' }}
-          placeholder='Type Here...'  />
-        <List containerStyle= {{marginTop:0, paddingTop:0}}>
-            <ListView
-              renderRow={this.renderRow.bind(this)}
-             dataSource={this.state.dataSource} 
-            />                   
-        </List>
+      <View> 
+          <SearchBar 
+            lightTheme 
+            inputStyle ={{ backgroundColor: 'white' }}
+          placeholder='Search'  />
+
+          <List containerStyle= {{marginTop:0, paddingTop:0}}>
+              <ListView
+                renderRow={this.renderRow.bind(this)}
+              dataSource={this.state.dataSource} 
+              />                   
+          </List> 
       </View>
       </ScrollView>
     );

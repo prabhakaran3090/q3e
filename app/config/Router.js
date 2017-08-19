@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import LoginScreen from '../components/LoginScreen';
+import LoadingScreen from '../components/LoadingScreen';
 import HomeScreen from '../components/HomeScreen';
 import CourseScreen from '../components/CourseScreen';
 import ForumScreen from '../components/ForumScreen';
@@ -114,13 +115,7 @@ const TabBar = TabNavigator({
 
 
 const CustomDrawerContentComponent = (props) => (
-    <View style={{flex: 1,  backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}>
-        {/* <View style={{ marginTop: SBHeaderStyle.Top, alignSelf: 'center' }} >
-            <Image
-                source={require('../assets/images/logo.png')}
-                style={{ width: 200, height: 60, resizeMode: 'contain' }}
-            />
-        </View> */}
+    <View style={{flex: 1,  backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}> 
         <View style={{padding:  20, flexDirection: 'row'}} >
            <View style={{flex: 4}}>
                 <Text style={{ color: 'white', fontWeight: 'bold' }}>Prabhakaran</Text>
@@ -173,31 +168,33 @@ const courseMain = StackNavigator({
 
 export const BookTabView = TabNavigator({
     ChapterView : {
-        screen: StackNavigator({ Home: { screen: ChapterView } }),
+        screen: ChapterView,
         navigationOptions: { 
             tabBarLabel: 'Chapters'
         }
     } ,
     VideoIndex: {
-        screen: StackNavigator({ Home: { screen: VideoIndex } }),
+        screen: VideoIndex,
         navigationOptions: {
             tabBarLabel: 'Videos'
         }
-    } ,
-    Description: {
-        screen: StackNavigator({ Home: { screen: Description } }, {
-            headerMode: 'none'
-        }),
-        navigationOptions: {
-            tabBarLabel: 'Description'
-        }
-    } 
-})
+    }   
+}, {tabBarOptions: { 
+        style: {
+            backgroundColor: '#32313F',
+        },
+    }
+});
 
-export const AppNavigator = StackNavigator({   
+const BookTabStack = StackNavigator({
+    BookHome: { screen: BookIndex }
+}, { headerMode: 'screen'})
+
+const AppNavigatorStack = {
     Login: { screen: LoginScreen },
     Main: { screen: DrawerNav },
-    CourseMain: { screen: courseMain }
-  },{
-      headerMode: 'none'
-  });
+    CourseMain: { screen: courseMain },
+    BookView: { screen: BookTabStack }
+};
+
+export const AppNavigator = StackNavigator( AppNavigatorStack , { headerMode: 'none' } );

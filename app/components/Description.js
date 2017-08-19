@@ -7,7 +7,7 @@ import {
    TouchableHighlight
 } from 'react-native';   
 import HTMLView from 'react-native-htmlview'; 
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
@@ -21,8 +21,8 @@ class Description extends Component {
       underlayColor='transparent'
       onPress={() => { navigation.goBack() }}
     >
-      <Icon
-        name='chevron-left'
+      <MaterialIcons
+        name='arrow-back'
         size={25}
         style={{ color: 'white', marginLeft: 20 }}
       />

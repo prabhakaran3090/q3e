@@ -1,32 +1,29 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar, ListView, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
- 
+import { View, Text, StatusBar, ListView, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { connect } from 'react-redux'; 
+import Ionicons from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { _ } from 'lodash';
+import { NavigationActions } from 'react-navigation';
+
+import { SBHeaderStyle, headerProp } from '../config/Config';
 
 class ChapterView extends Component {
     static navigationOptions = {
         header: null
-    }
+    };
+
+
     constructor(props) {
         super(props);
     }
 
     componentWillMount() { 
-       const data = [
-        { name: 'Memory Mapping and Peripheral Interfacing '},
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer', isHead: true },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer', isHead: true },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' }];
+        const data = _.map(this.props.screenProps.title, function (v) {
+            return {
+                name: v
+            }
+        });
        const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
        });
@@ -39,9 +36,9 @@ class ChapterView extends Component {
       var styleSheet = {};
 
       if (data.isHead) {
-         styleSheet.head = { backgroundColor: '#2196F3' }; 
+          styleSheet.head = { backgroundColor: '#32313F' }; 
          styleSheet.text = { color: 'white' };
-         styleSheet.border = { borderColor: '#2196F3' };
+         styleSheet.border = { borderColor: 'white' };
       }
     return ( 
         <TouchableOpacity style={[container, styleSheet.head]} onPress={() => this.props.chapterContentView()} >

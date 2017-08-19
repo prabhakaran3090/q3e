@@ -9,7 +9,7 @@ import { View,
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { connect } from 'react-redux'; 
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { NavigationActions } from 'react-navigation';
 import { _ } from 'lodash';
 
@@ -17,17 +17,14 @@ import { seeMore, selectBook, viewBook, getCourseOutline } from '../actions/cour
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
 class CourseOutline extends Component {
-    static navigationOptions = ({ navigation }) => {
-
+    static navigationOptions = ({ navigation }) => { 
         const header = headerProp(navigation);
         header.headerLeft = <TouchableHighlight
             underlayColor='transparent'
-            onPress={() => {  
-                return navigation.dispatch(NavigationActions.back())
-            }}
+            onPress={() =>  navigation.dispatch(NavigationActions.back())}
         >
-            <Icon
-                name='chevron-left'
+            <MaterialIcons
+                name='arrow-back'
                 size={25}
                 style={{ color: 'white', marginLeft: 20 }}
             />
@@ -42,13 +39,19 @@ class CourseOutline extends Component {
     };
 
     constructor(props) {
-        super(props);  
+        
+        super(props);   
+
+        const { params } = this.props.navigation.state;
+        this.props.getCourseOutline(params.id);
+
+        this.state = { course : null }
+    } 
+
+    componentWillReceiveProps(nextProps){  
+        this.setState({ course: nextProps.course })
     }
 
-    componentWillMount(){
-       const { params } = this.props.navigation.state;
-       this.props.getCourseOutline(params.id);
-    }
     renderNode(node, index) {
         if (node.name === 'seeall') {
             return (
@@ -64,24 +67,23 @@ class CourseOutline extends Component {
     }
 
 
-    render() {
-        if (_.isEmpty(this.props.course)){
+    render() {   
+        if (_.isEmpty(this.state.course)){
             return (<View style={{ flex: 1 }}>
                 <ActivityIndicator style={{ margin: 100 }} />
             </View>)
         }
-        const { desc, prof_img, fname , lname, city, img_url } = this.props.course;
- 
-        const { thumbnailStyle } = styles;
         
-        
+        const { desc, prof_img, fname , lname, city, img_url, name } = this.state.course; 
+        const { thumbnailStyle } = styles; 
+
         return (
             <View style={styles.parent}>
                 <View>
                     <Image style={thumbnailStyle} source={{ uri: img_url }} />
                 </View>
                 <View style={styles.floatView}>
-                    <Text style={styles.floatText}>Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers</Text>
+                    <Text style={styles.floatText}>{ name }</Text>
                 </View>
                 <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
                     <View style={styles.WebView}>
@@ -126,7 +128,7 @@ class CourseOutline extends Component {
                         </View>
                     </View>
                 </ScrollView>
-                <TouchableOpacity style={styles.footer} onPress={() => { this.props.viewBook(); }}>
+                <TouchableOpacity style={styles.footer} onPress={() => this.props.navigation.navigate('BookView', { data: this.state.course })  }>
                     <View >
                         <Text style={{ color: 'white', fontWeight: '600', textAlign: 'center' }}>
                             View Book

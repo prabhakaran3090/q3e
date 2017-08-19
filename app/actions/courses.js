@@ -9,7 +9,8 @@ import {
     SEE_MORE,
     VIEW_BOOK,
     SELECT_BOOK,
-    COURSE_OUTLINE
+    COURSE_OUTLINE,
+    BOOK_INDEX
 } from './types';
 import { URI } from '../config/Config';
 
@@ -51,11 +52,11 @@ export const getSessions = () => {
 } 
 
 
-export const getCourseOutline = (id) => {
-    return (dispatch) => { 
-        axios.get(`http://${URI.phpServer}/q3api/v1/index.php/cs/course_by_id?data=${id}&_=${Date.now()}`, reqHeader)
+export const getCourseOutline = (id) => { 
+    return async (dispatch) => { 
+        await axios.get(`http://${URI.phpServer}/q3api/v1/index.php/cs/course_by_id?data=${id}&_=${Date.now()}`, reqHeader)
         .then(response => response.data) 
-        .then(outline => {
+        .then(outline => { 
             dispatch({
                 type: COURSE_OUTLINE,
                 payload: outline[id]
@@ -66,12 +67,30 @@ export const getCourseOutline = (id) => {
         })
     }
 }
+
+export const getBookIndex = (id) => {
+    return (dispatch) => {
+             axios.get(`http://${URI.phpServer}/coursepack/generate_books/gen_book_html.php?course=${id}`)
+            .then(response => response.data)
+            .then(index => { 
+                dispatch({
+                    type: BOOK_INDEX,
+                    payload: index
+                });
+            })
+            .catch(() => {
+
+            })
+    }
+}
+
 export const seeMore = (desc) => { 
     return {
         type: SEE_MORE,
         payload: desc
     };
 };
+
 
 export const selectBook = (data) => { 
     return {

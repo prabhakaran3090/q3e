@@ -1,31 +1,27 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar, ListView } from 'react-native';
+import { View, Text, StatusBar, ListView, TouchableHighlight } from 'react-native';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { _ } from 'lodash';
+import { NavigationActions } from 'react-navigation';
+
+import { SBHeaderStyle, headerProp } from '../config/Config';
 
 class ChapterView extends Component {
     static navigationOptions = {
-        header: null
-    }
+        header:null
+    };
+
     constructor(props) {
-        super(props);
+        super(props);       
     }
 
     componentWillMount() { 
-       const data = [
-        { name: 'Memory Mapping and Peripheral Interfacing ' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' },
-        { name: 'Memory Mapping and Peripheral Interfacing - Microprocessors and Microcontrollers' },
-        { name: 'Introduction to Convection Heat Transfer - Heat Transfer' }];
+        const data = _.map(this.props.screenProps.videos, function (v) {
+            return {
+                name: v.title
+            }
+        });
        const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
        });
@@ -38,18 +34,22 @@ class ChapterView extends Component {
     return ( 
         <View style={container}>
             <View style={indexBox}>
-                <Text>{ Number(i) + 1 }</Text>
-            </View>            
-            <View style={textBox}>
+                <Text><MaterialIcons
+                    name='play-circle-outline'
+                    size={24}
+                    color='#b9b9b9'
+                /></Text>
+            </View>           
+            <View style={textBox}> 
                 <Text>{data.name}</Text>
             </View> 
-            <View style={downBox}>
+            {/* <View style={downBox}>
                 <Text><Ionicons  
                     name='cloud-download'
                     size={24}
                     color='#b9b9b9'
                 /></Text>
-            </View>        
+            </View>         */}
         </View>
     );
   }    

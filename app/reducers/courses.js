@@ -11,7 +11,8 @@ const INIT = {
     sessions : {},
     courses: {},
     outline: {},
-    BookIndex: {}
+    BookIndex: {},
+    loading: true
 };
 
 export default (state = INIT, action) => {  
@@ -23,7 +24,7 @@ export default (state = INIT, action) => {
         case COURSE_OUTLINE: 
             return { ...state, outline: action.payload };  
         case BOOK_INDEX:
-            return { ...state, BookIndex: action.payload };                        
+            return { ...state, loading: false, BookIndex: action.payload };                        
         default:
             return state;             
     }

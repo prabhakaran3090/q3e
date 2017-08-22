@@ -15,19 +15,19 @@ class ChapterView extends Component {
 
 
     constructor(props) {
-        super(props);
+        super(props); 
     }
 
-    componentWillMount() { 
-        const data = _.map(this.props.screenProps.title, function (v) {
+    componentWillMount() {  
+        const data = _.map(this.props.screenProps, function (v) { 
             return {
-                name: v
+                name: v.title,
+                source: v.data.html
             }
         });
        const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
-       });
-
+       }); 
        this.dataSource = ds.cloneWithRows(data);
   }
 
@@ -41,7 +41,7 @@ class ChapterView extends Component {
          styleSheet.border = { borderColor: 'white' };
       }
     return ( 
-        <TouchableOpacity style={[container, styleSheet.head]} onPress={() => this.props.chapterContentView()} >
+        <TouchableOpacity style={[container, styleSheet.head]} onPress={() => this.props.navigation.navigate('ViewBook')} >
             <View style={[indexBox, styleSheet.border]}>
                 <Text style={styleSheet.text}>{ Number(i) + 1 }</Text>
             </View>            

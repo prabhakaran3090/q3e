@@ -72,7 +72,7 @@ export const getBookIndex = (id) => {
     return (dispatch) => {
              axios.get(`http://${URI.phpServer}/coursepack/generate_books/gen_book_html.php?course=${id}`)
             .then(response => response.data)
-            .then(index => { 
+            .then(index => {   
                 dispatch({
                     type: BOOK_INDEX,
                     payload: index
@@ -99,7 +99,7 @@ export const selectBook = (data) => {
     };
 };
  
-export const viewBook = () => {
+export const viewBook = () => { 
     return {
         type: VIEW_BOOK,
         payload: ''

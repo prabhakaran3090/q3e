@@ -32,6 +32,7 @@ import BookIndex from '../components/BookIndex';
 import Loading from '../components/Loading';
 import ChapterView from '../components/ChapterView';
 import VideoIndex from '../components/VideoIndex'; 
+import ViewBook from '../components/ViewBook'; 
 
 import { SBHeaderStyle, headerProp } from '../config/Config'; 
 
@@ -166,7 +167,7 @@ const courseMain = StackNavigator({
     BookIndex: { screen: BookIndex }
 });
 
-export const BookTabView = TabNavigator({
+ export const BookTabView = TabNavigator({
     ChapterView : {
         screen: ChapterView,
         navigationOptions: { 
@@ -186,15 +187,19 @@ export const BookTabView = TabNavigator({
     }
 });
 
-const BookTabStack = StackNavigator({
-    BookHome: { screen: BookIndex }
+export const BookTabStack = StackNavigator({
+    BookHome: { screen: BookTabView },
+    Loading: {screen: Loading },
+    ViewBook: { screen: ViewBook }
 }, { headerMode: 'screen'})
 
 const AppNavigatorStack = {
     Login: { screen: LoginScreen },
     Main: { screen: DrawerNav },
     CourseMain: { screen: courseMain },
-    BookView: { screen: BookTabStack }
+    BookView: { screen: StackNavigator({
+        Home: { screen: BookIndex }
+    }) }
 };
 
 export const AppNavigator = StackNavigator( AppNavigatorStack , { headerMode: 'none' } );

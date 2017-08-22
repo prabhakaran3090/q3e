@@ -5,12 +5,17 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { _ } from 'lodash';
+import { addNavigationHelpers } from 'react-navigation';
+import { bindActionCreators } from 'redux';
 
-import { BookTabView } from '../config/Router';
+import { BookTabStack } from '../config/Router';
 import { SBHeaderStyle, headerProp } from '../config/Config';
-import { getBookIndex } from '../actions/courses';
+import * as courseActions from '../actions/courses';
+
 class BookIndex extends Component {
+
     static navigationOptions = ({ navigation }) => { 
+
         const header = headerProp(navigation); 
         header.headerLeft = <TouchableHighlight
             underlayColor='transparent'
@@ -31,34 +36,48 @@ class BookIndex extends Component {
         return (header);
     };
 
-    constructor(props) {
+    constructor(props) { 
+        super(props); 
+        this.state = { course: null, loading: true }    
+    } 
 
-        super(props);
-
-        const { params } = this.props.navigation.state; 
-        this.props.getBookIndex(params.data.id)
-        this.state = { indexItems: null }
+    componentWillMount(){
+        const { params } = this.props.navigation.state;
+        this.props.getBookIndex(params.data.id); 
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({ indexItems: nextProps.indexItems })
+    componentWillReceiveProps(nextProps) { 
+        this.setState({
+            course: nextProps.courses,
+            loading: false
+        })
     }
 
-    render() {  
-        if(this.state.indexItems == null)
+    render() {   
+        const { nav, dispatch } = this.props;     
+        if(this.state.loading == true)
             return (<View style={{ flex: 1 }}>
                         <ActivityIndicator style={{ margin: 100 }} />
-                    </View>);
-
+                    </View>);  
         return (
-            <BookTabView screenProps={this.state.indexItems.BookIndex} />
+            <BookTabStack   
+                screenProps={this.state.course.BookIndex} 
+                navigation={addNavigationHelpers({ dispatch, state: nav })} 
+            />
         );
-    }
+    } 
 }
-const mapStateToProps = ({ courses }) => {
+const mapStateToProps = ({ courses, NavBook }) => {
     return{
-        indexItems: courses
+        courses,
+        nav: NavBook
     }
 };
-
-export default connect(mapStateToProps,{ getBookIndex })(BookIndex);
+const mapDispatchToProps = (dispatch) => {
+    let actionCreators = bindActionCreators(courseActions, dispatch)
+    return ({
+        ...actionCreators,
+        dispatch
+    });
+}
+export default connect(mapStateToProps,mapDispatchToProps)(BookIndex);

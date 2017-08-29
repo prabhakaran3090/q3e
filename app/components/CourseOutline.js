@@ -42,13 +42,13 @@ class CourseOutline extends Component {
         
         super(props);   
 
-        const { params } = this.props.navigation.state;
+        const { params } = this.props.navigation.state; 
         this.props.getCourseOutline(params.id);
 
         this.state = { course : null }
     } 
 
-    componentWillReceiveProps(nextProps){  
+    componentWillReceiveProps(nextProps){    
         this.setState({ course: nextProps.course })
     }
 
@@ -75,12 +75,16 @@ class CourseOutline extends Component {
         }
         
         const { desc, prof_img, fname , lname, city, img_url, name } = this.state.course; 
+        
         const { thumbnailStyle } = styles; 
+        
+        const img = (img_url == '') ? require('../assets/images/img404_lg.jpg') : { uri: img_url };
+        const p_img = (prof_img == '') ? require('../assets/images/avatar.png') : { uri: prof_img };
 
         return (
             <View style={styles.parent}>
                 <View>
-                    <Image style={thumbnailStyle} source={{ uri: img_url }} />
+                    <Image style={thumbnailStyle} source={img} />
                 </View>
                 <View style={styles.floatView}>
                     <Text style={styles.floatText}>{ name }</Text>
@@ -113,7 +117,7 @@ class CourseOutline extends Component {
                             <View>
                                 <Image 
                                 style={{ height: 50, width: 50, borderRadius: 50, }} 
-                                source={{uri:prof_img }} 
+                                source={p_img} 
                                 defaultSource={require('../assets/images/img123.png')}
                             />
                             </View>

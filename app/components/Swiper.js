@@ -16,6 +16,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Swiper from 'react-native-swiper';
 import { Card, ListItem, Button } from 'react-native-elements'
+import moment from 'moment';
+
 
 export default class SwiperScreen extends Component {
 
@@ -32,7 +34,10 @@ export default class SwiperScreen extends Component {
         visibleSwiper: true
       });
     }, 0);
+  }
 
+  timestamp2date(time){   
+    return moment.unix(time).format('DD.MM.YYYY, h:mm A');    
   }
 
   render() {
@@ -49,50 +54,62 @@ export default class SwiperScreen extends Component {
           >
             {
               item.map((u, i) => {
-                return (
-                  <View key={i} style={styles.slide}>
-                    <View style={{ flex: 4 }}>
+                if(u.event_name != undefined){
+                  return (
+                    <View key={i} style={styles.slide}>
+                      <View style={{ flex: 4 }}>
+                        <Image
+                          resizeMode='cover'
+                          style={styles.image}
+                          source={{ uri: u.img_url }}
+                        />
+                      </View>
+                      <View >
+                        <View style={[styles.SwipeTextBox, { marginTop: 10 }]}>
+                          <Text style={styles.SwipeTextStyle}>
+                            {u.fullname}
+                          </Text>
+                        </View>
+                        <View style={styles.SwipeTextBox}>
+                          <Text style={styles.SwipeTextStyle}>
+                            {u.event_name}
+                          </Text>
+                        </View>
+                        <View style={[styles.SwipeTextBox, { marginBottom: 10 }]}>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.SwipeTextStyle}>
+                              <MaterialIcons
+                                name="access-time"
+                                size={20}
+                              />
+                            </Text>
+                            <Text style={styles.SwipeTextStyle}>{this.timestamp2date(u.start_date)} </Text>
+                          </View>
+                          <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.SwipeTextStyle}>
+                              <MaterialIcons
+                                name="videocam"
+                                color='green'
+                                size={20}
+                              />
+                            </Text>
+                            <Text style={{ marginTop: 1, fontSize: 15, fontWeight: 'bold', color: 'green' }}>Live</Text>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  );
+                }else{
+                  return (<View key={i} style={styles.slide}>
+                    <View style={{ flex: 1 }}>
                       <Image
                         resizeMode='cover'
                         style={styles.image}
-                        source={{ uri: u.img_url }}
+                        source={{ uri: u.url }}
                       />
                     </View>
-                    <View >
-                      <View style={[styles.SwipeTextBox, { marginTop: 10 }]}>
-                        <Text style={styles.SwipeTextStyle}>
-                          {u.fullname}
-                        </Text>
-                      </View>
-                      <View style={styles.SwipeTextBox}>
-                        <Text style={styles.SwipeTextStyle}>
-                          {u.event_name}
-                        </Text>
-                      </View>
-                      <View style={[styles.SwipeTextBox, { marginBottom: 10 }]}>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={styles.SwipeTextStyle}>
-                            <MaterialIcons
-                              name="access-time"
-                              size={20}
-                            />
-                          </Text>
-                          <Text style={styles.SwipeTextStyle}>30.08.1990 05.30 PM </Text>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                          <Text style={styles.SwipeTextStyle}>
-                            <MaterialIcons
-                              name="videocam"
-                              color='green'
-                              size={20}
-                            />
-                          </Text>
-                          <Text style={{ marginTop: 1, fontSize: 15, fontWeight: 'bold', color: 'green' }}>Live</Text>
-                        </View>
-                      </View>
-                    </View>
-                  </View> 
-                );
+                  </View>);
+                }
               })
             }
           </Swiper>

@@ -1,28 +1,45 @@
-import React, { Component } from 'react';
-import { 
-  ActivityIndicator, 
-  View, 
-  Text, 
-  Image, 
-  TextInput, 
-  ScrollView, 
-  TouchableHighlight, 
-  ListView,
-  StatusBar,
-  Alert 
-} from 'react-native';
 
-import { Card, List, ListItem, SearchBar } from 'react-native-elements'
+import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  TouchableHighlight,
+  StatusBar,
+  ScrollView,
+  ListView
+} from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { List, ListItem, SearchBar } from 'react-native-elements';
+import { connect } from 'react-redux'; 
+import _ from 'lodash';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
+import { getForumCourses, selectForumCourses } from '../actions/courses'; 
 
-export default class courselist extends Component {
-     static navigationOptions = ({ navigation }) => { 
+class CourseScreen extends Component {
+ 
+    static navigationOptions = ({ navigation }) => { 
                                 
-            const header = headerProp(navigation); 
-            header.headerRight = null;
+            const header = headerProp(navigation);
+
+            header.headerLeft = <TouchableHighlight  
+                                  underlayColor='transparent'  
+                                  onPress={() => { navigation.navigate('DrawerOpen') }}
+                                  >
+                                  <Icon 
+                                      name='bars'  
+                                      size={25} 
+                                      style={{  color: 'white',marginLeft:20}}
+                                  />
+                              </TouchableHighlight>;
+          header.headerRight = <View
+            style={{ marginLeft: 20 }}
+        />;
             header.headerTitle = 'Courses';
             header.drawerLabel = 'Forum';
             header.drawerIcon =  ({ tintColor }) => (
@@ -34,91 +51,62 @@ export default class courselist extends Component {
             );
 
             return (header);
-};
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: true,
-      text: '',
-      response_data:'',
-      emptySearch:1
-    }
+    };
 
-    this._renderRow = this._renderRow.bind(this);
-    this._pressRow = this._pressRow.bind(this);
+  constructor(props) {
+    super(props);  
+
+    const dss = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.state = {
+        dataSource: dss.cloneWithRows([]),
+        isLoading: true,
+        text: '',
+        response_data:'',
+        emptySearch:1
+    };
+      this._renderRow = this._renderRow.bind(this);
   }
 
+  componentWillMount() {  
+    this.props.getForumCourses();
+  }
 
-  componentDidMount() {
-
-   return fetch('http://10.21.2.45:8001/app/courselist/')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-        this.setState({
-          isLoading: false,
-          dataSource: ds.cloneWithRows(responseJson),
-          response_data: responseJson
-        }, function() {
-        });
-      })
-      .catch((error) => {
-        Alert.alert("Network Not Reachable. Try Again");
-        });
-    
+  componentWillReceiveProps(nextProps) {  
+ 
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.setState({
+      dataSource: ds.cloneWithRows(_.values(nextProps.courseslist)),
+      isLoading: false,
+    });
+  }
+ 
+  objectLength(obj) {
+    var size = 0, key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
   }
 
   _renderRow(data) {
-
-    return ( 
-      
+    return (   
           <ListItem
           roundAvatar
           key={data.id}
           title={data.fullname}
-          titleStyle={{fontSize: 13, fontWeight: 'bold'}} 
-          onPress={() => this._pressRow(data) }
+          containerStyle={{backgroundColor:'#fff'}}
+          titleStyle={{fontSize: 13, fontWeight: 'bold'}}
+          onPress={  () => { 
+              return this._pressRow.call(this, data.id )
+             }
+           }
           />
- 
-      
     );
   }
 
-_pressRow( course){
-   
-    const { navigate } = this.props.navigation;
-    const url = 'http://10.21.2.45:8001/app/forum/'+course.id ;
-    fetch(url, {
-    method: 'GET',
-    })
-    .then((response) => { return response.json() } )                     //Fetch and passing data
-    .then((responseJson) => {
-      console.log(responseJson);
-    navigate('Forum', { forum_data: responseJson });
-    })
-    
-}
-
-filterSearch(text){
-
-      const course_data = this.state.response_data;
-
-      const newData = course_data.filter(function(item){
-      const itemData = item.fullname.toUpperCase()
-      const textData = text.toUpperCase()
-      return itemData.indexOf(textData) > -1
-    })
-
-    
-      this.state.dataSource = this.state.dataSource.cloneWithRows(newData);
-      this.setState({
-          emptySearch:newData,
-          text: text
-      })
-    
-
-}
+   _pressRow(id){
+        this.props.selectForumCourses(id);      
+    }
 
   render() {
     if (this.state.isLoading) {
@@ -156,28 +144,49 @@ filterSearch(text){
                       clearIcon
                       textInputRef='none'
                       placeholder='Type Here...' />
-                  
-                <List containerStyle={{padding:0, marginTop:0}}>
-                                    <ListView
+                <List style={{padding:0,margin:0}} >
+                  <ListView
                   dataSource={this.state.dataSource}
                   renderRow={this._renderRow}  
-                  />  
-                  </List>      
-                    
+                  />        
+                </List>  
             </View>
 
     );
   }
+
+  filterSearch(text){
+      const course_data = this.props.courseslist;
+      const newData = course_data.filter(function(item){
+          const itemData = item.fullname.toUpperCase()
+          const textData = text.toUpperCase()
+          return itemData.indexOf(textData) > -1
+      })
+      this.state.dataSource = this.state.dataSource.cloneWithRows(newData);
+      this.setState({
+          emptySearch:newData,
+          text: text
+      })
+  }
+
+} //End class
+
+const styles = StyleSheet.create({
+subtitleView: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingTop: 5
+  }, 
+  ratingText: { 
+    color: 'grey'
+  }
+});
+mapStateToProps = ({ courses }) => {
+  return ({ 
+    courseslist: courses.courseslist,
+    
+  })
 }
 
 
-const styles = {
-    box:{
-        flexDirection: 'row', 
-        borderWidth: 1, 
-        padding: 10,
-        backgroundColor: '#fff',
-        margin:3,
-        }
-}
-
+export default connect(mapStateToProps, { getForumCourses, selectForumCourses })(CourseScreen);

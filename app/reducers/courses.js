@@ -3,7 +3,12 @@ import {
     GET_COURSES,
     LOGGED_IN,
     COURSE_OUTLINE,
-    BOOK_INDEX
+    BOOK_INDEX,
+    FORUM_COURSE_LIST,
+    FORUM_LIST,
+    FORUM_DISCUSSION_LIST,
+    FORUM_POST,
+    PROFILE_EDIT
 } from '../actions/types';
 
 
@@ -12,7 +17,10 @@ const INIT = {
     courses: {},
     outline: {},
     BookIndex: {},
-    loading: true
+    loading: true,
+    courseslist:{},
+    forum_list:{},
+    user_details:{}
 };
 
 export default (state = INIT, action) => {  
@@ -24,7 +32,17 @@ export default (state = INIT, action) => {
         case COURSE_OUTLINE: 
             return { ...state, outline: action.payload };  
         case BOOK_INDEX:
-            return { ...state, loading: false, BookIndex: action.payload };                        
+            return { ...state, loading: false, BookIndex: action.payload };     
+        case FORUM_COURSE_LIST:
+            return { ...state, courseslist: action.payload };
+        case FORUM_LIST:
+            return { ...state, forum_list: action.payload };
+        case FORUM_DISCUSSION_LIST:
+            return { ...state, forum_discussion: action.payload };  
+        case FORUM_POST:
+            return { ...state, forum_discussion: action.payload };
+        case PROFILE_EDIT:
+            return { ...state, user_details: action.payload };                   
         default:
             return state;             
     }

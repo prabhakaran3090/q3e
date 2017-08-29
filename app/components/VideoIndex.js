@@ -17,7 +17,7 @@ class ChapterView extends Component {
     }
 
     componentWillMount() {   
-        const data = _.remove(_.map(this.props.screenProps, function (v) {
+        const data = _.remove(_.map(this.props.screenProps.BI, function (v) {
             return _.map(v.data.videos, function (d) {
                 return {
                     name: v.title + ' ' + d.title,

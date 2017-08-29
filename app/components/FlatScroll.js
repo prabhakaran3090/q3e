@@ -16,18 +16,18 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
 import { Card, ListItem, Button } from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; 
 import _ from 'lodash';
+import moment from 'moment';
 
 export default class FlatScroll extends Component {
 
  
  constructor(props){
   super(props);
-  this._onCoursec = this._onCoursec.bind(this);
+  this._onCoursec = this._onCoursec.bind(this); 
 }
 
 _onCoursec(item){ 
-    const {navigate}= this.props.navigation;
-    navigate('Profile')
+  this.props.navigation.navigate('CourseMain', { id: item.courseid }) 
 }
 
 objectLength(obj){ 
@@ -39,6 +39,8 @@ objectLength(obj){
 }
 
   _renderItem(item){ 
+    const value = item.start_date;    
+    const n_date = moment.unix(value).format('DD.MM.YYYY, h:mm A');
     return( 
       <View style={[styles.box, {height: 270,}]} >
           <View style={{flex: 5 }}>
@@ -60,7 +62,7 @@ objectLength(obj){
                   size={20} 
                 /> 
             </Text>    
-            <Text style={ styles.SwipeTextStyle }>30.08.1990 05.30 PM </Text>        
+            <Text style={ styles.SwipeTextStyle }>{n_date}</Text>        
           </View>           
           </View>
       </View> 
@@ -90,7 +92,7 @@ objectLength(obj){
 
     } else {
       return (
-        <TouchableHighlight underlayColor='transparent' onPress={() => this._onCourseAll(item)} style={{ flex: 1 }} >
+        <TouchableHighlight underlayColor='transparent' onPress={this.props.onPress} style={{ flex: 1 }} >
           <View style={[styles.box, { height: 230, alignItems: 'center', justifyContent: 'center', padding: 20 }]}>
 
             <Text style={{ textAlign: 'center', width: 100, color: '#0089da', fontSize: 13, fontWeight: 'bold' }}>

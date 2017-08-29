@@ -1,103 +1,160 @@
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text, Image, TextInput, ScrollView, TouchableHighlight, ListView,StatusBar } from 'react-native';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ActivityIndicator,
+  TouchableHighlight,
+  StatusBar,
+  ScrollView,
+  ListView
+} from 'react-native'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { List, ListItem, SearchBar } from 'react-native-elements';
+import { connect } from 'react-redux'; 
+import { NavigationActions } from 'react-navigation'; 
+import _ from 'lodash';
 
-import { Card, List, ListItem } from 'react-native-elements'
+import { SBHeaderStyle, headerProp } from '../config/Config';
+import { getForumLists, selectForumid } from '../actions/courses'; 
 
-export default class ForumList extends Component {
-  constructor(props)
-    {
-        super(props);
-        const {state} = this.props.navigation;
-       
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-        
-        text: '',
-        dataSource: ds.cloneWithRows(state.params.forum_data),
-        };
+class ForumScreen extends Component {
 
-        this._renderRow = this._renderRow.bind(this);
-        this._pressRow = this._pressRow.bind(this);
-    }
+static navigationOptions = ({ navigation }) => { 
+                                
+            const header = headerProp(navigation);
 
+           header.headerLeft = <TouchableHighlight
+            underlayColor='transparent'
+            onPress={() => {  
+                return navigation.dispatch(NavigationActions.navigate({ routeName: 'Course' }));
+            }}
+        >
+            <Icon
+                name='angle-left'
+                size={25}
+                style={{ color: 'white', marginLeft: 20 }}
+            />
+        </TouchableHighlight>;
+            header.headerRight = <View
+            style={{ marginLeft: 20 }}
+        />;
+            header.headerTitle = 'Forums';
+            header.drawerLabel = 'Forum';
+            header.drawerIcon =  ({ tintColor }) => (
+              <MaterialIcons
+                name="forum"
+                size={24}
+                style={{ color: tintColor }}
+              />
+            );
 
-  _renderRow(data) {
-        if(data != 'Forum not found for the particular course')
+            return (header);
+};
+
+constructor(props) {
+    super(props);  
+      const { params } = this.props.navigation.state;
+     // console.log(params)
+      this.props.getForumLists(params.id);
+
+      const dss = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+      this.state = {
+        dataSource: dss.cloneWithRows([]),
+        isLoading: true,
+        response_data:'',
+    };
+
+    this._renderRow = this._renderRow.bind(this);
+  }
+componentWillReceiveProps(nextProps){
+  console.log(nextProps.forum_list)
+  const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    this.setState({
+      dataSource: ds.cloneWithRows(_.values(nextProps.forum_list)),
+      isLoading: false,
+    });
+}
+ 
+ objectLength(obj) {
+   var size = 0, key;
+   for (key in obj) {
+     if (obj.hasOwnProperty(key)) size++;
+   }
+   return size;
+ }
+
+_renderRow(data) {
+  // console.log(data)
+   if(data != 'Forum not found for the particular course')
         {
 
         const d = new Date(data.timemodified * 1000).toDateString();
         const total = '( '+data.tot+' )';
         return ( 
-
-         <Card containerStyle={{padding:0,marginBottom:-14,marginRight:2,marginLeft:2,bottom:12}}>
           <ListItem
           roundAvatar
           key={data.id}
           title={data.name}
-          titleContainerStyle={{width:280,paddingBottom:5}}
+          containerStyle={{backgroundColor:'#fff'}}
+          titleContainerStyle={{width:280,paddingBottom:5,}}
           subtitle={d}
           rightTitle= {total}
-          onPress={() => this._pressRow(data) }
-          />
-
-      </Card>
-                      
+          onPress={  () => { 
+              return this._pressRow.call(this, data.dis_id, data.crs_id)
+             }
+           }
+          />                 
     );
 
      }
         else
         {
-            return (<Text style={{fontWeight: 'bold',textAlign:'center',color:'#34495e',paddingTop:200,fontSize:18}}>{data}</Text>);
+            return (<View><Text style={{fontWeight: 'bold',textAlign:'center',color:'#34495e',paddingTop:200,fontSize:18}}>{data}</Text></View>);
         }
   }
 
- _pressRow(forum){
-       
-    const { navigate } = this.props.navigation;
-    const url = 'http://10.21.2.45:8001/app/discussionlist/'+forum.id ;
-   
-    fetch(url, {
-    method: 'GET',
-    })
-    .then((response) => { return response.json() } )                     //Fetch and passing data
-    .then((responseJson) => {
-    navigate('ForumTopics', { forumtopics_data: responseJson });
-    })
-    
-}
 
+  _pressRow(forumid, crse_id){
+    this.props.selectForumid(forumid, crse_id);    
+  }
 
   render() {
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, paddingTop: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
 
-    return (
-     
-            <View style={{flex: 1, padding: 2 }}>
-                                
-                  <ListView
-                  dataSource={this.state.dataSource}
-                  renderRow={this._renderRow}  
-                  />        
-                    
-            </View>
+    if (this.state.isLoading) 
+      return(<View>
+            <ActivityIndicator />
+        </View>);  
+
+     return (
+      <ScrollView >
+              <ListView
+              renderRow={this._renderRow}
+             dataSource={this.state.dataSource} 
+            />                   
+      </ScrollView>
     );
   }
 }
 
-
-const styles = {
-    box:{
-        flexDirection: 'row', 
-        borderWidth: 1, 
-        padding: 10,
-        backgroundColor: '#fff',
-        margin:3,
-        }
+const styles = StyleSheet.create({
+subtitleView: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingTop: 5
+  }, 
+  ratingText: { 
+    color: 'grey'
+  }
+});
+mapStateToProps = ({ courses }) => {
+  return ({ 
+    forum_list: courses.forum_list, 
+  })
 }
 
+
+export default connect(mapStateToProps, { getForumLists, selectForumid })(ForumScreen);

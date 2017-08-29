@@ -50,6 +50,8 @@ constructor(props){
  }
 
  renderRow(rowData, sectionID) {   
+   const img = (rowData.img_url == '') ? require('../assets/images/img404_sm.jpg') : {uri : rowData.img_url};
+   
    return (
      <ListItem 
        roundAvatar
@@ -59,7 +61,7 @@ constructor(props){
            <Text style={styles.ratingText}>{ rowData.fname + ' ' + rowData.lname }</Text>
          </View>
        }
-       avatar={{ uri: rowData.img_url }}
+       avatar={img}
        avatarStyle={{ borderRadius: 0, width: 60, height: 60 }}
        titleStyle={{ fontSize: 13, fontWeight: 'bold' }}
        onPress={  () =>  this.props.navigation.navigate('CourseMain', { id:rowData.id })  }
@@ -81,10 +83,10 @@ constructor(props){
     return (
       <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
       <View> 
-          <SearchBar 
+          {/* <SearchBar 
             lightTheme 
             inputStyle ={{ backgroundColor: 'white' }}
-          placeholder='Search'  />
+          placeholder='Search'  /> */}
 
           <List containerStyle= {{marginTop:0, paddingTop:0}}>
               <ListView

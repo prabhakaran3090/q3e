@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableHighlight, ActivityIndicator } from 'react-native'; 
+import { View, StyleSheet, TouchableHighlight, ActivityIndicator, Text } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -14,54 +14,40 @@ import * as courseActions from '../actions/courses';
 
 class BookIndex extends Component {
 
-    static navigationOptions = ({ navigation }) => { 
-
-        const header = headerProp(navigation); 
-        header.headerLeft = <TouchableHighlight
-            underlayColor='transparent'
-            onPress={() => navigation.dispatch(NavigationActions.back())}
-        >
-            <MaterialIcons
-                name='arrow-back'
-                size={25}
-                style={{ color: 'white', marginLeft: 20 }}
-            />
-        </TouchableHighlight>;
-
-        header.headerRight = <View
-            style={{ marginLeft: 20 }}
-        />; 
-        header.headerTitle = navigation.state.params.data.name;
-
-        return (header);
+    static navigationOptions = {
+        header:null
     };
 
     constructor(props) { 
         super(props); 
-        this.state = { course: null, loading: true }    
+        this.state = { 
+            course: null, 
+            loading: true,
+            cname: this.props.navigation.state.params.data.name
+        }    
     } 
 
     componentWillMount(){
         const { params } = this.props.navigation.state;
-        this.props.getBookIndex(params.data.id); 
+        this.props.getBookIndex(params.data.id, this.state.cname); 
     }
 
     componentWillReceiveProps(nextProps) { 
         this.setState({
-            course: nextProps.courses,
+            course: nextProps.courses.BookIndex.index,
             loading: false
         })
     }
 
-    render() {   
-        const { nav, dispatch } = this.props;     
+    render() {    
+        const { nav, dispatch } = this.props;   
         if(this.state.loading == true)
-            return (<View style={{ flex: 1 }}>
+            return (<View style={{ flex: 1 }}> 
                         <ActivityIndicator style={{ margin: 100 }} />
-                    </View>);  
+                    </View>);   
         return (
             <BookTabStack   
-                screenProps={this.state.course.BookIndex} 
+                screenProps={{   BI: this.state.course  }} 
                 navigation={addNavigationHelpers({ dispatch, state: nav })} 
             />
         );

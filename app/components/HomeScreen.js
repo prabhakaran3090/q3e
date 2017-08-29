@@ -21,6 +21,8 @@ import { SBHeaderStyle, headerProp } from '../config/Config';
 import Swiper from './Swiper';
 import { getSessions } from '../actions/courses'; 
 import TopRightmenu from '../components/TopRightmenu';
+import { NavigationActions } from 'react-navigation';
+import _ from 'lodash';
 
 class HomeScreen extends Component {
   
@@ -49,23 +51,33 @@ class HomeScreen extends Component {
           visibleSwiper: true
         });
     }, 0);  
-    
   }
  
   render() {    
+
+    const swiper_sessions = (_.size(this.props.sessions.live) != 0) ? this.props.sessions.live : this.props.sessions.ads;
+
       return(  
         <ScrollView contentContainerStyle={{ backgroundColor: 'white' }}>
-          <Swiper data = {this.props.sessions.live} />
+          <Swiper data={swiper_sessions} />
           <View style={{ flexDirection: 'row' }}>
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Upcoming Session</Text>
-            <Text style={[styles.HeaderStyle,styles.HeaderRight]}>View All</Text>
+            <Text style={[styles.HeaderStyle,styles.HeaderRight]} onPress={() => {  
+                return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.upcoming} }));
+            }}>View All</Text>
           </View>
-          <FlatScroll data={this.props.sessions.upcoming} />
+          <FlatScroll navigation={this.props.navigation} data={this.props.sessions.upcoming} onPress={() => {  
+                return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.upcoming} }));
+            }}/>
           <View style={{ flexDirection: 'row' }}>
             <Text style={[styles.HeaderStyle,{ flex:1}]}>Completed Session</Text>
-            <Text style={[styles.HeaderStyle, styles.HeaderRight]}>View All</Text>
+            <Text style={[styles.HeaderStyle, styles.HeaderRight]} onPress={() => {  
+                return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.completed} }));
+            }}>View All</Text>
           </View> 
-          <FlatScroll data={this.props.sessions.completed}/>
+          <FlatScroll  navigation={this.props.navigation}  data={this.props.sessions.completed} onPress={() => {  
+                return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.completed} }));
+            }}/>
        </ScrollView>
 
        );

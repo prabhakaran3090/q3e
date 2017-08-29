@@ -15,7 +15,14 @@ import {
     SEE_MORE,
     VIEW_BOOK,
     SELECT_BOOK,
-    BOOK_INDEX
+    BOOK_INDEX,
+    FORUM_COURSE_ID,
+    FORUM_LIST,
+    FORUM_LIST_ID,
+    PROFILE_EDIT,
+    PROFILE_EDIT_SCREEN,
+    BACK,
+    VIEW_CHAPTER
 } from '../actions/types';
 
  
@@ -55,6 +62,33 @@ export const AppRoot = (state = initialNavState, action) => {
                 state
             );
             break; 
+        case FORUM_COURSE_ID: 
+           nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({
+                     routeName: 'ForumList',
+                     params: {id: action.payload}
+             }),
+                state
+            );   
+            break;  
+         case FORUM_LIST_ID: 
+           nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({
+                     routeName: 'ForumDiscussion',
+                     params: {id: action.payload}
+             }),
+                state
+            );   
+            break;   
+        case PROFILE_EDIT_SCREEN: 
+        nextState = AppNavigator.router.getStateForAction(
+                NavigationActions.navigate({
+                    routeName: 'Edit',
+                    params: {uname: action.payload}
+            }),
+                state
+            );   
+            break;         
         default:
             nextState = AppNavigator.router.getStateForAction(action, state);
             break;
@@ -69,24 +103,34 @@ export const BookNav = (state = initialBookNavState, action) => {
     let nextState; 
     switch (action.type) {
         case BOOK_INDEX:    
-            nextState = BookTabStack.router.getStateForAction(NavigationActions.reset({
-                index: 0,
-                actions: [
+            nextState = BookTabStack.router.getStateForAction( 
                     NavigationActions.navigate({
                         routeName: 'BookHome',
                         params: { BookIndex: action.payload },
                     })
-                ]
-            })
                 ,
                 state
             ); 
             break;
+        case BACK:
+            nextState = BookTabStack.router.getStateForAction(
+                NavigationActions.back(),
+                state
+            );
+            break;
+        case VIEW_CHAPTER:
+            nextState = BookTabStack.router.getStateForAction(
+                NavigationActions.navigate({
+                    routeName: 'ViewBook',
+                    params: { data: action.payload }
+                }),
+                state
+            );
+            break;   
         default:
             nextState = BookTabStack.router.getStateForAction(action, state);
             break;
     }
-    return nextState || state;
-    console.log(nextState);
+    return nextState || state; 
 }   
 

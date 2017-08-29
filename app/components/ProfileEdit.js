@@ -1,67 +1,157 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Text, View, ActivityIndicator, TouchableHighlight, AsyncStorage, StyleSheet, ScrollView, Alert } from 'react-native';
+import { FormLabel, FormInput, CheckBox } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { SBHeaderStyle, headerProp } from '../config/Config';
+import { URI } from '../config/Config';
+import axios from 'axios';
+import { connect } from 'react-redux'; 
+import { NavigationActions } from 'react-navigation'; 
+import { getUserData } from '../actions/courses'; 
+import { InputBox, Button, Spinner } from './common';
 
-import { FormLabel, FormInput, Button } from 'react-native-elements'
+class Edit extends Component {
+  static navigationOptions = ({ navigation }) => { 
+                                
+            const header = headerProp(navigation);
+           
+            header.headerLeft = <TouchableHighlight
+                                    underlayColor='transparent'
+                                    onPress={() => {  
+                                        return navigation.dispatch(NavigationActions.navigate({ routeName: 'Profile' }));
+                                    }}
+                                >
+                                    <Icon
+                                        name='angle-left'
+                                        size={25}
+                                        style={{ color: 'white', marginLeft: 20 }}
+                                    />
+                                </TouchableHighlight>;
+            header.headerRight = <View
+            style={{ marginLeft: 20 }}
+        />;
+            header.headerTitle = 'Profile';
+            header.headerRight = <View></View>;
 
-export default class Edit extends Component {
+            return (header);
+};
+
+constructor(props){
+  super(props);
+  this.state = {
+   isLoading: true,
+   uname:'',
+   name:'',
+   email:'',
+   phone:'',
+   res_data:'',
+   errordata: false,
+   eload:false,
+   male:'',
+   female:'',
+   status:'',
+};
+}
+
+componentDidMount(){
+   this._loadInitialState().done();
+}
+
+_loadInitialState = async () => {
+  var uname = await AsyncStorage.getItem('username');
+  this.props.getUserData(uname);
+ }
+
+  componentWillReceiveProps(nextProps){
+
+    if(nextProps.user_details.gender == 1){
+      this.setState({male : true, female: false});
+    }
+    else{ 
+      this.setState({female : true, male: false})
+    }
+
+    this.setState({
+      uname:nextProps.user_details.username,
+      name: nextProps.user_details.firstname,
+      email: nextProps.user_details.email,
+      phone: nextProps.user_details.phone,
+      isLoading:false,
+      res_data:nextProps.user_details,
+    });
+}
+
+  renderButton() {
+    
+       let buttonDisabled;  
+       if (this.state.eload) {
+           buttonDisabled = true;
+       }
+          
+       if (this.state.eload) {
+           return ( 
+               <Button onPress={this._handlePress.bind(this)} disabled={buttonDisabled} >
+                   <Spinner size='small' />
+               </Button>    
+           );
+       }  
+   
+       return ( 
+           <Button onPress={this._handlePress.bind(this)} disabled={buttonDisabled} childText >
+               Submit
+           </Button>    
+       ); 
+   
+     }
+
+     renderStatus(){
+      if(this.state.status == 'success'){
+        return (<View><Text style={{color: 'green', textAlign: 'center', fontWeight: '900'}} >{this.state.errordata}</Text></View>);
+      }else{
+        return(<View><Text style={{color: '#ff4949', textAlign: 'center', fontWeight: '900'}} >{this.state.errordata}</Text></View>);
+      }
+     }
   
-  constructor(props){
-    super(props);
-    const {state} = this.props.navigation;
+   _handlePress() {
+        const uname = this.state.uname;
+        const name = this.state.name;
+        const email = this.state.email;
+        const phone = this.state.phone;
+        let gender='';
+        if(this.state.male){
+          gender = 1;
+        }
+        else if(this.state.female){
+          gender = 2;
+        }
+        else{
+          gender = 0;
+        }
 
-    this.state = {
-        name: state.params.data.name,
-        email: state.params.data.email,
-        phone: state.params.data.phone,
-        };
- 
-  }
-
-   validateEmail = (email) => {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-  };
-
-  validatePhone = (phone) => {
-  const phoneno = /^[0-9]{1,10}$/;
-  return phoneno.test(phone);
-  };
-  
- _handlePress() {
-
-      if (!this.validateEmail(this.state.email)) {
-        Alert.alert(
-          '',
-          'Enter Your Valid Email Id',
-          [
-            {text: 'OK'},
-          ])
-      }
-      else if (!this.validatePhone(this.state.phone)) {
-          Alert.alert(
-          '',
-          'Enter Your Valid Mobile Number',
-          [
-            {text: 'OK'},
-          ])
-      }
-      else {
-        console.log(this.state.name);
-        console.log(this.state.email);
-        console.log(this.state.phone);
-         Alert.alert(
-        '',
-        'Submitted Successfully',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ])
-      }
-  }
+        this.setState({eload: true}) 
+        axios.post(`http://${URI.nodeServer}:${URI.port}/user/`, {
+            username : uname,
+            name : name,
+            phone : phone,
+            email : email,
+            gender: gender,
+        })
+        .then(response => {
+    
+          setTimeout(function() { this.setState({errordata: response.data.message, status:response.data.status, eload: false}); }.bind(this), 3000);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });  
+    }
 
   render() {
-    const {state} = this.props.navigation;
+
+if(this.state.isLoading)
+  return (<View><ActivityIndicator /></View>);
+      
     return (
-      <ScrollView>
+      <ScrollView style={{backgroundColor:'#fff'}}>
       <View style={{backgroundColor:'#fff'}}>
           <FormLabel labelStyle={{color:'black',fontSize:14}}>Name</FormLabel>
           <FormInput
@@ -83,15 +173,38 @@ export default class Edit extends Component {
            onChangeText={(text) => this.setState({phone:text})}
            value={this.state.phone}
           />
-          
-          <Button
-          title="Submit"
-          buttonStyle={{ marginTop: 10,backgroundColor:"#1abc9c" }}
-          onPress={() => this._handlePress()}
-        />
-
       </View>
+          <FormLabel labelStyle={{color:'black',fontSize:14}}>Gender</FormLabel>
+          <View style={{flexDirection:'row' }}>
+            <CheckBox
+              title='Male'
+              checkedIcon='dot-circle-o'
+              uncheckedIcon='circle-o'
+              containerStyle={{borderWidth:0}}
+              checked={this.state.male}
+              onPress = {()=>{ this.setState({ male: true, female: false })}}
+            />
+            <CheckBox
+              title='Female'
+              checkedIcon='dot-circle-o'
+              uncheckedIcon='circle-o'
+              containerStyle={{borderWidth:0}}
+              checked={this.state.female}
+              onPress = {()=>{ this.setState({ female: true, male: false })}}
+            />
+          </View>    
+          {this.renderButton.call(this)}
+          {this.renderStatus.call(this)} 
       </ScrollView>
     );
   }
 }
+
+mapStateToProps = ({ courses }) => {
+  return ({ 
+    user_details: courses.user_details, 
+  })
+}
+
+
+export default connect(mapStateToProps, { getUserData })(Edit);

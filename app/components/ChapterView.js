@@ -7,6 +7,7 @@ import { _ } from 'lodash';
 import { NavigationActions } from 'react-navigation';
 
 import { SBHeaderStyle, headerProp } from '../config/Config';
+import { ViewChapter } from '../actions/courses'; 
 
 class ChapterView extends Component {
     static navigationOptions = {
@@ -19,7 +20,7 @@ class ChapterView extends Component {
     }
 
     componentWillMount() {  
-        const data = _.map(this.props.screenProps, function (v) { 
+        const data = _.map(this.props.screenProps.BI, function (v) { 
             return {
                 name: v.title,
                 source: v.data.html
@@ -39,9 +40,14 @@ class ChapterView extends Component {
           styleSheet.head = { backgroundColor: '#32313F' }; 
          styleSheet.text = { color: 'white' };
          styleSheet.border = { borderColor: 'white' };
-      }
+      }  
+    
+    const { source } = data;
+    
+    let x = source.replace(/\+/g, '%20');
+    x = decodeURIComponent(x);  
     return ( 
-        <TouchableOpacity style={[container, styleSheet.head]} onPress={() => this.props.navigation.navigate('ViewBook')} >
+        <TouchableOpacity style={[container, styleSheet.head]} onPress={() => this.props.ViewChapter(data,x)} >
             <View style={[indexBox, styleSheet.border]}>
                 <Text style={styleSheet.text}>{ Number(i) + 1 }</Text>
             </View>            
@@ -84,4 +90,4 @@ const styles = {
     }
 };
 
-export default ChapterView;
+export default connect(null, {ViewChapter})(ChapterView);

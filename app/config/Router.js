@@ -1,5 +1,4 @@
 
-
 import React, { Component } from 'react';
 import {
     AppRegistry,
@@ -7,7 +6,8 @@ import {
     Text,
     StatusBar,
     View,
-    Image
+    Image,
+    AsyncStorage
 } from 'react-native';
 import { StackNavigator, TabNavigator, DrawerNavigator, DrawerItems } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,9 +16,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LoginScreen from '../components/LoginScreen';
 import LoadingScreen from '../components/LoadingScreen';
 import HomeScreen from '../components/HomeScreen';
+import FlatScroll from '../components/FlatScroll';
+import Sessions from '../components/Session';
 import CourseScreen from '../components/CourseScreen';
 import ForumScreen from '../components/ForumScreen';
-import ForumTopicScreen from '../components/ForumTopicScreen';
 import ForumDiscussion from '../components/ForumDiscussion';
 import CalendarScreen from '../components/CalendarScreen';
 import AgendaScreen from '../components/CalendarScreen2';
@@ -29,43 +30,42 @@ import NotificationScreen from '../components/NotificationScreen';
 import CourseOutline from '../components/CourseOutline';
 import Description from '../components/Description'; 
 import BookIndex from '../components/BookIndex';
-import Loading from '../components/Loading';
-import ChapterView from '../components/ChapterView';
-import VideoIndex from '../components/VideoIndex'; 
-import ViewBook from '../components/ViewBook'; 
+import Loading from '../components/Loading'; 
+import ViewBookWebView from '../components/ViewBookWebView'; 
+import DrawerLeftConfig from '../components/DrawerLeftConfig'; 
+import CVTabBar from '../components/CVTabBar'; 
 
 import { SBHeaderStyle, headerProp } from '../config/Config'; 
 
 const ForumStack = StackNavigator({
-    Course: {
-        screen: CourseScreen,
-        navigationOptions: {
-            title: 'Courses'
-        }
-    },
-    Forum: {
-        screen: ForumScreen,
-        navigationOptions: {
-            title: 'Forum'
-        }
-    },
-    ForumTopics: {
-        screen: ForumTopicScreen,
-        navigationOptions: {
-            title: 'Forum Topics'
-        }
-    },
-    ForumDiscussion: {
-        screen: ForumDiscussion,
-        navigationOptions: {
-            title: 'Forum Discussion'
-        }
-    },
-}); 
+    Course: {  screen: CourseScreen },
+    ForumList: { screen: ForumScreen }, 
+    ForumDiscussion: { screen: ForumDiscussion  },
+});
+
+const ProfileStack = StackNavigator({ 
+      Profile: { screen: ProfileScreen },
+      Edit: { screen: EditScreen }
+    },{
+      headerMode: 'none'
+});
+
+    const courseMain = StackNavigator({
+        CourseOutline: { screen: CourseOutline },
+        Description: { screen: Description },
+        BookIndex: { screen: BookIndex }
+    });
+
+  const HomeStack = StackNavigator({ 
+    Home: { screen: HomeScreen},
+    Session: { screen: Sessions },  
+    },{
+    headerMode: 'none'
+});
 
 const TabBar = TabNavigator({
     HomeStack: {
-        screen: StackNavigator({ Home: { screen: HomeScreen}}),
+        screen: StackNavigator({ Home: { screen: HomeStack}}),
         navigationOptions: {
             tabBarIcon: ({ tintColor }) => <Icon name='home' size={25} color={tintColor} />,
             tabBarLabel: 'Home'
@@ -84,7 +84,7 @@ const TabBar = TabNavigator({
         }
     },
     Profile: {
-        screen: StackNavigator({ Profile: { screen: ProfileScreen } }),
+        screen: StackNavigator({ Profile: { screen: ProfileStack } }),
         navigationOptions: {
             tabBarLabel: 'Profile',
             tabBarIcon: ({ tintColor }) => <Icon name='user-circle-o' size={20} color={tintColor} />
@@ -114,18 +114,12 @@ const TabBar = TabNavigator({
     });
 
 
+ 
 
-const CustomDrawerContentComponent = (props) => (
-    <View style={{flex: 1,  backgroundColor: '#32313F', paddingTop: StatusBar.currentHeight, }}> 
-        <View style={{padding:  20, flexDirection: 'row'}} >
-           <View style={{flex: 4}}>
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>Prabhakaran</Text>
-                <Text style={{ color: 'white' }}>prabhakaran@tenet.res.in</Text>
-           </View> 
-        </View>
-        <DrawerItems {...props}  />
-    </View>
-);
+export const CalendarStack = StackNavigator({ 
+      Calendar: { screen: CalendarScreen },
+      Agenda: { screen: AgendaScreen }
+  });
 
 const DrawerRouteConfigs = {
     Home: {
@@ -138,11 +132,7 @@ const DrawerRouteConfigs = {
     },
     Calendar: {
         path: '/calendar',
-        screen: StackNavigator({ 
-            CourseOutline: { screen: CourseOutline }, 
-            Description : { screen: Description },
-            BookIndex: { screen: BookIndex }
-        }),
+        screen: CalendarStack,
     }
 }
 const DrawerNavigatorConfig = {
@@ -154,44 +144,22 @@ const DrawerNavigatorConfig = {
             flex: 1
         }
     },
-    contentComponent: CustomDrawerContentComponent,
+    contentComponent: DrawerLeftConfig,
     initialRouteName: 'Home'
 }
 
 
-const DrawerNav = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig);
-
-const courseMain = StackNavigator({ 
-    CourseOutline: { screen: CourseOutline },
-    Description: { screen: Description },
-    BookIndex: { screen: BookIndex }
-});
-
- export const BookTabView = TabNavigator({
-    ChapterView : {
-        screen: ChapterView,
-        navigationOptions: { 
-            tabBarLabel: 'Chapters'
-        }
-    } ,
-    VideoIndex: {
-        screen: VideoIndex,
-        navigationOptions: {
-            tabBarLabel: 'Videos'
-        }
-    }   
-}, {tabBarOptions: { 
-        style: {
-            backgroundColor: '#32313F',
-        },
-    }
-});
-
+export const DrawerNav = DrawerNavigator(DrawerRouteConfigs, DrawerNavigatorConfig); 
+ 
 export const BookTabStack = StackNavigator({
-    BookHome: { screen: BookTabView },
-    Loading: {screen: Loading },
-    ViewBook: { screen: ViewBook }
-}, { headerMode: 'screen'})
+    BookHome: {
+        screen: StackNavigator({
+            BookHomeScreen: { screen: CVTabBar },
+            ViewBook: { screen: ViewBookWebView }
+        }) 
+    },
+    Loading: { screen: Loading }, 
+}, { headerMode: 'none'})
 
 const AppNavigatorStack = {
     Login: { screen: LoginScreen },

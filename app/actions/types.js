@@ -18,6 +18,7 @@ export const SELECT_BOOK = 'select_book';
 export const COURSE_OUTLINE = 'course_outline';
 export const BOOK_INDEX = 'book_index'; 
 export const VIEW_CHAPTER = 'view_chapter';
+export const PLAY_VIDEO = 'play_video';
 
 //Forum
 export const FORUM_COURSE_LIST = 'forum_course_list';

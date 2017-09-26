@@ -22,7 +22,8 @@ import {
     PROFILE_EDIT,
     PROFILE_EDIT_SCREEN,
     BACK,
-    VIEW_CHAPTER
+    VIEW_CHAPTER,
+    PLAY_VIDEO
 } from '../actions/types';
 
  
@@ -126,7 +127,16 @@ export const BookNav = (state = initialBookNavState, action) => {
                 }),
                 state
             );
-            break;   
+            break;  
+        case PLAY_VIDEO:
+            nextState = BookTabStack.router.getStateForAction(
+                NavigationActions.navigate({
+                    routeName: 'VP',
+                    params: { data: action.payload }
+                }),
+                state
+            );
+            break;  
         default:
             nextState = BookTabStack.router.getStateForAction(action, state);
             break;

@@ -8,6 +8,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.brentvatne.react.ReactVideoPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +23,10 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
+      return Arrays.<ReactPackage>asList( 
+          new MainReactPackage(), 
           new RNDeviceInfo(),
-          new MainReactPackage()
+          new ReactVideoPackage()
       );
     }
   };

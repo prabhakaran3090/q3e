@@ -34,6 +34,7 @@ import Loading from '../components/Loading';
 import ViewBookWebView from '../components/ViewBookWebView'; 
 import DrawerLeftConfig from '../components/DrawerLeftConfig'; 
 import CVTabBar from '../components/CVTabBar'; 
+import VideoPlayer from '../components/VideoPlayer'; 
 
 import { SBHeaderStyle, headerProp } from '../config/Config'; 
 
@@ -155,7 +156,8 @@ export const BookTabStack = StackNavigator({
     BookHome: {
         screen: StackNavigator({
             BookHomeScreen: { screen: CVTabBar },
-            ViewBook: { screen: ViewBookWebView }
+            ViewBook: { screen: ViewBookWebView },
+            VP: { screen: VideoPlayer }
         }) 
     },
     Loading: { screen: Loading }, 

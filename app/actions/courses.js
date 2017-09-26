@@ -19,7 +19,8 @@ import {
     FORUM_POST,
     PROFILE_EDIT,
     PROFILE_EDIT_SCREEN,
-    VIEW_CHAPTER
+    VIEW_CHAPTER,
+    PLAY_VIDEO
 } from './types';
 import { URI } from '../config/Config';
 
@@ -84,7 +85,7 @@ export const getBookIndex = (id,cname) => {
             .then(index => {   
                 dispatch({
                     type: BOOK_INDEX,
-                    payload: {cname,index}
+                    payload: {cname,index,id}
                 });
             })
             .catch(() => {
@@ -244,5 +245,12 @@ export const ViewChapter = (data,html) => {
     return {
         type: VIEW_CHAPTER,
         payload: { cname: data.name, html }
+    };
+}
+
+export const VP = (data) => {
+    return {
+        type: PLAY_VIDEO,
+        payload: data
     };
 }

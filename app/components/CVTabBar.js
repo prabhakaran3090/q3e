@@ -58,8 +58,8 @@ export default class CVTabBar extends Component {
         super(props); 
     }
     
-    render(){  
-        return <BookTabView screenProps={this.props.screenProps} />
+    render(){    
+        return <BookTabView screenProps={{ index: this.props.screenProps, id: this.props.navigation.state.params.BookIndex.id}} />
     }
 
 }

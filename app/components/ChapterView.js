@@ -20,7 +20,7 @@ class ChapterView extends Component {
     }
 
     componentWillMount() {  
-        const data = _.map(this.props.screenProps.BI, function (v) { 
+        const data = _.map(this.props.screenProps.index.BI, function (v) { 
             return {
                 name: v.title,
                 source: v.data.html

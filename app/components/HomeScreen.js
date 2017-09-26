@@ -75,7 +75,7 @@ class HomeScreen extends Component {
                 return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.completed} }));
             }}>View All</Text>
           </View> 
-          <FlatScroll  navigation={this.props.navigation}  data={this.props.sessions.completed} onPress={() => {  
+          <FlatScroll navigation={this.props.navigation}  data={this.props.sessions.completed} onPress={() => {  
                 return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Session', params: {sdata: this.props.sessions.completed} }));
             }}/>
        </ScrollView>

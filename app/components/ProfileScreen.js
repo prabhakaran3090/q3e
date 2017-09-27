@@ -36,21 +36,20 @@ class ProfileScreen extends Component {
  componentDidMount(){
     this._loadInitialState().done();
  }
-
- componentWillReceiveProps(nextProps){
-    this.setState({
-      isLoading: false,
-      res_data:nextProps.user_details,
-    });
-}
-
+ 
  _loadInitialState = async () => {
   var uname = await AsyncStorage.getItem('username');
   var uid = await AsyncStorage.getItem('userId');
 
   this.props.getUserData(uname);
  }
-
+ 
+ componentWillReceiveProps(nextProps){
+    this.setState({
+      isLoading: false,
+      res_data:nextProps.user_details,
+    });
+}
 
   handleSettingsPress(usr_name) {
       this.props.selectUserEdit(usr_name);
@@ -69,7 +68,7 @@ class ProfileScreen extends Component {
       />);
     }
     else if(c_gen.gender == 2){
-      return (
+      return ( 
         <Tile
         imageSrc={require('../assets/images/favatar.jpg')}
         featured
@@ -145,6 +144,7 @@ class ProfileScreen extends Component {
   );
   }
 }
+
 
 mapStateToProps = ({ courses }) => {
   return ({ 

@@ -12,7 +12,8 @@ import {
   View,
   StatusBar,
   Dimensions,
-  Slider
+  Slider,
+  BackHandler
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -24,6 +25,17 @@ export default class VideoPlayer extends Component {
   constructor(props) {
     super(props); 
   } 
+  handleBackButtonClick() { 
+    return this.props.navigation.goBack()
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+  }
 
   render() { 
     return (<View style={{flex: 1}}>

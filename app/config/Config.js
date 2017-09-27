@@ -70,6 +70,7 @@ export const headerProp = (navigation) => {
 export const URI = {
     nodeServer: 'qeee.rtbi.in',
     phpServer: 'qeee.in',
+    coursePack: 'coursepack.tenet.res.in',
     port:3001
 }
 

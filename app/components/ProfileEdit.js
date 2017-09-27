@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, ActivityIndicator, TouchableHighlight, AsyncStorage, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Text, View, BackHandler, ActivityIndicator, TouchableHighlight, AsyncStorage, StyleSheet, ScrollView, Alert } from 'react-native';
 import { FormLabel, FormInput, CheckBox } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 import { URI } from '../config/Config';
 import axios from 'axios';
@@ -21,8 +22,8 @@ class Edit extends Component {
                                         return navigation.dispatch(NavigationActions.navigate({ routeName: 'Profile' }));
                                     }}
                                 >
-                                    <Icon
-                                        name='angle-left'
+                                    <MaterialIcons
+                                        name='arrow-back'
                                         size={25}
                                         style={{ color: 'white', marginLeft: 20 }}
                                     />
@@ -51,11 +52,22 @@ constructor(props){
    female:'',
    status:'',
 };
+this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 }
 
-componentDidMount(){
-   this._loadInitialState().done();
-}
+  componentDidMount(){
+    this._loadInitialState().done();
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+
+  handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    return true;
+  }
 
 _loadInitialState = async () => {
   var uname = await AsyncStorage.getItem('username');

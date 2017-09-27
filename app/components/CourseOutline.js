@@ -5,7 +5,8 @@ import { View,
     TouchableOpacity, 
     TouchableHighlight, 
     ScrollView ,
-    ActivityIndicator
+    ActivityIndicator,
+    BackHandler
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 import { connect } from 'react-redux'; 
@@ -48,6 +49,17 @@ class CourseOutline extends Component {
         this.state = { course : null }
     } 
 
+    handleBackButtonClick() {
+        return this.props.navigation.dispatch(NavigationActions.back());
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+    }
     componentWillReceiveProps(nextProps){    
         this.setState({ course: nextProps.course })
     }

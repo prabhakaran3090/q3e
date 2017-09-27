@@ -8,7 +8,8 @@ import {
     FORUM_LIST,
     FORUM_DISCUSSION_LIST,
     FORUM_POST,
-    PROFILE_EDIT
+    PROFILE_EDIT,
+    GET_ALL_PHASE_COURSES
 } from '../actions/types';
 
 
@@ -20,7 +21,8 @@ const INIT = {
     loading: true,
     courseslist:{},
     forum_list:{},
-    user_details:{}
+    user_details:{},
+    phasecourseslist:{}
 };
 
 export default (state = INIT, action) => {  
@@ -42,7 +44,9 @@ export default (state = INIT, action) => {
         case FORUM_POST:
             return { ...state, forum_discussion: action.payload };
         case PROFILE_EDIT:
-            return { ...state, user_details: action.payload };                   
+            return { ...state, user_details: action.payload };   
+        case GET_ALL_PHASE_COURSES:
+            return { ...state, phasecourseslist: action.payload };                
         default:
             return state;             
     }

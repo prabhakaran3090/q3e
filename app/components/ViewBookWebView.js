@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { WebView, TouchableHighlight,View } from 'react-native';   
+import { WebView, TouchableHighlight,View, BackHandler } from 'react-native';   
 import HTMLView from 'react-native-htmlview';    
 import { NavigationActions } from 'react-navigation'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -31,6 +31,18 @@ class ViewBook extends Component {
     };
     constructor(props){
         super(props) 
+    }
+
+    handleBackButtonClick() {  
+        return this.props.navigation.goBack()
+    }
+
+    componentWillMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
     }
 
     render() {      

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableHighlight, ActivityIndicator, Text } from 'react-native'; 
+import { View, StyleSheet, TouchableHighlight, ActivityIndicator, Text, BackHandler } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome'; 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -18,7 +18,7 @@ class BookIndex extends Component {
         header:null
     };
 
-    constructor(props) { 
+    constructor(props) {  
         super(props); 
         this.state = { 
             course: null, 
@@ -26,13 +26,21 @@ class BookIndex extends Component {
             cname: this.props.navigation.state.params.data.name
         }    
     } 
-
+    handleBackButtonClick() {  
+        console.log(this.props.navigation) 
+        return this.props.navigation.goBack()
+    }
     componentWillMount(){
         const { params } = this.props.navigation.state;
-        this.props.getBookIndex(params.data.id, this.state.cname); 
+        this.props.getBookIndex(params.data.id, this.state.cname);   
     }
-
-    componentWillReceiveProps(nextProps) { 
+    componentDidMount(){
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+    }
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick.bind(this));
+    }
+    componentWillReceiveProps(nextProps) {  
         this.setState({
             course: nextProps.courses.BookIndex.index,
             loading: false

@@ -17,7 +17,7 @@ import { getSessions } from '../actions/courses';
 import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 import VP from './common/VideoPlayer';
-
+import { URI } from '../config/Config';
 export default class VideoPlayer extends Component{
     static navigationOptions = {
         header: null
@@ -26,10 +26,11 @@ export default class VideoPlayer extends Component{
         super(props); 
     }
     
-    render(){
-        const { source,id } = this.props.navigation.state.params.data;
-        return(<View style={{flex: 1}}>
-                <VP navigation = {this.props.navigation} source={{ uri: 'http://qeee.in/coursepack/generate_books/generated_books/'+id+'/files/videos/'+source}} />
+    
+    render(){ 
+        const { source,id } = this.props.navigation.state.params.data;  
+        return(<View style={{flex: 1}}> 
+            <VP navigation={this.props.navigation} source={{ uri: `http://${URI.coursePack}/ebook/`+id+`/files/videos/`+source}} />
             </View>);
     }
 }

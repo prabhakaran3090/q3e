@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
+  BackHandler,
   Image,
   ActivityIndicator,
   TouchableHighlight,
@@ -33,10 +34,10 @@ static navigationOptions = ({ navigation }) => {
                 return navigation.dispatch(NavigationActions.navigate({ routeName: 'Course' }));
             }}
         >
-            <Icon
-                name='angle-left'
-                size={25}
-                style={{ color: 'white', marginLeft: 20 }}
+            <MaterialIcons
+              name='arrow-back'
+              size={25}
+              style={{ color: 'white', marginLeft: 20 }}
             />
         </TouchableHighlight>;
             header.headerRight = <View
@@ -58,7 +59,6 @@ static navigationOptions = ({ navigation }) => {
 constructor(props) {
     super(props);  
       const { params } = this.props.navigation.state;
-     // console.log(params)
       this.props.getForumLists(params.id);
 
       const dss = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -69,15 +69,29 @@ constructor(props) {
     };
 
     this._renderRow = this._renderRow.bind(this);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
-componentWillReceiveProps(nextProps){
-  console.log(nextProps.forum_list)
-  const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-    this.setState({
-      dataSource: ds.cloneWithRows(_.values(nextProps.forum_list)),
-      isLoading: false,
-    });
-}
+
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+  
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+  
+  handleBackButtonClick() {
+    return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Course' }));
+  }
+
+  componentWillReceiveProps(nextProps){
+
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+      this.setState({
+        dataSource: ds.cloneWithRows(_.values(nextProps.forum_list)),
+        isLoading: false,
+      });
+  }
  
  objectLength(obj) {
    var size = 0, key;
@@ -88,7 +102,7 @@ componentWillReceiveProps(nextProps){
  }
 
 _renderRow(data) {
-  // console.log(data)
+
    if(data != 'Forum not found for the particular course')
         {
 

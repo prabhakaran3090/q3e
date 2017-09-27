@@ -3,12 +3,14 @@ import {
   Text,
   View,
   StyleSheet,
+  BackHandler,
   TouchableHighlight,
   Alert
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 
 export default class AgendaScreen extends Component {
@@ -21,10 +23,10 @@ static navigationOptions = ({ navigation }) => {
                                   underlayColor='transparent'  
                                   onPress={() => navigation.goBack()}
                                   >
-                                  <Icon 
-                                      name='angle-left'  
-                                      size={25} 
-                                      style={{  color: 'white',marginLeft:20}}
+                                  <MaterialIcons
+                                      name='arrow-back'
+                                      size={25}
+                                      style={{ color: 'white', marginLeft: 20 }}
                                   />
                               </TouchableHighlight>;
           header.headerRight = <View
@@ -53,6 +55,20 @@ static navigationOptions = ({ navigation }) => {
     };
 
     this.loadItems = this.loadItems.bind(this);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
+  }
+
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+ 
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+  
+  handleBackButtonClick() {
+    this.props.navigation.goBack(null);
+    return true;
   }
 
   render() {
@@ -84,8 +100,6 @@ listdate.forEach(x => {
 });
 
 var result =  Object.keys(temp).map(k => temp[k]);
-
- console.log(result);
 
     for(let d of result){
       var value = d.start_date;

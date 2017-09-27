@@ -19,6 +19,7 @@ import {
     FORUM_POST,
     PROFILE_EDIT,
     PROFILE_EDIT_SCREEN,
+    GET_ALL_PHASE_COURSES,
     VIEW_CHAPTER,
     PLAY_VIDEO
 } from './types';
@@ -147,7 +148,7 @@ export const selectForumCourses = (id) =>{
 export const getForumLists = (id) => {
     return (dispatch) => { 
       
-        axios.get(`http://${URI.nodeServer}:${URI.port}/forum/app/forum/${id}` , reqHeader)
+        axios.get(`http://${URI.nodeServer}:${URI.port}/forum/app/forum/${id}`)
         .then(response => response.data)  
         .then(forumlist => {
             dispatch({ 
@@ -172,7 +173,7 @@ export const selectForumid = (fid, cid) =>{
 export const getForumDiscussionLists = (id) => {
     return (dispatch) => { 
       
-        axios.get(`http://${URI.nodeServer}:${URI.port}/forum/app/forumposts/${id}` , reqHeader)
+        axios.get(`http://${URI.nodeServer}:${URI.port}/forum/app/forumposts/${id}`)
         .then(response => response.data)  
         .then(forumdiscussionlist => {
             dispatch({ 
@@ -220,7 +221,7 @@ export const postForums = (userid, disc_id, msg) =>{
 export const getUserData = (uname) => {
     return (dispatch) => { 
       
-        axios.get(`http://${URI.nodeServer}:${URI.port}/user?username=${uname}` , reqHeader)
+        axios.get(`http://${URI.nodeServer}:${URI.port}/user?username=${uname}`)
         .then(response => response.data)  
         .then(user_data => {
             dispatch({ 
@@ -240,7 +241,21 @@ export const selectUserEdit = (uname) =>{
        payload: uname
     };
 };
-
+ export const getAllPhaseCourses = () => { 
+    return async (dispatch) => { 
+        axios.get(`http://${URI.phpServer}/q3api/v1/index.php/Getcourse/enrol_course_id/?deleted_courses_status=true`, reqHeader)
+        .then(response => response.data) 
+        .then(phase_courses => { 
+            dispatch({
+                type: GET_ALL_PHASE_COURSES,
+                payload: phase_courses
+            });
+        })
+        .catch(() => {
+         
+        })
+    }
+}  
 export const ViewChapter = (data,html) => { 
     return {
         type: VIEW_CHAPTER,

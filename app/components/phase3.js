@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Image,
+  BackHandler,
   ActivityIndicator,
   TouchableHighlight,
   StatusBar,
@@ -47,11 +48,21 @@ class AllCourses extends Component {
 
 constructor(props){
   super(props) 
+  this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
 }
 
- componentDidMount() {  
-   this.props.getAllPhaseCourses();
- }
+componentDidMount(){
+ this.props.getAllPhaseCourses();
+  BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+componentWillUnmount() {
+  BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+}
+
+handleBackButtonClick() {
+   return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Login' }));
+}
  
  objectLength(obj) {
    var size = 0, key;

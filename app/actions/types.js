@@ -32,4 +32,6 @@ export const FORUM_POST = 'forum_post';
 export const PROFILE_EDIT = 'profile_edit';
 export const PROFILE_EDIT_SCREEN = 'profile_edit_screen';
 
+//All Courses
+export const GET_ALL_PHASE_COURSES = 'get_all_phase_courses';
 export const BACK = 'back';

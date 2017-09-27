@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View, 
   Image,
+  TouchableHighlight,
   Text,
   ScrollView, 
   StatusBar, 
@@ -85,12 +86,14 @@ class LoginScreen extends Component {
                                         /> 
                                         <Text style={styles.errorText} >{this.props.error}</Text> 
                                         {this.renderButton.call(this)}           
-                                    </View>  
-                                {/* <View style={styles.borderButton} >
-                                <Text style={{ color: 'orange', fontWeight: '600', fontSize: 16 }}>
-                                   SKIP
-                                </Text>
-                            </View>   */}
+                                    </View> 
+                              <TouchableHighlight underlayColor='transparent' onPress={()=>{this.props.navigation.navigate('Skip')}}> 
+                                <View style={styles.borderButton} >
+                                  <Text style={{ color: 'orange', fontWeight: '600', fontSize: 16 }}>
+                                     SKIP
+                                  </Text>
+                                </View> 
+                              </TouchableHighlight>
                                 </ScrollView> 
                             <View style={styles.LoginFooter} />
     

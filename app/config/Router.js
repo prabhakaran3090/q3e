@@ -13,6 +13,12 @@ import { StackNavigator, TabNavigator, DrawerNavigator, DrawerItems } from 'reac
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
+import Phase_1 from '../components/phase1.js';
+import Phase_2 from '../components/phase2.js';
+import Phase_3 from '../components/phase3.js';
+import Phase_7 from '../components/phase7.js';
+import Phase_8 from '../components/phase8.js';
+import Phase_9 from '../components/phase9.js';
 import LoginScreen from '../components/LoginScreen';
 import LoadingScreen from '../components/LoadingScreen';
 import HomeScreen from '../components/HomeScreen';
@@ -92,7 +98,9 @@ const TabBar = TabNavigator({
         }
     },
     NotificationStack: {
-        screen: StackNavigator({ Notification: { screen: NotificationScreen } }),
+        screen: StackNavigator({
+            Notification: { screen: NotificationScreen }
+        }),
         navigationOptions: {
             tabBarLabel: 'Notification',
             tabBarIcon: ({ tintColor }) => <Icon name='bell-o' size={20} color={tintColor} />
@@ -163,7 +171,61 @@ export const BookTabStack = StackNavigator({
     Loading: { screen: Loading }, 
 }, { headerMode: 'none'})
 
+
+export const AllcourseTabView = TabNavigator({
+    Phase1 : {
+        screen: Phase_1,
+        navigationOptions: { 
+            tabBarLabel: 'Jan-Apr 2015'
+        }
+    } ,
+    Phase2: {
+        screen: Phase_2,
+        navigationOptions: {
+            tabBarLabel: 'Aug-Nov 2015'
+        }
+    },
+    Phase3: {
+        screen: Phase_3,
+        navigationOptions: {
+            tabBarLabel: 'Jan-Apr 2016'
+        }
+    },
+    Phase4 : {
+        screen: Phase_7,
+        navigationOptions: { 
+            tabBarLabel: 'Aug-Nov 2016'
+        }
+    } ,
+    Phase5: {
+        screen: Phase_8,
+        navigationOptions: {
+            tabBarLabel: 'Jan-Apr 2017'
+        }
+    },
+    Phase6: {
+        screen: Phase_9,
+        navigationOptions: {
+            tabBarLabel: 'Aug-Nov 2017'
+        }
+    }      
+}, {tabBarOptions: { 
+        scrollEnabled:true,
+        style: {
+            backgroundColor: '#32313F',
+        },
+        tabStyle: {
+            width: 100,    
+        },
+    },
+    lazy: true
+     });
+
+
 const AppNavigatorStack = {
+    AllCourse:{ screen: StackNavigator({
+        Skip: { screen: AllcourseTabView }
+    }) },
     Login: { screen: LoginScreen },
     Main: { screen: DrawerNav },
     CourseMain: { screen: courseMain },

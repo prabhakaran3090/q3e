@@ -12,6 +12,7 @@ import {
   StatusBar 
 } from 'react-native'; 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SBHeaderStyle, headerProp } from '../config/Config';
 import { Card, List, ListItem, SearchBar } from 'react-native-elements';
 import moment from 'moment';
@@ -26,8 +27,8 @@ export default class SessionScreen extends Component {
           underlayColor='transparent'  
           onPress={() => navigation.goBack()}
           >
-          <Icon 
-              name='angle-left'  
+          <MaterialIcons 
+              name='arrow-back'  
               size={25} 
               style={{  color: 'white',marginLeft:20}}
           />
@@ -51,7 +52,6 @@ export default class SessionScreen extends Component {
   
       componentDidMount() {
           const {state} = this.props.navigation;
-          console.log(state.params) 
           this.setState({
               session_data: state.params.sdata,
               isLoading:false

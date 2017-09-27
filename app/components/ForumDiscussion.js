@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Image,
+  BackHandler,
   Button,
   ActivityIndicator,
   AsyncStorage,
@@ -31,7 +32,6 @@ static navigationOptions = ({ navigation }) => {
                                 
          const header = headerProp(navigation);
           const crse_id = navigation.state.params.id.c_id;
-         // console.log(crse_id)
            header.headerLeft = <TouchableHighlight
             underlayColor='transparent'
             onPress={() => {  
@@ -40,8 +40,8 @@ static navigationOptions = ({ navigation }) => {
             );
             }}
         >
-            <Icon
-                name='angle-left'
+            <MaterialIcons
+                name='arrow-back'
                 size={25}
                 style={{ color: 'white', marginLeft: 20 }}
             />
@@ -73,11 +73,27 @@ constructor(props) {
         res_data:''
         };
     this._renderRow = this._renderRow.bind(this);
+    this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
 
  componentWillMount() {  
     const { params } = this.props.navigation.state;
     this.props.getForumDiscussionLists(params.id.f_id);
+  }
+
+  componentDidMount(){
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+ }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+  }
+  
+  handleBackButtonClick() {
+    // this.props.navigation.goBack(null);
+    // return true;
+     const crses_id = this.props.navigation.state.params.id.c_id;
+    return this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'ForumList', params: { id: crses_id } }));
   }
 
    componentWillReceiveProps(nextProps) {
@@ -203,8 +219,8 @@ if(data != 'No records found')
    
          </ScrollView> 
       
-         <View style={{flexDirection:'row', position: 'absolute', left: 0, right: 0, bottom: 0,backgroundColor:'#d3d3d3',padding:8}}>
-                <View style={{width:300}}>
+         <View style={{flex:1,flexDirection:'row', position: 'absolute', left: 0, right: 0, bottom: 0,backgroundColor:'#d3d3d3',padding:8}}>
+                <View style={{flex:5}}>
                     <TextInput 
                     placeholder="Reply" 
                     underlineColorAndroid='transparent' 
@@ -213,7 +229,7 @@ if(data != 'No records found')
                     value={this.state.message}
                     />
                 </View>
-                <View>
+                <View style={{flex:1}}>
                     <Button 
                         title="Reply"
                         color="orange"
